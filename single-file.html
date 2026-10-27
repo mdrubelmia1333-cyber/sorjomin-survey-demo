@@ -1,0 +1,2277 @@
+<!DOCTYPE html>
+<!--
+  সরজমিন জরিপ — রাজউক পরিদর্শন ব্যবস্থাপনা
+  Developed by Md Rubel Mia | © 2026 Digitalaxis Tech
+-->
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#13294B">
+<meta name="description" content="সরজমিন জরিপ — রাজউক পরিদর্শন ব্যবস্থাপনা | Developed by Md Rubel Mia, Digitalaxis Tech">
+<meta name="author" content="Md Rubel Mia, Digitalaxis Tech">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<title>সরজমিন জরিপ — রাজউক</title>
+<style>
+/* ============================================================
+   সরজমিন জরিপ — স্টাইল (অফিস অ্যাপ্লিকেশনের মতো সাজানো)
+   Developed by Md Rubel Mia — Digitalaxis Tech
+   রং বদলাতে নিচের :root এর মানগুলো বদলান।
+   ============================================================ */
+:root{
+  --font: Arial, "Noto Sans Bengali", "Nirmala UI", "Vrinda", "Shonar Bangla", Helvetica, sans-serif;
+  --appbar:#13294B; --appbar-ink:#FFFFFF;
+  --bg:#EEF1F6; --surface:#FFFFFF; --surface2:#F6F8FB; --ink:#1B2433; --muted:#5B6980; --line:#D5DCE7; --line2:#E6EBF2;
+  --blue:#2B579A; --orange:#C55A11; --green:#217346; --teal:#0E7C86; --purple:#6B3FA0; --slate:#4A5A70;
+  --red:#C42B1C; --red-bg:#FDECEA; --amber:#8F5B00; --amber-bg:#FFF3D1; --ok:#1E7B45; --ok-bg:#E2F3E8; --info-bg:#E7EFFA;
+  --mark:#FFE27A; --mark-ink:#1B2433;
+  --accent:var(--blue); --accent-ink:#FFFFFF;
+  --shadow:0 1px 2px rgba(16,32,64,.06),0 3px 10px rgba(16,32,64,.05);
+  --r:6px; --appbar-h:56px; --nav-w:248px; --bnav-h:60px;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --appbar:#0A1830; --bg:#0F1726; --surface:#172238; --surface2:#1B2840; --ink:#E7EDF7; --muted:#9DAAC0; --line:#2A3A57; --line2:#223048;
+  --blue:#6E9DE0; --orange:#F0954F; --green:#5BBE85; --teal:#4CC3CC; --purple:#B193E6; --slate:#A9B6CB;
+  --red:#F2786A; --red-bg:#3D1F1D; --amber:#EAB94F; --amber-bg:#3A2D12; --ok:#64C98D; --ok-bg:#163326; --info-bg:#1C2D4A;
+  --mark:#8A6C10; --mark-ink:#FFF7DA; --accent-ink:#0F1726; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --appbar:#0A1830; --bg:#0F1726; --surface:#172238; --surface2:#1B2840; --ink:#E7EDF7; --muted:#9DAAC0; --line:#2A3A57; --line2:#223048;
+  --blue:#6E9DE0; --orange:#F0954F; --green:#5BBE85; --teal:#4CC3CC; --purple:#B193E6; --slate:#A9B6CB;
+  --red:#F2786A; --red-bg:#3D1F1D; --amber:#EAB94F; --amber-bg:#3A2D12; --ok:#64C98D; --ok-bg:#163326; --info-bg:#1C2D4A;
+  --mark:#8A6C10; --mark-ink:#FFF7DA; --accent-ink:#0F1726; color-scheme:dark; }
+
+/* প্রতিটা অংশের নিজস্ব রং (Word নীল, Excel সবুজ ইত্যাদির মতো) */
+[data-mod="home"]{--accent:var(--blue)} [data-mod="reports"]{--accent:var(--blue)} [data-mod="assign"]{--accent:var(--orange)}
+[data-mod="stats"]{--accent:var(--green)} [data-mod="groups"]{--accent:var(--teal)} [data-mod="admin"]{--accent:var(--purple)}
+[data-mod="profile"],[data-mod="about"]{--accent:var(--slate)}
+
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--appbar)}
+button,input,select,textarea{font:inherit;color:inherit}
+img{max-width:100%}
+.num{font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- অ্যাপ বার ---------- */
+.appbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:25;height:var(--appbar-h);background:var(--appbar);color:var(--appbar-ink);display:flex;align-items:center;gap:12px;padding:0 14px}
+.logo{width:34px;height:34px;border-radius:6px;background:#fff;display:grid;place-items:center;flex:none}
+.logo svg{display:block}
+.appname{min-width:0;line-height:1.2}
+.appname b{display:block;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appname span{display:block;font-size:.74rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appbar .sp{flex:1}
+.abtn{background:transparent;border:1px solid rgba(255,255,255,.3);color:var(--appbar-ink);border-radius:5px;padding:5px 10px;font-size:.84rem;cursor:pointer;white-space:nowrap}
+.abtn:hover{background:rgba(255,255,255,.1)}
+.meav{background:none;border:0;padding:0;cursor:pointer;border-radius:50%}
+
+/* ---------- নেভিগেশন ---------- */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);display:flex;padding:3px 2px calc(3px + env(safe-area-inset-bottom,0px))}
+.nav .ni{flex:1;background:none;border:0;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.7rem;color:var(--muted);cursor:pointer;position:relative;border-radius:6px;min-width:0}
+.nav .ni svg{width:22px;height:22px;flex:none}
+.nav .ni span.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.nav .ni[aria-current="page"]{color:var(--ink);font-weight:bold}
+.nav .ni[aria-current="page"] svg{color:var(--nc)}
+.nav .ni .cnt{position:absolute;top:1px;left:calc(50% + 7px);background:var(--red);color:#fff;border-radius:999px;font-size:.62rem;padding:0 5px;line-height:1.55;font-weight:bold}
+.nav .desk-only,.nav .credit{display:none}
+main{padding-bottom:calc(var(--bnav-h) + 24px + env(safe-area-inset-bottom,0px))}
+@media (min-width:960px){
+  .nav{top:calc(env(safe-area-inset-top,0px) + var(--appbar-h));bottom:0;right:auto;width:var(--nav-w);flex-direction:column;border-top:0;border-right:1px solid var(--line);padding:12px 10px;gap:2px;overflow:auto}
+  .nav .ni{flex:none;flex-direction:row;gap:12px;font-size:.93rem;padding:9px 12px;justify-content:flex-start;border-left:3px solid transparent;border-radius:0 6px 6px 0}
+  .nav .ni[aria-current="page"]{background:var(--surface2);border-left-color:var(--nc)}
+  .nav .ni .cnt{position:static;margin-left:auto}
+  .nav .mob-only{display:none}
+  .nav .desk-only{display:flex}
+  .nav .credit{display:block;margin-top:auto;padding:14px 12px 4px;font-size:.74rem;color:var(--muted);border-top:1px solid var(--line2);line-height:1.5}
+  main{margin-left:var(--nav-w);padding-bottom:40px}
+}
+
+/* ---------- কমান্ড বার (রিবনের মতো) ---------- */
+.cmdbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--appbar-h));z-index:15;background:var(--surface);border-bottom:1px solid var(--line);border-top:3px solid var(--accent);padding:8px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:54px}
+.cmdbar .back{background:none;border:1px solid var(--line);border-radius:5px;width:34px;height:34px;cursor:pointer;flex:none;display:grid;place-items:center}
+.cmdbar .ttl{min-width:0;flex:1 1 160px}
+.cmdbar h1{font-size:1.12rem;margin:0;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmdbar .sub{font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmdbar .acts{display:flex;gap:6px;flex-wrap:wrap}
+.content{padding:16px 14px;max-width:1120px;margin:0 auto}
+
+/* ---------- বাটন ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:5px;padding:8px 14px;font-weight:bold;font-size:.88rem;cursor:pointer;background:var(--surface);color:var(--ink);border:1px solid var(--line);min-height:38px;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--surface2)}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn.danger{color:var(--red);border-color:var(--red);background:transparent}
+.btn.ok{background:var(--ok);color:#fff;border-color:transparent}
+.btn.sm{padding:5px 10px;min-height:32px;font-size:.82rem}
+.btn.block{width:100%}
+.btn:disabled{opacity:.5;cursor:default}
+.btn svg{width:16px;height:16px}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:bold;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- কার্ড ও লেআউট ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
+.card>h3,.card .h3{font-size:1rem;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.card>h3::before{content:"";width:4px;height:16px;border-radius:2px;background:var(--accent);flex:none}
+.hint{margin:0 0 12px;color:var(--muted);font-size:.84rem}
+.cols{display:grid;gap:14px}
+@media (min-width:960px){.cols.c2{grid-template-columns:1fr 1fr}.cols.c21{grid-template-columns:2fr 1fr}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+@media (min-width:700px){.grid.g3{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:380px){.grid{grid-template-columns:1fr}}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f.full{grid-column:1/-1}
+.l{font-size:.82rem;color:var(--muted);font-weight:bold}
+.req{color:var(--red)}
+input,select,textarea{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:8px 10px;min-height:40px}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+input[type=checkbox],input[type=radio]{width:18px;height:18px;min-height:0;accent-color:var(--accent);flex:none}
+textarea{min-height:84px;resize:vertical}
+input:disabled,select:disabled{opacity:.6}
+
+/* KPI কার্ড */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+@media (min-width:700px){.kpis{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--kc,var(--accent));border-radius:var(--r);padding:12px 14px;box-shadow:var(--shadow);text-align:left;cursor:default}
+button.kpi{cursor:pointer;width:100%}
+.kpi .v{font-size:1.65rem;font-weight:bold;line-height:1.1;color:var(--kc,var(--ink))}
+.kpi .k{font-size:.8rem;color:var(--muted);margin-top:4px}
+.kpi .s{font-size:.74rem;color:var(--muted);margin-top:2px}
+
+/* ব্যানার */
+.banner{border-radius:var(--r);padding:10px 14px;margin-bottom:14px;font-size:.9rem;display:flex;gap:10px;align-items:flex-start;border:1px solid transparent}
+.banner.info{background:var(--info-bg);border-color:color-mix(in srgb,var(--blue) 25%,transparent)}
+.banner.warn{background:var(--amber-bg);color:var(--amber);border-color:color-mix(in srgb,var(--amber) 25%,transparent)}
+.banner.bad{background:var(--red-bg);color:var(--red);border-color:color-mix(in srgb,var(--red) 25%,transparent)}
+.banner.good{background:var(--ok-bg);color:var(--ok)}
+
+/* সেগমেন্ট ও চিপ */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:5px;overflow:hidden;background:var(--surface);margin-bottom:12px;flex-wrap:wrap}
+.seg button{border:0;background:none;padding:7px 14px;cursor:pointer;font-size:.86rem;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:bold}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:.82rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:transparent}
+.toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.toolbar input[type=search]{flex:1;min-width:180px}
+
+/* পিল ব্যাজ */
+.pill{display:inline-block;font-size:.72rem;border-radius:999px;padding:2px 8px;white-space:nowrap;font-weight:bold;line-height:1.5}
+.p-red{background:var(--red-bg);color:var(--red)} .p-ok{background:var(--ok-bg);color:var(--ok)} .p-amber{background:var(--amber-bg);color:var(--amber)}
+.p-info{background:var(--info-bg);color:var(--blue)} .p-grey{background:var(--surface2);color:var(--muted);border:1px solid var(--line2)}
+.p-orange{background:color-mix(in srgb,var(--orange) 14%,transparent);color:var(--orange)} .p-purple{background:color-mix(in srgb,var(--purple) 14%,transparent);color:var(--purple)}
+
+/* তালিকা সারি */
+.list{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:var(--r);padding:10px 12px;cursor:pointer;text-align:left;width:100%;box-shadow:var(--shadow)}
+.row:hover{background:var(--surface2)}
+.row.red{border-left-color:var(--red);background:color-mix(in srgb,var(--red-bg) 55%,var(--surface))}
+.row.ok{border-left-color:var(--ok)} .row.amber{border-left-color:var(--amber)} .row.orange{border-left-color:var(--orange)} .row.blue{border-left-color:var(--blue)}
+.row .main{min-width:0}
+.row .t1{font-weight:bold;font-size:.97rem;line-height:1.3;overflow:hidden;text-overflow:ellipsis}
+.row .t2{font-size:.82rem;color:var(--muted);margin-top:1px}
+.row .t3{font-size:.74rem;color:var(--muted);margin-top:2px;word-break:break-all}
+.row .side{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:var(--r);padding:26px 18px;text-align:center}
+.empty b{display:block;font-size:1.02rem;margin-bottom:4px}
+.empty p{margin:0 0 12px;color:var(--muted);font-size:.9rem}
+
+/* অবতার */
+.av{border-radius:50%;background:var(--slate);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:bold;overflow:hidden;flex:none;line-height:1}
+.av img{width:100%;height:100%;object-fit:cover}
+
+/* টেবিল */
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.tbl{width:100%;border-collapse:collapse;font-size:.87rem}
+table.tbl th,table.tbl td{padding:8px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:middle}
+table.tbl th{background:var(--surface2);color:var(--muted);font-size:.76rem;font-weight:bold;position:sticky;top:0}
+table.tbl td.r,table.tbl th.r{text-align:right}
+table.tbl tr.tot td{font-weight:bold;border-top:2px solid var(--line)}
+.kv{display:grid;grid-template-columns:minmax(110px,38%) 1fr;gap:7px 12px;font-size:.92rem;margin:0}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-weight:bold;word-break:break-word}
+
+/* তুলনা সারি */
+.cmp-head,.cmp{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:center}
+.cmp-head{font-size:.76rem;color:var(--muted);font-weight:bold;padding-bottom:5px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.cmp{padding:6px 0;border-bottom:1px dashed var(--line2)}
+.cmp:last-child{border-bottom:0}
+.cmp .nm{font-weight:bold;font-size:.9rem;line-height:1.25}
+.cmp .nm small{display:block;color:var(--muted);font-weight:normal;font-size:.74rem}
+.cmp .res{grid-column:2/-1;font-size:.79rem;font-weight:bold}
+.res.bad{color:var(--red)} .res.good{color:var(--ok)} .res.none{color:var(--muted);font-weight:normal}
+.xbtn{background:none;border:0;color:var(--red);cursor:pointer;font-size:.78rem;text-align:left;padding:0}
+.road{border:1px solid var(--line2);border-radius:5px;padding:10px;margin-bottom:8px;background:var(--surface2)}
+.road .tg{display:flex;align-items:center;gap:10px;font-weight:bold;cursor:pointer}
+.road .grid{margin-top:8px}
+.diagram{background:var(--surface2);border:1px solid var(--line2);border-radius:5px;padding:8px;display:flex;justify-content:center;margin:10px 0}
+.diagram svg{width:100%;max-width:380px;height:auto}
+.gpsrow{display:flex;gap:8px}
+.gpsrow input{flex:1;font-weight:bold}
+.gpsmsg{font-size:.82rem;color:var(--muted);margin-top:6px}
+.gpsmsg.err{color:var(--red)}
+a.lnk{color:var(--accent);font-weight:bold}
+
+/* ছবি */
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:10px}
+.ph{background:var(--surface2);border:1px solid var(--line2);border-radius:5px;overflow:hidden;display:flex;flex-direction:column}
+.ph .img{aspect-ratio:4/3;background:var(--line2);display:block;width:100%;border:0;padding:0;cursor:pointer}
+.ph .img img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .meta{padding:6px;font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.ph .meta input{min-height:30px;padding:4px 6px;font-size:.8rem}
+.filebtn{position:relative;overflow:hidden}
+.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.files{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.fileitem{display:flex;align-items:center;gap:10px;padding:6px 8px;border:1px solid var(--line2);border-radius:5px;background:var(--surface2);font-size:.85rem}
+.fileitem img{width:44px;height:44px;object-fit:cover;border-radius:4px}
+
+/* রিচ টেক্সট */
+.rte{border:1px solid var(--line);border-radius:5px;overflow:hidden;background:var(--surface)}
+.rte:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+.rte-bar{display:flex;gap:2px;padding:4px;border-bottom:1px solid var(--line2);background:var(--surface2)}
+.rte-bar button{min-width:34px;height:30px;border:1px solid transparent;background:none;border-radius:4px;cursor:pointer;font-size:.9rem}
+.rte-bar button:hover{border-color:var(--line);background:var(--surface)}
+.rte-bar .sep{width:1px;background:var(--line);margin:4px 4px}
+.rte-bar .hint2{margin-left:auto;font-size:.72rem;color:var(--muted);align-self:center;padding-right:4px}
+.rte textarea{border:0;border-radius:0;box-shadow:none!important}
+.rte-prev{border-top:1px dashed var(--line2);padding:6px 10px;font-size:.86rem;white-space:pre-wrap;background:var(--surface2)}
+.rte-prev:empty{display:none}
+.rt{white-space:pre-wrap;word-break:break-word}
+mark{background:var(--mark);color:var(--mark-ink);padding:0 2px;border-radius:2px}
+
+/* সারাংশ */
+.verdict{border-radius:5px;padding:10px 14px;margin-bottom:10px;font-weight:bold}
+.v-bad{background:var(--red-bg);color:var(--red)} .v-good{background:var(--ok-bg);color:var(--ok)} .v-none{background:var(--surface2);color:var(--muted)}
+ul.iss{margin:0;padding-left:20px} ul.iss li{margin:3px 0}
+
+/* রিপোর্ট হেডার */
+.rhead{background:var(--appbar);color:#fff;border-radius:var(--r);padding:16px;margin-bottom:14px}
+.rhead .lbl{font-size:.74rem;opacity:.75}
+.rhead .fno{font-size:1.05rem;font-weight:bold;word-break:break-all}
+.rhead .by{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:.88rem}
+.rhead .by small{opacity:.8}
+.rhead .pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+
+/* মন্তব্যের টাইমলাইন */
+.tl{display:flex;flex-direction:column;gap:12px}
+.tli{display:grid;grid-template-columns:34px 1fr;gap:10px}
+.tli .bx{background:var(--surface2);border:1px solid var(--line2);border-radius:5px;padding:9px 11px}
+.tli .who{font-weight:bold;font-size:.88rem}
+.tli .who small{color:var(--muted);font-weight:normal}
+.tli .tx{margin:4px 0 0}
+.tli .tm{font-size:.74rem;color:var(--muted);margin-top:4px}
+
+/* চার্ট */
+.chart{max-width:820px}
+.chart svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:14px;font-size:.8rem;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+
+/* ব্যবহারকারী পিকার */
+.picker{max-height:280px;overflow:auto;border:1px solid var(--line);border-radius:5px}
+.pick{display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--line2);cursor:pointer}
+.pick:last-child{border-bottom:0}
+.pick:hover{background:var(--surface2)}
+.pick .nm{font-weight:bold;font-size:.88rem}
+.pick .ds{font-size:.76rem;color:var(--muted)}
+
+/* শিট / ডায়ালগ */
+.toast{position:fixed;left:50%;bottom:calc(var(--bnav-h) + 18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--appbar);color:#fff;padding:9px 16px;border-radius:6px;font-size:.88rem;z-index:60;opacity:0;pointer-events:none;transition:opacity .2s;max-width:92vw;text-align:center;box-shadow:var(--shadow)}
+.toast.show{opacity:1}
+@media (min-width:960px){.toast{bottom:24px;left:calc(50% + var(--nav-w)/2)}}
+.sheet-bg{position:fixed;inset:0;background:rgba(8,16,32,.5);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.sheet-bg.open{display:flex}
+.sheet{background:var(--surface);width:100%;max-width:640px;border-radius:10px 10px 0 0;padding:18px 16px calc(16px + env(safe-area-inset-bottom,0px));max-height:90vh;overflow:auto;border-top:3px solid var(--accent)}
+@media (min-width:700px){.sheet-bg{align-items:center}.sheet{border-radius:8px}}
+.sheet h2{font-size:1.08rem;margin:0 0 12px}
+.sheet textarea.rep{min-height:300px;font-size:.84rem}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.moregrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.moregrid button{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);cursor:pointer;text-align:left;font-weight:bold}
+.moregrid svg{width:22px;height:22px;color:var(--nc)}
+
+/* লগইন পাতা */
+.authwrap{min-height:calc(100vh - var(--appbar-h));display:flex;align-items:center;justify-content:center;padding:24px 14px;background:linear-gradient(180deg,var(--appbar) 0,var(--appbar) 190px,var(--bg) 190px)}
+.authcard{background:var(--surface);border-radius:8px;box-shadow:0 8px 30px rgba(10,24,48,.18);width:100%;max-width:430px;padding:24px 20px;border-top:4px solid var(--blue)}
+.authcard h1{font-size:1.3rem;margin:0 0 2px}
+.authcard .sub{color:var(--muted);font-size:.86rem;margin-bottom:16px}
+.credit-line{text-align:center;font-size:.76rem;color:var(--muted);margin-top:18px;line-height:1.6}
+.perm{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:6px;margin-bottom:8px}
+.perm .ic{width:36px;height:36px;border-radius:6px;display:grid;place-items:center;background:var(--info-bg);color:var(--blue);flex:none}
+.perm .tx{flex:1;font-size:.86rem}
+.perm .tx b{display:block;font-size:.92rem}
+.loading{text-align:center;padding:80px 20px;color:var(--muted)}
+.about-hero{background:var(--appbar);color:#fff;border-radius:var(--r);padding:22px;margin-bottom:14px;display:flex;gap:16px;align-items:center}
+.about-hero .logo{width:56px;height:56px}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+@media print{.appbar,.nav,.cmdbar .acts,.toast{display:none!important}main{margin:0!important}}
+
+</style>
+</head>
+<body>
+<header class="appbar">
+  <span class="logo" id="logo"></span>
+  <div class="appname"><b id="appName"></b><span id="appOrg"></span></div>
+  <div class="sp"></div>
+  <button class="abtn" id="langBtn"></button>
+  <button class="meav" id="meBtn" hidden aria-label="প্রোফাইল / Profile"></button>
+</header>
+<nav class="nav" id="nav" hidden aria-label="মেনু / Menu"></nav>
+<main id="main" data-mod="home">
+  <div class="cmdbar" id="cmd"></div>
+  <div class="content" id="content"><div class="loading">লোড হচ্ছে… / Loading…</div></div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="sheet-bg" id="sheetBg"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><h2 id="sheetTitle"></h2><div id="sheetBody"></div></div></div>
+<div id="rcBox"></div>
+<script>
+/* ============================================================
+   config.js — অ্যাপের মূল সেটিংস
+   Developed by Md Rubel Mia — Digitalaxis Tech
+   ============================================================ */
+'use strict';
+
+const APP = {
+  nameBn: 'সরজমিন জরিপ',
+  nameEn: 'Sorjomin Survey',
+  orgBn: 'রাজউক পরিদর্শন ব্যবস্থাপনা',
+  orgEn: 'RAJUK Inspection Management',
+  developer: 'Md Rubel Mia',
+  company: 'Digitalaxis Tech',
+  version: '3.0.0',
+  year: 2026
+};
+
+/* ------------------------------------------------------------
+   Firebase config (নিজের সার্ভার / প্লে স্টোর / অ্যাপ স্টোর সংস্করণের জন্য)
+   null থাকলে:
+     - Claude-এর ভেতরে: Claude অ্যাকাউন্ট দিয়ে লগইন, অনলাইন ডাটাবেস
+     - বাইরে: ডেমো মোড (শুধু এই ডিভাইসে, সব ক্ষমতাসহ পরীক্ষার জন্য)
+   Firebase Console > Project settings > Your apps > Web app থেকে কপি করে বসান:
+   const FIREBASE_CONFIG = {
+     apiKey: "...", authDomain: "your-app.firebaseapp.com", projectId: "your-app",
+     storageBucket: "your-app.appspot.com", messagingSenderId: "...", appId: "..."
+   };
+   ------------------------------------------------------------ */
+const FIREBASE_CONFIG = null;
+const FIREBASE_SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
+
+/* কত দিন পর পুরনো রিপোর্ট লাল হবে (নিয়ন্ত্রণ প্যানেল থেকেও বদলানো যায়) */
+const DEFAULT_OVERDUE_DAYS = 30;
+
+/* নিষ্ক্রিয় থাকলে কত মিনিট পর স্বয়ংক্রিয় লগআউট (শুধু Firebase মোডে; 0 = বন্ধ) */
+const IDLE_LOGOUT_MINUTES = 30;
+
+/* ============================================================
+   base.js — ভাষা, সহায়ক ফাংশন ও অপশন তালিকা
+   L('বাংলা','English') বর্তমান ভাষা অনুযায়ী লেখা দেয়।
+   ============================================================ */
+'use strict';
+
+let lang = (() => { try { return localStorage.getItem('rj-lang') || 'bn'; } catch (e) { return 'bn'; } })();
+const L = (b, e) => (lang === 'en' ? e : b);
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+/* ব্যবহারকারীর লেখা সবসময় esc() দিয়ে দেখানো হয় — HTML/স্ক্রিপ্ট ঢোকানো যায় না */
+const esc = s => String(s ?? '').replace(/[&<>"'`]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' }[c]));
+const BD = '০১২৩৪৫৬৭৮৯';
+const asciiDigits = s => String(s ?? '').replace(/[০-৯]/g, d => BD.indexOf(d));
+const num = v => { if (v === '' || v == null) return null; const n = parseFloat(asciiDigits(v)); return Number.isFinite(n) ? n : null; };
+const fmt = n => (n == null || !Number.isFinite(n)) ? '—' : new Intl.NumberFormat(lang === 'en' ? 'en-US' : 'bn-BD', { maximumFractionDigits: 2 }).format(n);
+const loc = () => (lang === 'en' ? 'en-GB' : 'bn-BD');
+const pad2 = n => String(n).padStart(2, '0');
+const dayKey = t => { const d = new Date(t); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); };
+const monthKey = t => { const d = new Date(t); return d.getFullYear() + '-' + pad2(d.getMonth() + 1); };
+const yearKey = t => String(new Date(t).getFullYear());
+const today = () => dayKey(Date.now());
+const parseDay = s => { if (!s) return null; const d = new Date(String(s) + 'T00:00:00'); return isNaN(d) ? null : d; };
+const fdt = ts => ts ? new Date(ts).toLocaleString(loc(), { dateStyle: 'medium', timeStyle: 'short' }) : '—';
+const fd = s => { if (!s) return '—'; const d = typeof s === 'number' ? new Date(s) : parseDay(s); return d ? d.toLocaleDateString(loc(), { dateStyle: 'medium' }) : '—'; };
+const daysSince = s => { const d = typeof s === 'number' ? new Date(s) : parseDay(s); return d ? Math.floor((Date.now() - d.getTime()) / 864e5) : 0; };
+const clip = (s, n) => String(s ?? '').slice(0, n);
+
+/* নিরাপদ র‍্যান্ডম আইডি */
+function newId(p) {
+  const a = new Uint8Array(8); crypto.getRandomValues(a);
+  return p + Date.now().toString(36) + [...a].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+function toast(m) {
+  const t = $('#toast'); if (!t) return;
+  t.textContent = m; t.classList.add('show');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* তারিখ-সময় অনুযায়ী নম্বর। kind: CMP=অভিযোগভিত্তিক, SLF=স্বপ্রণোদিত, NTH=নথি, ASG=অ্যাসাইনমেন্ট
+   যেমন: RAJUK/Z3/CMP/20261027/143512-A1B */
+function genNo(kind, zone) {
+  const d = new Date(), r = new Uint8Array(2); crypto.getRandomValues(r);
+  return `RAJUK/Z${zone || '0'}/${kind}/${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}/${pad2(d.getHours())}${pad2(d.getMinutes())}${pad2(d.getSeconds())}-${[...r].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase().slice(0, 3)}`;
+}
+
+/* রিচ টেক্সট: **বোল্ড**, ==হাইলাইট==, "- " দিয়ে শুরু লাইন = বুলেট
+   আগে esc() করা হয়, তাই কোনো HTML ঢোকানো যায় না */
+function md(s) {
+  return esc(s)
+    .replace(/\*\*([^\n]+?)\*\*/g, '<b>$1</b>')
+    .replace(/==([^\n]+?)==/g, '<mark>$1</mark>')
+    .replace(/^- (.*)$/gm, '• $1');
+}
+const plain = s => String(s ?? '').replace(/\*\*|==/g, '');
+
+/* ================= অপশন তালিকা ================= */
+const ZONES = [1, 2, 3, 4, 5, 6, 7, 8].map(n => ({ v: String(n), b: 'জোন-' + BD[n], e: 'Zone ' + n }));
+
+/* পদবি — role হলো অনুমোদনের পর যে ক্ষমতা পাবে। ডেভেলপার ক্ষমতা শুধু নিয়ন্ত্রণ প্যানেল থেকে দেওয়া যায়। */
+const DESIG = [
+  { v: 'bi',  b: 'ইমারত পরিদর্শক', e: 'Building Inspector', role: 'inspector' },
+  { v: 'cbi', b: 'প্রধান ইমারত পরিদর্শক', e: 'Chief Building Inspector', role: 'lead' },
+  { v: 'aao', b: 'সহকারী অথরাইজড অফিসার', e: 'Asst. Authorized Officer', role: 'ao' },
+  { v: 'ao',  b: 'অথরাইজড অফিসার', e: 'Authorized Officer', role: 'ao' },
+  { v: 'dir', b: 'পরিচালক / উচ্চ পর্যায়ের কর্মকর্তা', e: 'Director / Senior Officer', role: 'senior' },
+];
+const ROLES = {
+  dev:       ['ডেভেলপার (সম্পূর্ণ নিয়ন্ত্রণ)', 'Developer (full control)'],
+  senior:    ['উচ্চ পর্যায় — সব জোন', 'Senior — all zones'],
+  ao:        ['অথরাইজড অফিসার — নিজের জোন', 'Authorized Officer — own zone'],
+  lead:      ['গ্রুপ প্রধান', 'Group head'],
+  inspector: ['পরিদর্শক', 'Inspector'],
+};
+const roleLabel = r => L(...(ROLES[r] || ROLES.inspector));
+
+const SOURCES = [{ v: 'self', b: 'স্বপ্রণোদিত', e: 'Self-initiated' }, { v: 'complaint', b: 'অভিযোগভিত্তিক', e: 'Complaint-based' }];
+const PRIORITY = [{ v: 'normal', b: 'সাধারণ', e: 'Normal' }, { v: 'urgent', b: 'জরুরি', e: 'Urgent' }];
+const ASTATUS = [
+  { v: 'open', b: 'নতুন', e: 'New' }, { v: 'inprogress', b: 'চলমান', e: 'In progress' },
+  { v: 'done', b: 'সম্পন্ন', e: 'Done' }, { v: 'cancelled', b: 'বাতিল', e: 'Cancelled' }];
+const USES = [
+  { v: 'res', b: 'আবাসিক', e: 'Residential' }, { v: 'com', b: 'বাণিজ্যিক', e: 'Commercial' },
+  { v: 'mix', b: 'মিশ্র ব্যবহার', e: 'Mixed use' }, { v: 'ind', b: 'শিল্প', e: 'Industrial' },
+  { v: 'edu', b: 'শিক্ষা প্রতিষ্ঠান', e: 'Educational' }, { v: 'hlt', b: 'স্বাস্থ্যসেবা', e: 'Healthcare' },
+  { v: 'off', b: 'অফিস', e: 'Office' }, { v: 'oth', b: 'অন্যান্য', e: 'Other' }];
+
+/* ভবনের শ্রেণি (Occupancy) — ইমারত নির্মাণ বিধিমালা / BNBC অনুযায়ী। বর্তমান বিধিমালার সাথে মিলিয়ে নিন। */
+const BGROUPS = {
+  A: ['আবাসিক', 'Residential'], B: ['শিক্ষা', 'Educational'], C: ['প্রাতিষ্ঠানিক', 'Institutional'], D: ['স্বাস্থ্যসেবা', 'Health care'],
+  E: ['ব্যবসায়িক', 'Business'], F: ['বাণিজ্যিক (দোকান/বাজার)', 'Mercantile'], G: ['শিল্প', 'Industrial'], H: ['গুদাম', 'Storage'],
+  I: ['সমাবেশ', 'Assembly'], J: ['বিপজ্জনক', 'Hazardous'], K: ['গ্যারেজ', 'Garage'], L: ['ইউটিলিটি', 'Utility'], M: ['বিবিধ', 'Miscellaneous'] };
+const BTYPES = [
+  ['A-1', 'একক পরিবার বাসস্থান', 'Single-family dwelling'], ['A-2', 'দুই পরিবার বাসস্থান', 'Two-family dwelling'], ['A-3', 'ফ্ল্যাট / অ্যাপার্টমেন্ট', 'Flats / apartments'],
+  ['A-4', 'মেস, বোর্ডিং, ডরমিটরি, হোস্টেল', 'Mess, boarding, dormitory, hostel'], ['A-5', 'হোটেল ও লজিং', 'Hotel and lodging'],
+  ['B-1', 'শিক্ষা প্রতিষ্ঠান', 'Educational facility'], ['B-2', 'প্রাক-প্রাথমিক / ডে-কেয়ার', 'Pre-school / day care'],
+  ['C-1', 'শিশু পরিচর্যা প্রতিষ্ঠান', 'Child care institution'], ['C-2', 'সক্ষম প্রাপ্তবয়স্কদের হেফাজত', 'Custodial — capable adults'], ['C-3', 'অক্ষম প্রাপ্তবয়স্কদের হেফাজত', 'Custodial — incapable adults'],
+  ['C-4', 'শিশুদের সংশোধন ও মানসিক প্রতিষ্ঠান', 'Penal / mental — children'], ['C-5', 'প্রাপ্তবয়স্কদের সংশোধন ও মানসিক প্রতিষ্ঠান', 'Penal / mental — adults'],
+  ['D-1', 'সাধারণ চিকিৎসা স্থাপনা', 'Normal medical facility'], ['D-2', 'জরুরি চিকিৎসা স্থাপনা', 'Emergency medical facility'],
+  ['E-1', 'অফিস', 'Offices'], ['E-2', 'গবেষণা ও পরীক্ষাগার', 'Research and testing labs'], ['E-3', 'জরুরি সেবা', 'Essential services'],
+  ['F-1', 'ছোট দোকান ও বাজার', 'Small shops and market'], ['F-2', 'বড় দোকান ও বাজার', 'Large shops and market'], ['F-3', 'জ্বালানি স্টেশন', 'Refuelling station'],
+  ['G-1', 'স্বল্প ঝুঁকির শিল্প', 'Low-hazard industry'], ['G-2', 'মাঝারি ঝুঁকির শিল্প', 'Moderate-hazard industry'],
+  ['H-1', 'স্বল্প অগ্নিঝুঁকির গুদাম', 'Low fire-risk storage'], ['H-2', 'মাঝারি অগ্নিঝুঁকির গুদাম', 'Moderate fire-risk storage'],
+  ['I-1', 'বড় সমাবেশ (স্থির আসন)', 'Large assembly, fixed seats'], ['I-2', 'ছোট সমাবেশ (স্থির আসন)', 'Small assembly, fixed seats'],
+  ['I-3', 'বড় সমাবেশ (স্থির আসন নেই)', 'Large assembly, no fixed seats'], ['I-4', 'ছোট সমাবেশ (স্থির আসন নেই)', 'Small assembly, no fixed seats'], ['I-5', 'ক্রীড়া স্থাপনা', 'Sports facility'],
+  ['J-1', 'বিস্ফোরণ ঝুঁকি', 'Explosion hazard'], ['J-2', 'রাসায়নিক ঝুঁকি', 'Chemical hazard'], ['J-3', 'জৈবিক ঝুঁকি', 'Biological hazard'], ['J-4', 'পারমাণবিক ঝুঁকি', 'Nuclear hazard'],
+  ['K-1', 'পার্কিং গ্যারেজ', 'Parking garage'], ['K-2', 'ব্যক্তিগত গ্যারেজ', 'Private garage'], ['K-3', 'মেরামত গ্যারেজ ও শোরুম', 'Repair garage and showroom'],
+  ['L', 'ইউটিলিটি স্থাপনা', 'Utility'], ['M-1', 'বিশেষ স্থাপনা', 'Special structures'], ['M-2', 'বেড়া, ট্যাংক, টাওয়ার', 'Fences, tanks, towers'],
+].map(([v, b, e]) => ({ v, g: v[0], b: v + ' — ' + b, e: v + ' — ' + e }));
+
+const SHAPES = [
+  { v: 'rect', b: 'আয়তাকার', e: 'Rectangular' }, { v: 'square', b: 'বর্গাকার', e: 'Square' },
+  { v: 'L', b: 'এল (L) আকৃতি', e: 'L-shaped' }, { v: 'tri', b: 'ত্রিভুজাকার', e: 'Triangular' },
+  { v: 'trap', b: 'ট্রাপিজিয়াম (এক পাশ চওড়া)', e: 'Trapezoid' }, { v: 'irr', b: 'অনিয়মিত', e: 'Irregular' }];
+const FACING = [{ v: 'N', b: 'উত্তর', e: 'North' }, { v: 'S', b: 'দক্ষিণ', e: 'South' }, { v: 'E', b: 'পূর্ব', e: 'East' }, { v: 'W', b: 'পশ্চিম', e: 'West' }];
+const CSTAT = [
+  { v: 'none', b: 'নির্মাণ শুরু হয়নি', e: 'Not started' }, { v: 'uc', b: 'নির্মাণাধীন', e: 'Under construction' },
+  { v: 'done', b: 'নির্মাণ সম্পন্ন', e: 'Completed' }, { v: 'occ', b: 'ব্যবহার / বসবাস চলছে', e: 'Occupied' },
+  { v: 'stop', b: 'নির্মাণ কাজ বন্ধ', e: 'Work stopped' }];
+const RECO = [
+  { v: 'ok', b: 'কোনো ব্যবস্থা প্রয়োজন নেই', e: 'No action needed' }, { v: 'notice', b: 'নোটিশ প্রদান', e: 'Issue notice' },
+  { v: 're', b: 'পুনঃপরিদর্শন', e: 'Re-inspect' }, { v: 'stopw', b: 'কাজ বন্ধের নির্দেশ', e: 'Stop-work order' },
+  { v: 'remove', b: 'অননুমোদিত অংশ অপসারণ', e: 'Remove unauthorized part' }, { v: 'oth', b: 'অন্যান্য', e: 'Other' }];
+const SIDES = [{ v: 'front', b: 'সামনে', e: 'Front' }, { v: 'back', b: 'পেছনে', e: 'Rear' }, { v: 'left', b: 'বামে', e: 'Left' }, { v: 'right', b: 'ডানে', e: 'Right' }];
+const ACTS = [
+  { v: 'comment', b: 'মন্তব্য', e: 'Comment' }, { v: 'nothi', b: 'নথি পেশ', e: 'Submit to file (Nothi)' },
+  { v: 'returned', b: 'সংশোধনের জন্য ফেরত', e: 'Return for correction' }, { v: 'closed', b: 'নিষ্পত্তি', e: 'Close / resolved' }];
+
+const O = (list, v) => { const o = list.find(x => x.v === v); return o ? L(o.b, o.e) : (v || '—'); };
+const opts = (list, cur, none = true) => (none ? `<option value="">${L('বাছাই করুন', 'Select')}</option>` : '') +
+  list.map(o => `<option value="${esc(o.v)}" ${o.v === cur ? 'selected' : ''}>${esc(L(o.b, o.e))}</option>`).join('');
+const btOpts = cur => `<option value="">${L('বাছাই করুন', 'Select')}</option>` + Object.entries(BGROUPS).map(([g, [b, e]]) =>
+  `<optgroup label="${g} — ${esc(L(b, e))}">${BTYPES.filter(t => t.g === g).map(t => `<option value="${t.v}" ${t.v === cur ? 'selected' : ''}>${esc(L(t.b, t.e))}</option>`).join('')}</optgroup>`).join('');
+
+/* ============================================================
+   calc.js — অনুমোদিত বনাম সরজমিন হিসাব, বিচ্যুতি, জমির নকশা
+   dir:'over'  = অনুমোদনের চেয়ে বেশি হলে বিচ্যুতি
+   dir:'under' = অনুমোদনের চেয়ে কম হলে বিচ্যুতি
+   ============================================================ */
+'use strict';
+
+const UNITS = () => ({ m: { len: L('মি', 'm'), area: L('বর্গমি', 'sq m') }, ft: { len: L('ফুট', 'ft'), area: L('বর্গফুট', 'sq ft') } });
+const unitsOf = r => UNITS()[r && r.unit === 'ft' ? 'ft' : 'm'];
+const CMP = () => [
+  { k: 'floors',   n: L('তলা সংখ্যা', 'Storeys'), kind: 'count', u: L('তলা', 'storey'), dir: 'over' },
+  { k: 'basement', n: L('বেসমেন্ট', 'Basements'), kind: 'count', u: L('টি', 'nos'), dir: 'over' },
+  { k: 'sb_front', n: L('সেটব্যাক — সামনে', 'Setback — front'), kind: 'len', dir: 'under' },
+  { k: 'sb_back',  n: L('সেটব্যাক — পেছনে', 'Setback — rear'), kind: 'len', dir: 'under' },
+  { k: 'sb_left',  n: L('সেটব্যাক — বামে', 'Setback — left'), kind: 'len', dir: 'under' },
+  { k: 'sb_right', n: L('সেটব্যাক — ডানে', 'Setback — right'), kind: 'len', dir: 'under' },
+  { k: 'gc',       n: L('গ্রাউন্ড কভারেজ', 'Ground coverage'), sub: L('নিচতলার ক্ষেত্রফল', 'ground floor area'), kind: 'area', dir: 'over' },
+  { k: 'tfa',      n: L('মোট ফ্লোর এরিয়া', 'Total floor area'), sub: L('সব তলা মিলিয়ে', 'all floors'), kind: 'area', dir: 'over' },
+  { k: 'parking',  n: L('পার্কিং', 'Parking'), kind: 'count', u: L('টি', 'spaces'), dir: 'under' },
+];
+const cmpByKey = k => CMP().find(c => c.k === k);
+const unitOf = (c, r) => (c.kind === 'count' ? c.u : unitsOf(r)[c.kind]);
+
+function diff(a, m, dir, u, isArea) {
+  if (a == null || m == null) return { s: 'none', t: L('দুটো মান দিলে হিসাব হবে', 'Enter both values') };
+  const d = m - a;
+  if (Math.abs(d) < 1e-9) return { s: 'good', t: L('অনুমোদন অনুযায়ী', 'As approved'), a, m };
+  const bad = dir === 'over' ? d > 0 : d < 0;
+  const pct = isArea && a ? ` (${fmt(Math.abs(d) / a * 100)}%)` : '';
+  return { s: bad ? 'bad' : 'good', t: `${fmt(Math.abs(d))} ${u} ${d > 0 ? L('বেশি', 'more') : L('কম', 'less')}${pct}`, a, m };
+}
+
+/* তলাভিত্তিক ক্ষেত্রফলের যোগফল */
+function floorSum(r) {
+  let a = null, m = null;
+  (r.floorsList || []).forEach(f => { const x = num(f.a), y = num(f.m); if (x != null) a = (a || 0) + x; if (y != null) m = (m || 0) + y; });
+  return { a, m };
+}
+/* মোট ফ্লোর এরিয়া: আলাদা করে লিখলে সেটা, না লিখলে তলাগুলোর যোগফল */
+function cmpVals(c, r) {
+  if (c.k === 'tfa') { const s = floorSum(r); return [num(r.tfaA) ?? s.a, num(r.tfaM) ?? s.m]; }
+  return [num(r[c.k + 'A']), num(r[c.k + 'M'])];
+}
+const compare = (c, r) => { const [a, m] = cmpVals(c, r); return diff(a, m, c.dir, unitOf(c, r), c.kind === 'area'); };
+const roadCmp = (side, r) => { const x = (r.roads || {})[side] || {}; return diff(num(x.a), num(x.m), 'under', unitsOf(r).len, false); };
+const floorCmp = (f, r) => diff(num(f.a), num(f.m), 'over', unitsOf(r).area, true);
+
+function issues(r) {
+  const out = [];
+  CMP().forEach(c => { const d = compare(c, r); if (d.s === 'bad') out.push(`${c.n}: ${L('অনুমোদিত', 'approved')} ${fmt(d.a)}, ${L('সরজমিন', 'on site')} ${fmt(d.m)} ${unitOf(c, r)} — ${d.t}`); });
+  SIDES.forEach(s => {
+    const x = (r.roads || {})[s.v]; if (!x || !x.on) return; const d = roadCmp(s.v, r);
+    if (d.s === 'bad') out.push(`${L('রাস্তা', 'Road')} (${L(s.b, s.e)}): ${L('নকশায়', 'plan')} ${fmt(d.a)}, ${L('সরজমিন', 'on site')} ${fmt(d.m)} — ${d.t}`);
+  });
+  (r.floorsList || []).forEach(f => { const d = floorCmp(f, r); if (d.s === 'bad') out.push(`${f.name || L('তলা', 'Floor')}: ${L('অনুমোদিত', 'approved')} ${fmt(d.a)}, ${L('সরজমিন', 'on site')} ${fmt(d.m)} ${unitsOf(r).area} — ${d.t}`); });
+  if (r.btypeA && r.btypeM && r.btypeA !== r.btypeM) out.push(`${L('ভবনের শ্রেণি পরিবর্তন', 'Change of building type')}: ${r.btypeA} → ${r.btypeM}`);
+  if (r.useA && r.useM && r.useA !== r.useM) out.push(`${L('ব্যবহার পরিবর্তন', 'Change of use')}: ${O(USES, r.useA)} → ${O(USES, r.useM)}`);
+  return out;
+}
+const hasMeasure = r => CMP().some(c => compare(c, r).s !== 'none') || SIDES.some(s => roadCmp(s.v, r).s !== 'none') ||
+  !!(r.useA && r.useM) || !!(r.btypeA && r.btypeM) || (r.floorsList || []).some(f => num(f.a) != null && num(f.m) != null);
+
+function floorName(i, basements) {
+  if (i < basements) { const n = basements - i; return L('বেসমেন্ট-' + (BD[n] || fmt(n)), 'Basement ' + n); }
+  const n = i - basements;
+  if (n === 0) return L('নিচতলা', 'Ground floor');
+  const bnOrd = ['', '১ম', '২য়', '৩য়', '৪র্থ', '৫ম', '৬ষ্ঠ', '৭ম', '৮ম', '৯ম', '১০ম'];
+  const en = n + (n % 10 === 1 && n % 100 !== 11 ? 'st' : n % 10 === 2 && n % 100 !== 12 ? 'nd' : n % 10 === 3 && n % 100 !== 13 ? 'rd' : 'th');
+  return L((bnOrd[n] || fmt(n) + 'তম') + ' তলা', en + ' floor');
+}
+
+/* GPS: এক বক্সে "অক্ষাংশ, দ্রাঘিমাংশ" */
+function parseGps(s) {
+  const m = asciiDigits(s).match(/(-?\d{1,3}(?:\.\d+)?)\s*[, ]\s*(-?\d{1,3}(?:\.\d+)?)/);
+  if (!m) return null; const lat = +m[1], lng = +m[2];
+  return (Math.abs(lat) <= 90 && Math.abs(lng) <= 180) ? { lat, lng } : null;
+}
+const mapUrl = g => `https://www.google.com/maps?q=${g.lat},${g.lng}`;
+
+/* জমির আকৃতির নকশা (SVG) — নিচের দিক = সামনে */
+const SHAPE_PTS = {
+  rect: [[0, 0], [1, 0], [1, 1], [0, 1]], square: [[.08, 0], [.92, 0], [.92, 1], [.08, 1]],
+  L: [[0, 0], [.55, 0], [.55, .42], [1, .42], [1, 1], [0, 1]], tri: [[.5, 0], [1, 1], [0, 1]],
+  trap: [[.22, 0], [.78, 0], [1, 1], [0, 1]], irr: [[.1, 0], [.72, .07], [1, .5], [.88, 1], [0, .92], [.05, .45]] };
+function diagramSVG(r) {
+  const bx = 62, by = 46, bw = 196, bh = 176;
+  const P = (SHAPE_PTS[r.shape] || SHAPE_PTS.rect).map(([x, y]) => [bx + x * bw, by + y * bh]);
+  const cx = P.reduce((s, p) => s + p[0], 0) / P.length, cy = P.reduce((s, p) => s + p[1], 0) / P.length;
+  const B = P.map(([x, y]) => [cx + (x - cx) * .5, cy + (y - cy) * .5]);
+  const xs = B.map(p => p[0]), ys = B.map(p => p[1]);
+  const b = { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) };
+  const u = unitsOf(r).len, pts = a => a.map(p => p.map(v => v.toFixed(1)).join(',')).join(' ');
+  const sb = k => {
+    const c = cmpByKey(k), d = compare(c, r), m = num(r[k + 'M']), a = num(r[k + 'A']);
+    return { col: d.s === 'bad' ? 'var(--red)' : d.s === 'good' ? 'var(--ok)' : 'var(--muted)', t: m != null ? fmt(m) + ' ' + u : (a != null ? '(' + fmt(a) + ')' : '?'), s: (a != null && m != null) ? L('অনু. ', 'appr. ') + fmt(a) : '' };
+  };
+  const lab = (x, y, o) => `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" font-size="12" font-weight="bold" fill="${o.col}">${esc(o.t)}</text>${o.s ? `<text x="${x.toFixed(1)}" y="${(y + 13).toFixed(1)}" text-anchor="middle" font-size="9.5" fill="var(--muted)">${esc(o.s)}</text>` : ''}`;
+  const road = s => {
+    const x = (r.roads || {})[s]; if (!x || !x.on) return '';
+    const sd = SIDES.find(z => z.v === s), w = num(x.m) ?? num(x.a);
+    const t = esc(L(sd.b + 'র রাস্তা', sd.e + ' road') + (w != null ? ' ' + fmt(w) + ' ' + u : ''));
+    const col = roadCmp(s, r).s === 'bad' ? 'var(--red)' : 'var(--ink)';
+    if (s === 'front') return `<rect x="20" y="234" width="280" height="26" fill="var(--line)"/><text x="160" y="251" text-anchor="middle" font-size="11" fill="${col}">${t}</text>`;
+    if (s === 'back') return `<rect x="20" y="8" width="280" height="26" fill="var(--line)"/><text x="160" y="25" text-anchor="middle" font-size="11" fill="${col}">${t}</text>`;
+    if (s === 'left') return `<rect x="16" y="40" width="26" height="188" fill="var(--line)"/><text x="29" y="134" text-anchor="middle" font-size="11" fill="${col}" transform="rotate(-90 29 134)">${t}</text>`;
+    return `<rect x="278" y="40" width="26" height="188" fill="var(--line)"/><text x="291" y="134" text-anchor="middle" font-size="11" fill="${col}" transform="rotate(90 291 134)">${t}</text>`;
+  };
+  const fl = num(r.floorsM) ?? num(r.floorsA);
+  return `<svg viewBox="0 0 320 290" role="img" aria-label="${L('প্লটের নকশা', 'Plot sketch')}">
+    ${SIDES.map(s => road(s.v)).join('')}
+    <polygon points="${pts(P)}" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 4"/>
+    <polygon points="${pts(B)}" fill="var(--info-bg)" stroke="var(--ink)" stroke-width="2"/>
+    <text x="${cx.toFixed(1)}" y="${(cy + 2).toFixed(1)}" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--ink)">${L('ভবন', 'Building')}</text>
+    ${fl != null ? `<text x="${cx.toFixed(1)}" y="${(cy + 17).toFixed(1)}" text-anchor="middle" font-size="10" fill="var(--muted)">${fmt(fl)} ${L('তলা', 'storeys')}</text>` : ''}
+    ${lab((b.x0 + b.x1) / 2, (b.y1 + by + bh) / 2 + 2, sb('sb_front'))}
+    ${lab((b.x0 + b.x1) / 2, (by + b.y0) / 2 - 2, sb('sb_back'))}
+    ${lab((bx + b.x0) / 2, (b.y0 + b.y1) / 2 - 4, sb('sb_left'))}
+    ${lab((bx + bw + b.x1) / 2, (b.y0 + b.y1) / 2 - 4, sb('sb_right'))}
+    <text x="160" y="281" text-anchor="middle" font-size="10.5" fill="var(--muted)">${L('নিচের দিক = সামনে', 'Bottom = front')}${r.facing ? ' (' + esc(O(FACING, r.facing)) + ')' : ''} | ${esc(O(SHAPES, r.shape || 'rect'))}</text>
+  </svg>`;
+}
+
+/* ============================================================
+   store.js — ডেটা সংরক্ষণ ও ভূমিকা (role)
+   তিনটি মোড, একই কোড:
+     cloud    — Claude-এর ভেতরে (Claude অ্যাকাউন্ট)
+     firebase — নিজের সার্ভার / প্লে স্টোর / অ্যাপ স্টোর (ইমেইল/ফোন + পাসওয়ার্ড)
+     local    — ডেমো, শুধু এই ডিভাইসে
+   কালেকশন: profiles, roles, contacts, groups, settings,
+            reports (+ reports/<id>/comments), assignments, photos
+   ============================================================ */
+'use strict';
+
+/* ---------- ডেমো মোডের ছোট ডাটাবেস (Firestore-এর মতো একই ভাষায় কাজ করে) ---------- */
+function snapDoc(id, d) { return { id, exists: !!d, data: () => (d ? JSON.parse(JSON.stringify(d)) : undefined) }; }
+class LocalStore {
+  constructor(key) { this.key = key; this.docs = {}; this.ls = new Set(); try { this.docs = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { this.docs = {}; } }
+  _save() { try { localStorage.setItem(this.key, JSON.stringify(this.docs)); } catch (e) { const er = new Error('full'); er.code = 'quota_exceeded'; throw er; } }
+  _emit() { [...this.ls].forEach(f => { try { f(); } catch (e) { console.error(e); } }); }
+  collection(path) { return new LQuery(this, path, []); }
+  doc(path) { return new LDoc(this, path); }
+}
+class LDoc {
+  constructor(s, path) { this.s = s; this.path = path; this.id = path.split('/').pop(); }
+  async get() { return snapDoc(this.id, this.s.docs[this.path]); }
+  async set(data) { const old = this.s.docs[this.path]; this.s.docs[this.path] = JSON.parse(JSON.stringify(data)); try { this.s._save(); } catch (e) { if (old) this.s.docs[this.path] = old; else delete this.s.docs[this.path]; throw e; } this.s._emit(); }
+  async update(f) { const cur = this.s.docs[this.path]; if (!cur) { const e = new Error('missing'); e.code = 'invalid_argument'; throw e; } await this.set(Object.assign({}, cur, JSON.parse(JSON.stringify(f)))); }
+  async delete() { delete this.s.docs[this.path]; this.s._save(); this.s._emit(); }
+  collection(p) { return new LQuery(this.s, this.path + '/' + p, []); }
+}
+class LQuery {
+  constructor(s, path, f) { this.s = s; this.path = path; this.f = f; }
+  where(field, op, val) { return new LQuery(this.s, this.path, [...this.f, [field, op, val]]); }
+  orderBy() { return this; }
+  limit() { return this; }
+  doc(id) { return new LDoc(this.s, this.path + '/' + (id || newId('d'))); }
+  async add(data) { const d = this.doc(); await d.set(data); return d; }
+  _run() {
+    const pre = this.path + '/', out = [];
+    for (const [k, v] of Object.entries(this.s.docs)) {
+      if (!k.startsWith(pre)) continue;
+      const id = k.slice(pre.length); if (id.includes('/')) continue;
+      const ok = this.f.every(([fi, op, val]) => {
+        const x = v[fi];
+        if (op === '==') return x === val; if (op === '!=') return x !== val;
+        if (op === 'array-contains') return Array.isArray(x) && x.includes(val);
+        if (op === 'in') return Array.isArray(val) && val.includes(x);
+        return true;
+      });
+      if (ok) out.push(snapDoc(id, v));
+    }
+    return { docs: out, size: out.length, empty: !out.length };
+  }
+  async get() { return this._run(); }
+  onSnapshot(next) { const f = () => next(this._run()); this.s.ls.add(f); setTimeout(f, 0); return () => this.s.ls.delete(f); }
+}
+
+const clean = o => JSON.parse(JSON.stringify(o));
+function errMsg(e) {
+  const c = e && e.code;
+  if (c === 'invalid_argument' || c === 'permission-denied' || c === 'not_granted') return L('এই কাজের অনুমতি নেই', 'You do not have permission for this');
+  if (c === 'quota_exceeded' || c === 'resource-exhausted' || c === 'resource_exhausted') return L('জায়গা বা সীমা শেষ — পরে চেষ্টা করুন', 'Storage or limit reached — try later');
+  return L('সংরক্ষণ হয়নি — নেটওয়ার্ক দেখে আবার চেষ্টা করুন', 'Not saved — check network and retry');
+}
+
+/* ---------- মূল ডেটা স্টোর ---------- */
+const DB = {
+  mode: 'local', store: null, me: null, owner: false, user: null, auth: null, assets: null, dl: null,
+  data: { profiles: {}, roles: {}, groups: {}, settings: {}, reports: {}, assignments: {} },
+  _base: [], _scoped: [], _scopeKey: '', photoCache: {},
+
+  unsubAll(arr) { arr.forEach(f => { try { f(); } catch (e) { /* ignore */ } }); arr.length = 0; },
+  resetData() { this.data = { profiles: {}, roles: {}, groups: {}, settings: {}, reports: {}, assignments: {} }; this._scopeKey = ''; },
+
+  /* Claude-এর ভেতরে */
+  async connectClaude() {
+    try {
+      const [db, user, assets, dl] = await Promise.all(['db', 'user', 'assets', 'downloads'].map(n => claude.use(n).catch(() => null)));
+      this.dl = dl;
+      if (!db || !user) return false;
+      const id = await user.id(); if (!id) return false;
+      this.store = db; this.assets = assets; this.me = id; this.mode = 'cloud';
+      try { this.owner = !!(await user.isOwner()); } catch (e) { this.owner = false; }
+      await this.subscribeBase();
+      if (this.owner) { const r = this.data.roles[id]; if (!r || r.role !== 'dev' || !r.approved || r.disabled) await this.put('roles', id, { role: 'dev', approved: true, disabled: false, by: id, at: Date.now() }); }
+      this.rescope();
+      return true;
+    } catch (e) { console.error(e); return false; }
+  },
+
+  /* Firebase (নিজের সার্ভার, প্লে স্টোর, অ্যাপ স্টোর) */
+  async connectFirebase() {
+    try { for (const f of ['firebase-app-compat.js', 'firebase-auth-compat.js', 'firebase-firestore-compat.js']) await loadScript(FIREBASE_SDK + f); }
+    catch (e) { toast(L('সার্ভারে সংযোগ হয়নি — ইন্টারনেট দেখুন', 'Could not reach server — check internet')); return false; }
+    firebase.initializeApp(FIREBASE_CONFIG);
+    this.auth = firebase.auth(); this.store = firebase.firestore(); this.mode = 'firebase';
+    try { await this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); } catch (e) { /* ignore */ }
+    await new Promise(res => {
+      let first = true;
+      this.auth.onAuthStateChanged(async u => {
+        this.user = u; this.me = u ? u.uid : null; this.owner = false;
+        this.unsubAll(this._scoped); this.unsubAll(this._base); this.resetData();
+        if (u) { await this.subscribeBase(); this.rescope(); }
+        if (first) { first = false; res(); }
+        else if (typeof started !== 'undefined' && started) { V.name = defaultView(); render(); }
+      });
+    });
+    return true;
+  },
+
+  /* ডেমো মোড */
+  async useLocal() {
+    this.mode = 'local'; this.store = new LocalStore('rj-demo-v3'); this.me = 'demo-dev'; this.owner = true;
+    await this.subscribeBase();
+    if (!this.data.roles[this.me]) await this.put('roles', this.me, { role: 'dev', approved: true, disabled: false, by: this.me, at: Date.now() });
+    this.rescope();
+  },
+
+  /* সবার জন্য দরকারি তথ্য */
+  subscribeBase() {
+    this.unsubAll(this._base);
+    const pending = new Set(['profiles', 'roles']); let done; const ready = new Promise(r => { done = r; });
+    for (const c of ['profiles', 'roles', 'groups', 'settings']) {
+      this._base.push(this.store.collection(c).onSnapshot(snap => {
+        const m = {}; snap.docs.forEach(d => { if (d.exists) m[d.id] = d.data(); });
+        this.data[c] = m; pending.delete(c); if (!pending.size) done();
+        this.rescope(); onData(c);
+      }, err => { console.warn(c, err); pending.delete(c); if (!pending.size) done(); }));
+    }
+    return Promise.race([ready, new Promise(r => setTimeout(r, 9000))]);
+  },
+
+  /* ভূমিকা অনুযায়ী শুধু দরকারি রিপোর্ট ও অ্যাসাইনমেন্ট আনা (সার্ভারের নিয়মের সাথে মিল রেখে) */
+  rescope() {
+    if (!this.me || !this.store) return;
+    const role = myRole(), p = me() || {}, lead = ledGroups().length > 0;
+    const key = [role, p.zone || '', lead].join('|');
+    if (key === this._scopeKey) return;
+    this._scopeKey = key;
+    this.unsubAll(this._scoped);
+    const R = this.store.collection('reports'), A = this.store.collection('assignments');
+    const rq = [], aq = [];
+    if (role === 'dev' || role === 'senior') { rq.push(R); aq.push(A); }
+    else {
+      rq.push(R.where('authorId', '==', this.me));
+      if (role === 'ao' && p.zone) rq.push(R.where('zone', '==', p.zone).where('status', '==', 'submitted'));
+      if (lead || role === 'lead') rq.push(R.where('leaderId', '==', this.me).where('status', '==', 'submitted'));
+      aq.push(A.where('assignees', 'array-contains', this.me), A.where('createdBy', '==', this.me));
+      if (role === 'ao' && p.zone) aq.push(A.where('zone', '==', p.zone));
+    }
+    this._listen('reports', rq); this._listen('assignments', aq);
+  },
+  _listen(col, queries) {
+    const parts = queries.map(() => ({}));
+    queries.forEach((q, i) => this._scoped.push(q.onSnapshot(snap => {
+      const m = {}; snap.docs.forEach(d => { if (d.exists) m[d.id] = d.data(); });
+      parts[i] = m; this.data[col] = Object.assign({}, ...parts); onData(col);
+    }, err => console.warn(col, err))));
+  },
+
+  async put(col, id, obj) {
+    try { const c = clean(obj); await this.store.collection(col).doc(id).set(c); if (this.data[col]) this.data[col][id] = c; return true; }
+    catch (e) { console.warn(e); toast(errMsg(e)); return false; }
+  },
+  async patch(col, id, fields) {
+    try { const c = clean(fields); await this.store.doc(col + '/' + id).update(c); if (this.data[col] && this.data[col][id]) Object.assign(this.data[col][id], c); return true; }
+    catch (e) { console.warn(e); toast(errMsg(e)); return false; }
+  },
+  async del(col, id) {
+    try { await this.store.doc(col + '/' + id).delete(); if (this.data[col]) delete this.data[col][id]; return true; }
+    catch (e) { console.warn(e); toast(errMsg(e)); return false; }
+  },
+  watchComments(rid, cb) {
+    return this.store.collection('reports/' + rid + '/comments').onSnapshot(
+      snap => cb(snap.docs.filter(d => d.exists).map(d => Object.assign({ id: d.id }, d.data())).sort((a, b) => a.at - b.at)),
+      err => { console.warn(err); cb([]); });
+  },
+  async addComment(rid, c) {
+    try { await this.store.collection('reports/' + rid + '/comments').doc(newId('c')).set(clean(c)); return true; }
+    catch (e) { console.warn(e); toast(errMsg(e)); return false; }
+  },
+  async getContact(uid) { try { const s = await this.store.doc('contacts/' + uid).get(); return s.exists ? s.data() : null; } catch (e) { return null; } },
+
+  /* ছবি ছোট করে সংরক্ষণ — ফেরত দেয় একটি ref */
+  async uploadImage(file) {
+    if (!file || !/^image\//.test(file.type)) { toast(L('শুধু ছবি দেওয়া যাবে', 'Images only')); return null; }
+    if (this.assets) {
+      try { const r = await this.assets.upload(await shrink(file, 1600, .82)); return 'a:' + r.id; } catch (e) { /* বিকল্প নিচে */ }
+    }
+    const small = await shrink(file, this.mode === 'local' ? 720 : 960, .6);
+    const dataUrl = await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => res(null); fr.readAsDataURL(small); });
+    if (!dataUrl) return null;
+    if (this.mode === 'local') return dataUrl;
+    const pid = newId('p');
+    try { await this.store.collection('photos').doc(pid).set({ d: dataUrl, by: this.me, at: Date.now() }); this.photoCache[pid] = dataUrl; return 'p:' + pid; }
+    catch (e) { toast(L('ছবি সংরক্ষণ হয়নি', 'Photo not saved')); return null; }
+  },
+  /* অভিযোগের কপি: ছবি বা PDF */
+  async uploadDoc(file) {
+    if (!file) return null;
+    if (file.size > 15 * 1024 * 1024) { toast(L('ফাইল ১৫ MB-এর বেশি', 'File larger than 15 MB')); return null; }
+    if (/^image\//.test(file.type)) { const ref = await this.uploadImage(file); return ref ? { ref, name: clip(file.name, 120), type: 'image' } : null; }
+    if (file.type === 'application/pdf' && this.assets) {
+      try { const r = await this.assets.upload(file); return { ref: 'a:' + r.id, name: clip(file.name, 120), type: 'pdf' }; } catch (e) { toast(L('ফাইল আপলোড হয়নি', 'Upload failed')); return null; }
+    }
+    toast(L('এই সংস্করণে শুধু ছবি নেওয়া যায় — PDF-এর পাতার ছবি তুলে দিন', 'Only images in this version — photograph the PDF pages'));
+    return null;
+  },
+  src(ref) {
+    if (!ref || typeof ref !== 'string') return '';
+    if (ref.startsWith('a:')) return '/_blob/' + encodeURIComponent(ref.slice(2));
+    if (ref.startsWith('p:')) return this.photoCache[ref.slice(2)] || '';
+    if (ref.startsWith('data:image/')) return ref;
+    return '';
+  },
+  async hydrate() {
+    for (const img of $$('img[data-ref^="p:"]')) {
+      const id = img.dataset.ref.slice(2);
+      if (this.photoCache[id] === undefined && this.store) {
+        this.photoCache[id] = '';
+        try { const s = await this.store.doc('photos/' + id).get(); this.photoCache[id] = s.exists ? (s.data().d || '') : ''; } catch (e) { /* ignore */ }
+      }
+      if (this.photoCache[id] && /^data:image\//.test(this.photoCache[id])) img.src = this.photoCache[id];
+    }
+  }
+};
+
+/* ---------- ভূমিকা ও কে কী দেখবে ---------- */
+const me = () => DB.data.profiles[DB.me];
+function roleOf(uid) { const r = DB.data.roles[uid]; return (r && r.approved && !r.disabled && r.role) || 'inspector'; }
+const myRole = () => (DB.owner ? 'dev' : roleOf(DB.me));
+const isDisabled = () => !DB.owner && !!(DB.data.roles[DB.me] && DB.data.roles[DB.me].disabled);
+const ledGroups = () => Object.entries(DB.data.groups).filter(([, g]) => g.leaderId === DB.me).map(([id]) => id);
+const isOfficer = () => ['dev', 'senior', 'ao', 'lead'].includes(myRole()) || ledGroups().length > 0;
+const isSeniorUp = () => ['dev', 'senior'].includes(myRole());
+const canAssign = () => ['dev', 'senior', 'ao', 'lead'].includes(myRole());
+const isDev = () => myRole() === 'dev';
+function pendingApproval() {
+  const p = me(); if (!p) return false;
+  const want = (DESIG.find(d => d.v === p.desig) || {}).role;
+  return !!want && want !== 'inspector' && myRole() === 'inspector';
+}
+function canSee(r) {
+  if (!r) return false;
+  if (r.authorId === DB.me) return true;
+  if (r.status !== 'submitted') return false;
+  const role = myRole(); if (role === 'dev' || role === 'senior') return true;
+  const p = me() || {};
+  if (role === 'ao' && p.zone && p.zone === r.zone) return true;
+  return r.leaderId === DB.me;
+}
+function canSeeA(a) {
+  if (!a) return false;
+  const role = myRole(); if (role === 'dev' || role === 'senior') return true;
+  if (a.createdBy === DB.me || (a.assignees || []).includes(DB.me)) return true;
+  return role === 'ao' && (me() || {}).zone === a.zone;
+}
+const overdueDays = () => { const s = DB.data.settings.app; const n = s && num(s.overdueDays); return n && n > 0 ? n : DEFAULT_OVERDUE_DAYS; };
+/* রিপোর্ট পুরনো (১ মাস পার) হলে লাল — "না" টিক দিলে আর লাল থাকে না */
+const isOverdue = r => r.status === 'submitted' && daysSince(r.date || r.submittedAt) >= overdueDays() && !(r.revisit && r.revisit.v === 'no');
+function reviewState(r) {
+  const v = r.review;
+  if (!v || !v.s) return 'new';
+  if (v.s === 'returned' && r.resubmittedAt && r.resubmittedAt > v.at) return 'resub';
+  return v.s;
+}
+const REVIEW = {
+  new: () => ['p-info', L('নতুন', 'New')], review: () => ['p-amber', L('পর্যালোচনাধীন', 'In review')],
+  comment: () => ['p-amber', L('পর্যালোচনাধীন', 'In review')], nothi: () => ['p-ok', L('নথি পেশ হয়েছে', 'Filed (Nothi)')],
+  returned: () => ['p-red', L('সংশোধনের জন্য ফেরত', 'Returned')], closed: () => ['p-grey', L('নিষ্পত্তি', 'Closed')],
+  resub: () => ['p-info', L('পুনরায় জমা', 'Resubmitted')] };
+const reviewPill = r => { const [c, t] = (REVIEW[reviewState(r)] || REVIEW.new)(); return `<span class="pill ${c}">${t}</span>`; };
+const isAOverdue = a => !['done', 'cancelled'].includes(a.status) && a.dueDate && daysSince(a.dueDate) > 0;
+
+/* ============================================================
+   ui.js — সব পাতায় ব্যবহৃত উপাদান: কমান্ড বার, ডায়ালগ, অবতার,
+   রিচ টেক্সট (বোল্ড/হাইলাইট), ফাইল সংরক্ষণ, ছবি ছোট করা, GPS
+   ============================================================ */
+'use strict';
+
+const ICONS = {
+  home: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  assign: '<path d="M9 3h6v3H9z"/><path d="M7 5H5v16h14V5h-2"/><path d="M9 12l2 2 4-4"/>',
+  reports: '<path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
+  stats: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  groups: '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5M15 19c0-2 1.6-4 4-4"/>',
+  admin: '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  profile: '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>',
+  about: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+  more: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
+  back: '<path d="M15 5l-7 7 7 7"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  pin: '<path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  camera: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  download: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  copy: '<rect x="8" y="8" width="12" height="12" rx="1"/><path d="M16 8V4H4v12h4"/>',
+  print: '<path d="M7 9V3h10v6M7 17H4v-7h16v7h-3"/><path d="M7 14h10v7H7z"/>'
+};
+const ic = (k, s = 18) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k] || ''}</svg>`;
+const LOGO = `<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="2" fill="none" stroke="#13294B" stroke-width="2" stroke-dasharray="3.5 2.5"/><rect x="7" y="7" width="10" height="10" fill="#C55A11"/><path d="M7 12h10" stroke="#fff" stroke-width="1.4"/></svg>`;
+
+/* ---------- কমান্ড বার ---------- */
+function setCmd(mod, title, sub, actions, back) {
+  $('#main').dataset.mod = mod;
+  $('#cmd').innerHTML = `${back ? `<button class="back" id="cmdBack" aria-label="${L('ফিরে যান', 'Back')}">${ic('back')}</button>` : ''}
+    <div class="ttl"><h1>${esc(title)}</h1>${sub ? `<div class="sub">${esc(sub)}</div>` : ''}</div>
+    ${actions ? `<div class="acts">${actions}</div>` : ''}`;
+  const b = $('#cmdBack'); if (b) b.onclick = goBack;
+}
+
+/* ---------- ডায়ালগ (শিট) ---------- */
+function openSheet(t, body) { $('#sheetTitle').textContent = t; $('#sheetBody').innerHTML = body; $('#sheetBg').classList.add('open'); }
+function closeSheet() { $('#sheetBg').classList.remove('open'); $('#sheetBody').innerHTML = ''; }
+function confirmSheet(t, msg, yesLabel, yes) {
+  openSheet(t, `<p>${esc(msg)}</p><div class="acts"><button class="btn danger" id="yy">${esc(yesLabel)}</button><button class="btn" id="nn">${L('না', 'No')}</button></div>`);
+  $('#yy').onclick = () => { closeSheet(); yes(); }; $('#nn').onclick = closeSheet;
+}
+
+/* ---------- অবতার ও নাম ---------- */
+function avatarFrom(p, size) {
+  p = p || {};
+  const ini = (p.name || '?').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('');
+  const src = DB.src(p.photo);
+  return `<span class="av" style="width:${size}px;height:${size}px;font-size:${Math.round(size * .4)}px">${p.photo ? `<img alt="" src="${esc(src)}" data-ref="${esc(p.photo)}">` : esc(ini)}</span>`;
+}
+const avatar = (uid, size = 34) => avatarFrom(DB.data.profiles[uid], size);
+const nameOf = uid => (DB.data.profiles[uid] || {}).name || L('অজানা ব্যবহারকারী', 'Unknown user');
+function desigOf(uid) {
+  if (roleOf(uid) === 'dev') return L('ডেভেলপার', 'Developer');
+  return O(DESIG, (DB.data.profiles[uid] || {}).desig);
+}
+
+/* ---------- রিচ টেক্সট এডিটর ---------- */
+function rte(id, key, value, ph, rows) {
+  return `<div class="rte"><div class="rte-bar" role="toolbar" aria-label="${L('লেখার ধরন', 'Formatting')}">
+    <button type="button" data-rte="b" data-for="${id}" title="${L('বোল্ড', 'Bold')}"><b>B</b></button>
+    <button type="button" data-rte="h" data-for="${id}" title="${L('হাইলাইট', 'Highlight')}"><mark>H</mark></button>
+    <button type="button" data-rte="li" data-for="${id}" title="${L('তালিকা', 'List')}">•</button>
+    <span class="hint2">${L('লেখা সিলেক্ট করে চাপুন', 'Select text, then tap')}</span></div>
+    <textarea id="${id}" ${key ? `data-k="${key}"` : ''} rows="${rows || 4}" maxlength="5000" placeholder="${esc(ph || '')}">${esc(value || '')}</textarea>
+    <div class="rte-prev" id="${id}_prev">${/\*\*|==|^- /m.test(value || '') ? md(value) : ''}</div></div>`;
+}
+function bindRte(root) {
+  (root || document).querySelectorAll('[data-rte]').forEach(b => {
+    b.addEventListener('pointerdown', e => e.preventDefault());
+    b.onclick = () => {
+      const ta = document.getElementById(b.dataset.for); if (!ta) return;
+      const s = ta.selectionStart, e = ta.selectionEnd, v = ta.value;
+      if (b.dataset.rte === 'li') {
+        const ls = v.lastIndexOf('\n', s - 1) + 1;
+        ta.value = v.slice(0, ls) + '- ' + v.slice(ls); ta.setSelectionRange(s + 2, e + 2);
+      } else {
+        const m = b.dataset.rte === 'b' ? '**' : '==';
+        const sel = v.slice(s, e) || L('লেখা', 'text');
+        ta.value = v.slice(0, s) + m + sel + m + v.slice(e); ta.setSelectionRange(s + m.length, s + m.length + sel.length);
+      }
+      ta.focus(); ta.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+  });
+  (root || document).querySelectorAll('.rte textarea').forEach(ta => ta.addEventListener('input', () => {
+    const p = document.getElementById(ta.id + '_prev'); if (p) p.innerHTML = /\*\*|==|^- /m.test(ta.value) ? md(ta.value) : '';
+  }));
+}
+
+/* ---------- ফাইল সংরক্ষণ ---------- */
+async function saveFile(name, text, mime) {
+  const data = '\ufeff' + text;
+  if (DB.dl) {
+    try { await DB.dl.save({ filename: name, data }); } catch (e) { if (e && e.code !== 'declined') toast(L('ফাইল সংরক্ষণ হয়নি', 'File not saved')); }
+    return;
+  }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([data], { type: (mime || 'text/plain') + ';charset=utf-8' }));
+  a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+const csvCell = v => { let s = String(v ?? ''); if (/^[=+\-@]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; };
+const toCsv = rows => rows.map(r => r.map(csvCell).join(',')).join('\r\n');
+
+function loadScript(src) {
+  return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.async = true; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+}
+function shrink(file, max, q) {
+  return new Promise(res => {
+    const url = URL.createObjectURL(file), im = new Image();
+    im.onload = () => {
+      let w = im.naturalWidth, h = im.naturalHeight; const s = Math.min(1, max / Math.max(w, h)); w = Math.round(w * s); h = Math.round(h * s);
+      const c = document.createElement('canvas'); c.width = w; c.height = h; c.getContext('2d').drawImage(im, 0, 0, w, h);
+      URL.revokeObjectURL(url); c.toBlob(b => res(b || file), 'image/jpeg', q);
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); res(file); };
+    im.src = url;
+  });
+}
+function locate() {
+  return new Promise((res, rej) => {
+    if (!navigator.geolocation) { rej({ code: 0 }); return; }
+    navigator.geolocation.getCurrentPosition(p => res(p.coords), e => rej(e), { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
+  });
+}
+function viewImage(ref, caption, meta) {
+  openSheet(caption || L('ছবি', 'Image'), `<img src="${esc(DB.src(ref))}" data-ref="${esc(ref)}" alt="" style="width:100%;border-radius:6px">
+    ${meta ? `<p class="hint" style="margin-top:8px">${esc(meta)}</p>` : ''}<div class="acts"><button class="btn" id="clsImg">${L('বন্ধ করুন', 'Close')}</button></div>`);
+  $('#clsImg').onclick = closeSheet; DB.hydrate();
+}
+function filesHTML(files, removable) {
+  return `<div class="files">${(files || []).map((f, i) => `<div class="fileitem">
+    ${f.type === 'image' ? `<button class="linkbtn" data-fview="${i}" style="text-decoration:none"><img alt="" src="${esc(DB.src(f.ref))}" data-ref="${esc(f.ref)}"></button>` : `<span class="pill p-red">PDF</span>`}
+    <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${f.type === 'pdf' ? `<a class="lnk" href="${esc(DB.src(f.ref))}" target="_blank" rel="noopener">${esc(f.name)}</a>` : esc(f.name)}</span>
+    ${removable ? `<button class="xbtn" data-frm="${i}">${L('মুছুন', 'Remove')}</button>` : ''}</div>`).join('')}</div>`;
+}
+
+/* ============================================================
+   v-reports.js — রিপোর্ট তালিকা, জরিপ ফর্ম, রিপোর্ট দেখা,
+   মন্তব্য/নথি, পুনঃপরিদর্শন (হ্যাঁ/না), প্রতিবেদন ও CSV
+   ============================================================ */
+'use strict';
+
+const titleOf = r => r.plot ? L('প্লট ', 'Plot ') + r.plot : r.rsDag ? L('আরএস দাগ ', 'RS Dag ') + r.rsDag : r.msDag ? L('এমএস দাগ ', 'MS Dag ') + r.msDag : r.holding ? L('হোল্ডিং ', 'Holding ') + r.holding : (r.address ? clip(plain(r.address), 50) : L('নাম ছাড়া জরিপ', 'Untitled survey'));
+const srcPill = r => r.source === 'complaint' ? `<span class="pill p-orange">${L('অভিযোগভিত্তিক', 'Complaint')}</span>` : `<span class="pill p-info">${L('স্বপ্রণোদিত', 'Self')}</span>`;
+function scopeText() {
+  const role = myRole(), p = me() || {};
+  if (role === 'dev' || role === 'senior') return L('সব জোনের রিপোর্ট', 'Reports from all zones');
+  if (role === 'ao') return O(ZONES, p.zone) + L('-এর সব রিপোর্ট', ' — all reports');
+  return L('আপনার গ্রুপের রিপোর্ট', 'Your group’s reports');
+}
+
+/* ---------- তালিকার একটি সারি ---------- */
+function reportRow(id, r, showAuthor) {
+  const iss = issues(r), od = isOverdue(r);
+  const cls = od ? 'red' : r.source === 'complaint' ? 'orange' : 'blue';
+  const status = r.status === 'submitted' ? reviewPill(r) : `<span class="pill p-grey">${L('খসড়া', 'Draft')}</span>`;
+  const sub = [O(ZONES, r.zone), r.mouza, r.status === 'submitted' ? fdt(r.submittedAt) : fd(r.date)].filter(x => x && x !== '—').join(' | ');
+  return `<button class="row ${cls}" data-open="${esc(id)}">
+    ${showAuthor ? avatar(r.authorId, 36) : `<span style="width:0"></span>`}
+    <span class="main">${showAuthor ? `<div style="font-size:.8rem;font-weight:bold;color:var(--muted)">${esc(nameOf(r.authorId))}</div>` : ''}
+      <div class="t1">${esc(titleOf(r))}</div><div class="t2">${esc(sub)}</div>${r.fileNo ? `<div class="t3 num">${esc(r.fileNo)}</div>` : ''}</span>
+    <span class="side">${srcPill(r)}${status}
+      ${iss.length ? `<span class="pill p-red">${L('বিচ্যুতি', 'Deviation')} ${fmt(iss.length)}</span>` : ''}
+      ${od ? `<span class="pill p-red">${fmt(daysSince(r.date || r.submittedAt))} ${L('দিন আগে দেখা', 'days ago')}</span>` : ''}
+      ${r.revisit && r.revisit.v === 'yes' ? `<span class="pill p-amber">${L('পুনঃপরিদর্শন দরকার', 'Revisit needed')}</span>` : ''}</span></button>`;
+}
+function openReport(id) {
+  const r = DB.data.reports[id]; if (!r) return;
+  V.from = V.name;
+  if (r.authorId === DB.me && r.status !== 'submitted') openForm(id); else go('detail', id);
+}
+
+/* ---------- রিপোর্ট তালিকা ---------- */
+function renderReports() {
+  const off = isOfficer();
+  if (!off || !V.rtab) V.rtab = off ? 'inbox' : 'mine';
+  const tab = V.rtab;
+  setCmd('reports', L('রিপোর্ট', 'Reports'), tab === 'mine' ? L('আমার জমা দেওয়া ও খসড়া রিপোর্ট', 'My submitted and draft reports') : scopeText(),
+    `<button class="btn pri" id="newRep">${ic('plus', 16)} ${L('নতুন জরিপ', 'New survey')}</button><button class="btn" id="csvRep">${ic('download', 16)} CSV</button>`);
+  let list = Object.entries(DB.data.reports).filter(([, r]) => tab === 'mine' ? r.authorId === DB.me : (r.authorId !== DB.me && canSee(r)));
+  if (V.rsrc && V.rsrc !== 'all') list = list.filter(([, r]) => (r.source || 'self') === V.rsrc);
+  const st = V.rst || 'all';
+  if (st === 'overdue') list = list.filter(([, r]) => isOverdue(r));
+  else if (st === 'revisit') list = list.filter(([, r]) => r.revisit && r.revisit.v === 'yes');
+  else if (st === 'draft') list = list.filter(([, r]) => r.status !== 'submitted');
+  else if (st !== 'all') list = list.filter(([, r]) => r.status === 'submitted' && (reviewState(r) === st || (st === 'new' && reviewState(r) === 'resub') || (st === 'review' && reviewState(r) === 'comment')));
+  const q = (V.q || '').trim().toLowerCase();
+  if (q) list = list.filter(([, r]) => [r.plot, r.rsDag, r.msDag, r.holding, r.owner, r.mouza, r.planNo, r.letterNo, r.fileNo, r.complaintNo, plain(r.address), nameOf(r.authorId)].join(' ').toLowerCase().includes(q));
+  list.sort((a, b) => (b[1].submittedAt || b[1].updatedAt || 0) - (a[1].submittedAt || a[1].updatedAt || 0));
+  V.lastList = list;
+  const stChips = tab === 'mine'
+    ? [['all', L('সব', 'All')], ['draft', L('খসড়া', 'Drafts')], ['returned', L('ফেরত', 'Returned')], ['overdue', L('১ মাস পার', 'Over a month')]]
+    : [['all', L('সব', 'All')], ['new', L('নতুন', 'New')], ['review', L('পর্যালোচনাধীন', 'In review')], ['nothi', L('নথি পেশ', 'Filed')], ['returned', L('ফেরত', 'Returned')], ['closed', L('নিষ্পত্তি', 'Closed')], ['overdue', L('১ মাস পার', 'Over a month')], ['revisit', L('পুনঃপরিদর্শন', 'Revisit')]];
+  $('#content').innerHTML = `
+    ${off ? `<div class="seg" role="group"><button data-rtab="inbox" aria-pressed="${tab === 'inbox'}">${L('প্রাপ্ত রিপোর্ট', 'Received')}</button><button data-rtab="mine" aria-pressed="${tab === 'mine'}">${L('আমার রিপোর্ট', 'My reports')}</button></div>` : ''}
+    <div class="toolbar"><input type="search" id="q" value="${esc(V.q || '')}" placeholder="${L('প্লট, দাগ, মালিক, ফাইল বা অভিযোগ নম্বর', 'Plot, dag, owner, file or complaint no.')}" aria-label="${L('খুঁজুন', 'Search')}">
+      <select id="srcF" style="width:auto">${opts([{ v: 'all', b: 'সব ধরন', e: 'All types' }, ...SOURCES], V.rsrc || 'all', false)}</select></div>
+    <div class="chips">${stChips.map(([k, n]) => `<button class="chip" data-st="${k}" aria-pressed="${st === k}">${n}</button>`).join('')}</div>
+    <p class="hint">${L(`${fmt(list.length)}টি রিপোর্ট`, `${list.length} reports`)}</p>
+    <div class="list">${list.map(([id, r]) => reportRow(id, r, tab !== 'mine')).join('') || `<div class="empty"><b>${L('কোনো রিপোর্ট নেই', 'No reports')}</b><p>${tab === 'mine' ? L('নতুন জরিপ করে জমা দিলে এখানে দেখাবে।', 'Submit a survey and it shows here.') : L('পরিদর্শকরা জমা দিলে এখানে আসবে।', 'Reports appear here once submitted.')}</p></div>`}</div>`;
+  $('#newRep').onclick = () => newReport(null);
+  $('#csvRep').onclick = () => exportReportsCsv(V.lastList);
+  $$('[data-rtab]').forEach(b => b.onclick = () => { V.rtab = b.dataset.rtab; V.rst = 'all'; render(); });
+  $$('[data-st]').forEach(b => b.onclick = () => { V.rst = b.dataset.st; render(); });
+  $('#srcF').onchange = e => { V.rsrc = e.target.value; render(); };
+  const qi = $('#q'); qi.oninput = () => { V.q = qi.value; const p = qi.selectionStart; render(); const n = $('#q'); n.focus(); n.setSelectionRange(p, p); };
+  $$('[data-open]').forEach(b => b.onclick = () => openReport(b.dataset.open));
+}
+
+/* ---------- নতুন জরিপ ---------- */
+function newReport(a) {
+  const p = me() || {};
+  if (a) {
+    const ex = Object.entries(DB.data.reports).find(([, r]) => r.assignmentId === a.id && r.authorId === DB.me);
+    if (ex) { openReport(ex[0]); return; }
+  }
+  const r = { id: newId('r'), authorId: DB.me, status: 'draft', createdAt: Date.now(), updatedAt: Date.now(), date: today(), unit: 'm',
+    zone: p.zone || '', shape: 'rect', roads: { front: { on: true } }, photos: [], floorsList: [], source: 'self' };
+  if (a) Object.assign(r, { source: 'complaint', assignmentId: a.id, complaintNo: a.complaintNo || '', zone: a.zone || r.zone, mouza: a.area || '', address: a.address || '', gps: a.gps || '' });
+  V.rec = r; V.dirty = false; V.isNew = true; V.from = V.name;
+  if (a && a.status === 'open' && (a.assignees || []).includes(DB.me)) DB.patch('assignments', a.id, { status: 'inprogress' });
+  go('form');
+}
+function openForm(id) {
+  const r = JSON.parse(JSON.stringify(DB.data.reports[id]));
+  r.roads = r.roads || {}; r.photos = r.photos || []; r.floorsList = r.floorsList || []; r.source = r.source || 'self';
+  V.rec = r; V.dirty = false; V.isNew = false;
+  go('form');
+}
+
+/* ---------- ফর্মের উপাদান ---------- */
+function fld(k, label, o = {}) {
+  const r = V.rec, v = r[k] ?? '', id = 'f_' + k;
+  let inp;
+  if (o.list) inp = `<select id="${id}" data-k="${k}">${opts(o.list, v)}</select>`;
+  else inp = `<input id="${id}" data-k="${k}" type="${o.type || 'text'}" ${o.type === 'number' ? 'inputmode="decimal" step="any" min="0"' : ''} maxlength="${o.max || 120}" value="${esc(v)}" placeholder="${esc(o.ph || '')}">`;
+  return `<div class="f${o.full ? ' full' : ''}"><label class="l" for="${id}">${label}${o.req ? ' <span class="req">*</span>' : ''}</label>${inp}</div>`;
+}
+function cmpRows(keys) {
+  const r = V.rec;
+  return `<div class="cmp-head"><span>${L('বিষয়', 'Item')}</span><span>${L('অনুমোদিত', 'Approved')}</span><span>${L('সরজমিন', 'On site')}</span></div>` +
+    CMP().filter(c => keys.includes(c.k)).map(c => {
+      const d = compare(c, r);
+      return `<div class="cmp"><div class="nm">${c.n}<small>${c.sub ? c.sub + ', ' : ''}${unitOf(c, r)}</small></div>
+      <input data-k="${c.k}A" type="number" inputmode="decimal" step="any" min="0" value="${esc(r[c.k + 'A'] ?? '')}" aria-label="${esc(c.n)} ${L('অনুমোদিত', 'approved')}">
+      <input data-k="${c.k}M" type="number" inputmode="decimal" step="any" min="0" value="${esc(r[c.k + 'M'] ?? '')}" aria-label="${esc(c.n)} ${L('সরজমিন', 'on site')}">
+      <span></span><div class="res ${d.s}" id="res_${c.k}">${d.t}</div></div>`;
+    }).join('');
+}
+function roadsHTML() {
+  const r = V.rec, u = unitsOf(r).len;
+  return SIDES.map(s => {
+    const x = r.roads[s.v] || {}, d = roadCmp(s.v, r);
+    return `<div class="road"><label class="tg"><input type="checkbox" data-road="${s.v}" data-rf="on" ${x.on ? 'checked' : ''}> ${L(s.b, s.e)} ${L('পাশে রাস্তা আছে', 'side has a road')}</label>
+    ${x.on ? `<div class="grid">
+      <div class="f"><label class="l">${L('নকশায় প্রস্থ', 'Width on plan')} (${u})</label><input type="number" inputmode="decimal" step="any" min="0" data-road="${s.v}" data-rf="a" value="${esc(x.a ?? '')}"></div>
+      <div class="f"><label class="l">${L('সরজমিন প্রস্থ', 'Width on site')} (${u})</label><input type="number" inputmode="decimal" step="any" min="0" data-road="${s.v}" data-rf="m" value="${esc(x.m ?? '')}"></div>
+      <div class="f full"><div class="res ${d.s}" id="road_${s.v}">${d.t}</div></div></div>` : ''}</div>`;
+  }).join('');
+}
+function floorsHTML() {
+  const r = V.rec, fl = r.floorsList || [], s = floorSum(r), u = unitsOf(r).area;
+  if (!fl.length) return `<p class="hint" style="margin:0">${L('এখনো কোনো তলা যোগ হয়নি। নিচের বাটন দিয়ে যোগ করুন।', 'No floors yet. Add with the buttons below.')}</p>`;
+  const tot = diff(s.a, s.m, 'over', u, true);
+  return `<div class="cmp-head"><span>${L('তলা', 'Floor')}</span><span>${L('অনুমোদিত', 'Approved')}</span><span>${L('সরজমিন', 'On site')}</span></div>` +
+    fl.map((f, i) => {
+      const d = floorCmp(f, r);
+      return `<div class="cmp"><input data-fl="${i}" data-ff="name" maxlength="40" value="${esc(f.name || '')}" aria-label="${L('তলার নাম', 'Floor name')}">
+      <input data-fl="${i}" data-ff="a" type="number" inputmode="decimal" step="any" min="0" value="${esc(f.a ?? '')}" aria-label="${L('অনুমোদিত', 'Approved')}">
+      <input data-fl="${i}" data-ff="m" type="number" inputmode="decimal" step="any" min="0" value="${esc(f.m ?? '')}" aria-label="${L('সরজমিন', 'On site')}">
+      <button type="button" class="xbtn" data-flrm="${i}">${L('সারি মুছুন', 'Remove')}</button>
+      <div class="res ${d.s}" id="flres_${i}">${d.s === 'none' ? '' : d.t}</div></div>`;
+    }).join('') +
+    `<div class="cmp" style="border-top:2px solid var(--line);border-bottom:0"><div class="nm">${L('যোগফল', 'Total')}</div><div class="num" style="font-weight:bold" id="flSumA">${fmt(s.a)}</div><div class="num" style="font-weight:bold" id="flSumM">${fmt(s.m)}</div><span></span><div class="res ${tot.s}" id="flSumRes">${tot.s === 'none' ? '' : tot.t}</div></div>`;
+}
+function photosHTML(list, editable) {
+  return `<div class="photos">${(list || []).map((p, i) => `<div class="ph"><button type="button" class="img" data-pview="${i}" aria-label="${L('ছবি বড় করে দেখুন', 'View photo')}"><img alt="${esc(p.cap || '')}" src="${esc(DB.src(p.ref))}" data-ref="${esc(p.ref)}"></button>
+    <div class="meta">${editable ? `<input data-cap="${i}" maxlength="80" value="${esc(p.cap || '')}" placeholder="${L('বিবরণ', 'Caption')}">` : (p.cap ? `<span style="color:var(--ink)">${esc(p.cap)}</span>` : '')}
+    <span class="num">${fdt(p.at)}</span>${editable ? `<button type="button" class="xbtn" data-prm="${i}">${L('মুছুন', 'Remove')}</button>` : ''}</div></div>`).join('')}</div>`;
+}
+function gpsInfo(r) {
+  const g = parseGps(r.gps); if (!g) return '';
+  return `${r.gpsAcc ? L('নির্ভুলতা প্রায় ±', 'Accuracy about ±') + fmt(r.gpsAcc) + L(' মিটার', ' m') + ' | ' : ''}<a class="lnk" href="${esc(mapUrl(g))}" target="_blank" rel="noopener">${L('ম্যাপে দেখুন', 'Open in map')}</a>`;
+}
+
+/* ---------- জরিপ ফর্ম ---------- */
+function renderForm() {
+  const r = V.rec; if (!r) { go('reports'); return; }
+  const ret = r.status === 'submitted', u = unitsOf(r);
+  const asg = r.assignmentId ? DB.data.assignments[r.assignmentId] : null;
+  setCmd('reports', titleOf(r), ret ? L('সংশোধন করে আবার জমা দিন', 'Correct and resubmit') : L('খসড়া — জমা দিলে অফিসারের কাছে যাবে', 'Draft — submit to send to officers'),
+    `<button class="btn" id="saveBtn">${L('খসড়া সংরক্ষণ', 'Save draft')}</button><button class="btn pri" id="submitBtn">${ret ? L('আবার জমা দিন', 'Resubmit') : L('জমা দিন', 'Submit')}</button>`, true);
+  $('#content').innerHTML = `
+  <section class="card"><h3>${L('রিপোর্টের ধরন', 'Report type')}</h3>
+    <div class="seg" role="group">${SOURCES.map(s => `<button type="button" data-src="${s.v}" aria-pressed="${r.source === s.v}" ${r.assignmentId ? 'disabled' : ''}>${esc(L(s.b, s.e))}</button>`).join('')}</div>
+    ${asg ? `<div class="banner warn">${L('এই জরিপ অ্যাসাইনমেন্ট থেকে', 'From assignment')}: <b>${esc(asg.complaintNo || asg.area || '')}</b></div>` : ''}
+    <div id="cmpBox" ${r.source === 'complaint' ? '' : 'hidden'}><div class="grid">${fld('complaintNo', L('অভিযোগ নম্বর', 'Complaint no.'))}</div></div></section>
+
+  <section class="card"><h3>${L('জমির পরিচয়', 'Land details')}</h3>
+    <div class="grid g3">
+      ${fld('date', L('পরিদর্শনের তারিখ', 'Inspection date'), { type: 'date' })}
+      ${fld('zone', L('রাজউক জোন', 'RAJUK zone'), { list: ZONES, req: true })}
+      ${fld('subZone', L('সাব-জোন / ওয়ার্ড', 'Sub-zone / ward'), { ph: L('যেমন: ৩/২', 'e.g. 3/2') })}
+      ${fld('mouza', L('মৌজা / এলাকা', 'Mouza / area'))}
+      ${fld('rsDag', L('আরএস দাগ নং', 'RS Dag no.'))}
+      ${fld('msDag', L('এমএস দাগ নং', 'MS Dag no.'))}
+      ${fld('plot', L('প্লট নং', 'Plot no.'))}
+      ${fld('holding', L('হোল্ডিং নং', 'Holding no.'))}
+      ${fld('owner', L('মালিকের নাম', 'Owner name'))}
+      <div class="f full"><label class="l" for="f_address">${L('পূর্ণ ঠিকানা', 'Full address')}</label><textarea id="f_address" data-k="address" rows="2" maxlength="400">${esc(r.address || '')}</textarea></div>
+    </div></section>
+
+  <section class="card"><h3>${L('GPS লোকেশন', 'GPS location')}</h3><p class="hint">${L('নতুন জরিপ খুললে নিজে থেকে বসে যায়। দরকার হলে আবার নিন।', 'Fills automatically for a new survey. Refresh if needed.')}</p>
+    <div class="gpsrow"><input id="f_gps" data-k="gps" maxlength="60" value="${esc(r.gps || '')}" placeholder="23.804100, 90.366700" aria-label="GPS"><button type="button" class="btn" id="gpsBtn">${ic('pin', 16)} ${L('লোকেশন নিন', 'Locate')}</button></div>
+    <div class="gpsmsg" id="gpsMsg">${gpsInfo(r)}</div></section>
+
+  <section class="card"><h3>${L('অনুমোদনের কাগজ', 'Approval documents')}</h3>
+    <div class="grid g3">
+      ${fld('planNo', L('অনুমোদিত নকশা নং', 'Approved plan no.'))}
+      ${fld('letterNo', L('চিঠি / ইস্যু নং', 'Letter / issue no.'))}
+      ${fld('approvalDate', L('অনুমোদনের তারিখ', 'Approval date'), { type: 'date' })}
+      <div class="f"><label class="l" for="f_btypeA">${L('অনুমোদিত ভবনের শ্রেণি', 'Approved building type')}</label><select id="f_btypeA" data-k="btypeA">${btOpts(r.btypeA)}</select></div>
+      <div class="f"><label class="l" for="f_btypeM">${L('সরজমিন ভবনের শ্রেণি', 'Building type on site')}</label><select id="f_btypeM" data-k="btypeM">${btOpts(r.btypeM)}</select></div>
+      ${fld('useA', L('অনুমোদিত ব্যবহার', 'Approved use'), { list: USES })}
+      ${fld('useM', L('সরজমিন ব্যবহার', 'Use on site'), { list: USES })}
+      <div class="f"><label class="l" for="f_unit">${L('মাপের একক', 'Unit')}</label><select data-k="unit" id="f_unit"><option value="m" ${r.unit !== 'ft' ? 'selected' : ''}>${L('মিটার', 'Metre')}</option><option value="ft" ${r.unit === 'ft' ? 'selected' : ''}>${L('ফুট', 'Feet')}</option></select></div>
+    </div></section>
+
+  <section class="card"><h3>${L('জমির আকৃতি ও রাস্তা', 'Plot shape and roads')}</h3><p class="hint">${L('যে যে পাশে রাস্তা আছে টিক দিন।', 'Tick every side that has a road.')}</p>
+    <div class="grid">
+      ${fld('shape', L('জমির আকৃতি', 'Plot shape'), { list: SHAPES })}
+      ${fld('facing', L('সামনের দিক', 'Front faces'), { list: FACING })}
+      ${fld('plotArea', L('প্লটের আয়তন', 'Plot area') + ' (' + u.area + ')', { type: 'number' })}
+      ${fld('plotDim', L('প্লটের মাপ (দৈর্ঘ্য × প্রস্থ)', 'Plot dimensions'), { ph: L('যেমন: ২০ × ১৫', 'e.g. 20 × 15') })}
+    </div>
+    <div class="diagram" id="diagram"></div>
+    <div id="roadsBox">${roadsHTML()}</div></section>
+
+  <section class="card"><h3>${L('সেটব্যাক', 'Setbacks')}</h3><p class="hint">${L('সীমানা থেকে ভবনের দেয়াল পর্যন্ত খালি জায়গা। কম হলে লাল।', 'Open space from boundary to wall. Red if less than approved.')}</p>
+    ${cmpRows(['sb_front', 'sb_back', 'sb_left', 'sb_right'])}</section>
+
+  <section class="card"><h3>${L('তলা, কভারেজ ও পার্কিং', 'Storeys, coverage and parking')}</h3>
+    ${cmpRows(['floors', 'basement', 'gc', 'parking'])}</section>
+
+  <section class="card"><h3>${L('তলাভিত্তিক ফ্লোর এরিয়া', 'Floor-wise area')}</h3><p class="hint">${L('প্রতি তলার অনুমোদিত ও সরজমিন ক্ষেত্রফল দিন — যোগফল নিজে হিসাব হবে।', 'Approved and on-site area per floor — totals are calculated.')} (${u.area})</p>
+    <div id="floorsBox">${floorsHTML()}</div>
+    <div class="acts"><button type="button" class="btn sm" id="flAdd">${ic('plus', 14)} ${L('তলা যোগ করুন', 'Add floor')}</button><button type="button" class="btn sm" id="flGen">${L('তলার সংখ্যা থেকে সারি তৈরি', 'Rows from storey count')}</button></div>
+    <div class="h3" style="margin-top:18px;font-weight:bold">${L('মোট ফ্লোর এরিয়া', 'Total floor area')}</div>
+    <p class="hint">${L('আলাদাভাবে লিখতে পারেন। খালি রাখলে উপরের যোগফল ধরা হবে।', 'Enter separately, or leave blank to use the sum above.')}</p>
+    ${cmpRows(['tfa'])}
+    <div class="f" style="margin-top:10px"><label class="l" for="f_floorNote">${L('কোন তলায় কত এরিয়া নিয়ে নির্মাণ — বিবরণ', 'Notes on area per floor')}</label>${rte('f_floorNote', 'floorNote', r.floorNote, L('যেমন: ৭ম তলায় ছাদের অর্ধেক জুড়ে অননুমোদিত কক্ষ', 'e.g. unauthorized rooms on half the roof'), 3)}</div>
+  </section>
+
+  <section class="card"><h3>${L('বর্তমান অবস্থার ছবি', 'Photos of current condition')}</h3><p class="hint">${L('ক্যামেরায় তুলুন বা গ্যালারি থেকে দিন। সময় ও GPS নিজে থেকে যুক্ত হয়।', 'Camera or gallery. Time and GPS are added automatically.')}</p>
+    <span class="btn filebtn">${ic('camera', 16)} ${L('ছবি তুলুন / যোগ করুন', 'Take / add photo')}<input type="file" accept="image/*" capture="environment" id="phIn" multiple></span>
+    <span class="gpsmsg" id="phMsg"></span>
+    <div id="photosBox">${photosHTML(r.photos, true)}</div></section>
+
+  <section class="card"><h3>${L('পর্যবেক্ষণ', 'Observations')}</h3>
+    <div class="grid">
+      ${fld('cstat', L('বর্তমান অবস্থা', 'Current status'), { list: CSTAT })}
+      ${fld('reco', L('সুপারিশ', 'Recommendation'), { list: RECO })}
+      <div class="f full"><label class="l" for="f_remarks">${L('মন্তব্য', 'Remarks')}</label>${rte('f_remarks', 'remarks', r.remarks, L('সরজমিনে যা দেখেছেন', 'What you observed on site'), 4)}</div>
+    </div></section>
+
+  <section class="card" id="summary"></section>
+  <div class="acts" style="justify-content:flex-end;margin-bottom:10px"><button class="btn" id="saveBtn2">${L('খসড়া সংরক্ষণ', 'Save draft')}</button><button class="btn pri" id="submitBtn2">${ret ? L('আবার জমা দিন', 'Resubmit') : L('জমা দিন', 'Submit')}</button></div>
+  ${!V.isNew && !ret ? `<div style="text-align:center"><button class="btn danger sm" id="delBtn">${L('এই খসড়া মুছুন', 'Delete this draft')}</button></div>` : ''}`;
+
+  $$('#content [data-k]').forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => { V.rec[el.dataset.k] = el.value; V.dirty = true; liveForm(el.dataset.k); }));
+  $$('[data-src]').forEach(b => b.onclick = () => { V.rec.source = b.dataset.src; V.dirty = true; $$('[data-src]').forEach(x => x.setAttribute('aria-pressed', x === b)); $('#cmpBox').hidden = V.rec.source !== 'complaint'; });
+  bindRte($('#content')); bindRoads(); bindFloors(); bindPhotos();
+  $('#flAdd').onclick = () => { const b = num(V.rec.basementM) ?? num(V.rec.basementA) ?? 0; V.rec.floorsList.push({ name: floorName(V.rec.floorsList.length, b), a: '', m: '' }); V.dirty = true; refreshFloors(); };
+  $('#flGen').onclick = () => {
+    const b = Math.max(num(V.rec.basementA) || 0, num(V.rec.basementM) || 0), f = Math.max(num(V.rec.floorsA) || 0, num(V.rec.floorsM) || 0);
+    if (!f) { toast(L('আগে উপরে তলা সংখ্যা দিন', 'Enter storey count above first')); return; }
+    const n = Math.min(b + f, 80), old = V.rec.floorsList;
+    V.rec.floorsList = Array.from({ length: n }, (_, i) => ({ name: floorName(i, b), a: (old[i] || {}).a || '', m: (old[i] || {}).m || '' }));
+    V.dirty = true; refreshFloors();
+  };
+  $('#gpsBtn').onclick = () => getGps();
+  $('#phIn').onchange = e => addPhotos([...e.target.files]);
+  ['saveBtn', 'saveBtn2'].forEach(i => $('#' + i).onclick = () => saveDraft(true));
+  ['submitBtn', 'submitBtn2'].forEach(i => $('#' + i).onclick = submitReport);
+  const d = $('#delBtn'); if (d) d.onclick = () => confirmSheet(L('খসড়াটি মুছবেন?', 'Delete this draft?'), L('সব তথ্য স্থায়ীভাবে মুছে যাবে।', 'All data will be permanently removed.'), L('হ্যাঁ, মুছুন', 'Yes, delete'), async () => { if (await DB.del('reports', V.rec.id)) { V.dirty = false; toast(L('মুছে ফেলা হয়েছে', 'Deleted')); go('reports'); } });
+  drawDiagram(); renderSummary(); updateTfa();
+  if (!r.gps && V.isNew) getGps(true);
+}
+
+function liveForm(k) {
+  const c = CMP().find(x => k === x.k + 'A' || k === x.k + 'M');
+  if (c) { const d = compare(c, V.rec), o = $('#res_' + c.k); if (o) { o.className = 'res ' + d.s; o.textContent = d.t; } }
+  if (['plot', 'rsDag', 'msDag', 'holding', 'address'].includes(k)) { const h = $('#cmd h1'); if (h) h.textContent = titleOf(V.rec); }
+  if (k === 'unit') { const y = window.scrollY; renderForm(); window.scrollTo(0, y); return; }
+  if (k === 'gps') { V.rec.gpsAcc = null; $('#gpsMsg').innerHTML = gpsInfo(V.rec); }
+  if (k === 'shape' || k === 'facing' || (c && (c.k.startsWith('sb_') || c.k === 'floors'))) drawDiagram();
+  renderSummary();
+}
+function drawDiagram() { const d = $('#diagram'); if (d) d.innerHTML = diagramSVG(V.rec); }
+function summaryHTML(r) {
+  const iss = issues(r);
+  return iss.length ? `<div class="verdict v-bad">${L(`বিচ্যুতি পাওয়া গেছে — ${fmt(iss.length)}টি বিষয়`, `${iss.length} deviation(s) found`)}</div><ul class="iss">${iss.map(i => `<li>${esc(i)}</li>`).join('')}</ul>`
+    : hasMeasure(r) ? `<div class="verdict v-good">${L('দেওয়া মাপ অনুযায়ী বিচ্যুতি নেই', 'No deviation in the entered measurements')}</div>` : `<div class="verdict v-none">${L('মাপ দিলে এখানে সারাংশ দেখাবে', 'The summary appears once you enter measurements')}</div>`;
+}
+function renderSummary() { const s = $('#summary'); if (s) s.innerHTML = `<h3>${L('বিচ্যুতির সারাংশ', 'Deviation summary')}</h3>` + summaryHTML(V.rec); }
+
+function bindRoads() {
+  $$('#roadsBox [data-road]').forEach(el => el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', () => {
+    const s = el.dataset.road, f = el.dataset.rf; V.rec.roads[s] = V.rec.roads[s] || {};
+    V.rec.roads[s][f] = el.type === 'checkbox' ? el.checked : el.value; V.dirty = true;
+    if (f === 'on') { $('#roadsBox').innerHTML = roadsHTML(); bindRoads(); }
+    else { const d = roadCmp(s, V.rec), o = $('#road_' + s); if (o) { o.className = 'res ' + d.s; o.textContent = d.t; } }
+    drawDiagram(); renderSummary();
+  }));
+}
+function refreshFloors() { $('#floorsBox').innerHTML = floorsHTML(); bindFloors(); updateTfa(); renderSummary(); }
+function updateTfa() {
+  const s = floorSum(V.rec), a = $('[data-k="tfaA"]'), m = $('[data-k="tfaM"]');
+  if (a) a.placeholder = s.a != null ? L('যোগফল: ', 'Sum: ') + fmt(s.a) : '';
+  if (m) m.placeholder = s.m != null ? L('যোগফল: ', 'Sum: ') + fmt(s.m) : '';
+  const d = compare(cmpByKey('tfa'), V.rec), o = $('#res_tfa'); if (o) { o.className = 'res ' + d.s; o.textContent = d.t; }
+}
+function bindFloors() {
+  $$('#floorsBox [data-fl]').forEach(el => el.oninput = () => {
+    const i = +el.dataset.fl, f = V.rec.floorsList[i]; if (!f) return;
+    f[el.dataset.ff] = el.value; V.dirty = true;
+    if (el.dataset.ff === 'name') return;
+    const u = unitsOf(V.rec).area, d = floorCmp(f, V.rec), o = $('#flres_' + i);
+    if (o) { o.className = 'res ' + d.s; o.textContent = d.s === 'none' ? '' : d.t; }
+    const s = floorSum(V.rec), t = diff(s.a, s.m, 'over', u, true);
+    $('#flSumA').textContent = fmt(s.a); $('#flSumM').textContent = fmt(s.m);
+    const tr = $('#flSumRes'); tr.className = 'res ' + t.s; tr.textContent = t.s === 'none' ? '' : t.t;
+    updateTfa(); renderSummary();
+  });
+  $$('#floorsBox [data-flrm]').forEach(b => b.onclick = () => { V.rec.floorsList.splice(+b.dataset.flrm, 1); V.dirty = true; refreshFloors(); });
+}
+function bindPhotos() {
+  $$('#photosBox [data-cap]').forEach(el => el.oninput = () => { V.rec.photos[+el.dataset.cap].cap = el.value; V.dirty = true; });
+  $$('#photosBox [data-prm]').forEach(el => el.onclick = () => { V.rec.photos.splice(+el.dataset.prm, 1); V.dirty = true; $('#photosBox').innerHTML = photosHTML(V.rec.photos, true); bindPhotos(); DB.hydrate(); });
+  $$('#photosBox [data-pview]').forEach(el => el.onclick = () => { const p = V.rec.photos[+el.dataset.pview]; viewImage(p.ref, p.cap, fdt(p.at) + (p.gps ? ' | GPS ' + p.gps : '')); });
+}
+async function addPhotos(files) {
+  if (!files.length) return;
+  if (V.rec.photos.length + files.length > 20) { toast(L('একটি রিপোর্টে সর্বোচ্চ ২০টি ছবি', 'Max 20 photos per report')); return; }
+  const msg = $('#phMsg'); msg.textContent = ' ' + L('আপলোড হচ্ছে…', 'Uploading…');
+  for (const f of files) { const ref = await DB.uploadImage(f); if (ref && V.name === 'form') V.rec.photos.push({ ref, at: Date.now(), gps: V.rec.gps || '', cap: '' }); }
+  if (V.name !== 'form') return;
+  V.dirty = true; msg.textContent = ''; $('#phIn').value = '';
+  $('#photosBox').innerHTML = photosHTML(V.rec.photos, true); bindPhotos(); DB.hydrate();
+  await saveDraft(false);
+}
+async function getGps(auto) {
+  const msg = $('#gpsMsg'), btn = $('#gpsBtn'); if (!msg) return;
+  btn.disabled = true; msg.className = 'gpsmsg'; msg.textContent = L('লোকেশন নেওয়া হচ্ছে…', 'Getting location…');
+  try {
+    const c = await locate();
+    if (V.name !== 'form') return;
+    V.rec.gps = c.latitude.toFixed(6) + ', ' + c.longitude.toFixed(6); V.rec.gpsAcc = Math.round(c.accuracy); V.dirty = true;
+    $('#f_gps').value = V.rec.gps; msg.innerHTML = gpsInfo(V.rec);
+  } catch (e) {
+    if (V.name !== 'form') return;
+    msg.className = 'gpsmsg err';
+    msg.textContent = e && e.code === 1 ? L('লোকেশনের অনুমতি দেওয়া হয়নি। অনুমতি দিন অথবা Google Maps থেকে কপি করে বক্সে লিখুন।', 'Location permission denied. Allow it, or paste from Google Maps.')
+      : L('লোকেশন পাওয়া যায়নি — খোলা জায়গায় গিয়ে আবার নিন, অথবা বক্সে লিখুন।', 'Could not get location — retry in the open, or type it in.');
+  } finally { if (btn) btn.disabled = false; }
+}
+
+/* ---------- সংরক্ষণ ও জমা ---------- */
+async function saveDraft(showToast) {
+  const r = V.rec; r.updatedAt = Date.now(); r.authorId = DB.me;
+  const cur = DB.data.reports[r.id];
+  if (cur) { r.review = cur.review; r.revisit = cur.revisit; }   // অফিসারের দেওয়া অবস্থা অক্ষত থাকে
+  const ok = await DB.put('reports', r.id, r);
+  if (ok) { V.dirty = false; V.isNew = false; if (showToast) toast(L('খসড়া সংরক্ষিত', 'Draft saved')); }
+  return ok;
+}
+const hasContent = r => ['plot', 'rsDag', 'msDag', 'holding', 'owner', 'address', 'planNo', 'letterNo', 'remarks', 'complaintNo'].some(k => String(r[k] || '').trim()) || hasMeasure(r) || (r.photos || []).length > 0;
+async function autoSave() { if (V.name === 'form' && V.rec && V.dirty && (V.rec.status === 'submitted' || hasContent(V.rec))) await saveDraft(false); }
+async function submitReport() {
+  const r = V.rec;
+  if (!r.zone) { toast(L('জোন বাছাই করুন — জোন অনুযায়ী রিপোর্ট যাবে', 'Choose a zone — reports are routed by zone')); $('#f_zone').focus(); return; }
+  if (!(r.plot || r.rsDag || r.msDag || r.holding)) { toast(L('প্লট, দাগ বা হোল্ডিং নম্বর দিন', 'Enter plot, dag or holding no.')); $('#f_plot').focus(); return; }
+  if (r.gps && !parseGps(r.gps)) { toast(L('GPS সঠিক নয় — যেমন 23.8041, 90.3667', 'Invalid GPS — e.g. 23.8041, 90.3667')); $('#f_gps').focus(); return; }
+  const re = r.status === 'submitted';
+  r.status = 'submitted';
+  r.fileNo = r.fileNo || genNo(r.source === 'complaint' ? 'CMP' : 'SLF', r.zone);
+  r.submittedAt = r.submittedAt || Date.now(); if (re) r.resubmittedAt = Date.now();
+  const gid = (me() || {}).groupId, g = gid ? DB.data.groups[gid] : null;
+  r.groupId = g ? gid : ''; r.leaderId = g && g.leaderId !== DB.me ? g.leaderId : '';
+  $$('#submitBtn,#submitBtn2').forEach(b => { b.disabled = true; });
+  const ok = await saveDraft(false);
+  $$('#submitBtn,#submitBtn2').forEach(b => { b.disabled = false; });
+  if (!ok) { if (!re) r.status = 'draft'; return; }
+  if (r.assignmentId) { const a = DB.data.assignments[r.assignmentId]; if (a && a.status !== 'done') await DB.patch('assignments', r.assignmentId, { status: 'done', reportId: r.id, doneAt: Date.now(), doneBy: DB.me }); }
+  toast(L('জমা হয়েছে — ফাইল নং ', 'Submitted — file no. ') + r.fileNo);
+  V.from = 'reports'; V.rtab = 'mine'; go('detail', r.id);
+}
+
+/* ---------- রিপোর্ট দেখা ---------- */
+function renderDetail() {
+  const id = V.id, r = DB.data.reports[id];
+  if (!r || !canSee(r)) { go('reports'); return; }
+  const kept = V.cFor === id ? { t: ($('#cTxt') || {}).value || '', k: ($('#cKind') || {}).value || '' } : { t: '', k: '' };
+  const u = unitsOf(r), mine = r.authorId === DB.me, rs = reviewState(r), od = isOverdue(r);
+  const canEdit = mine && rs === 'returned';
+  setCmd('reports', titleOf(r), r.fileNo || '',
+    `${canEdit ? `<button class="btn pri" id="editBtn">${L('সংশোধন করুন', 'Edit & correct')}</button>` : ''}
+     <button class="btn" id="repBtn">${ic('copy', 16)} ${L('প্রতিবেদন', 'Report')}</button>
+     <button class="btn" id="prtBtn">${ic('print', 16)} ${L('প্রিন্ট', 'Print')}</button>
+     ${isDev() ? `<button class="btn danger" id="devDel">${L('মুছুন', 'Delete')}</button>` : ''}`, true);
+  const kv = (k, v) => v && v !== '—' ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : '';
+  const roads = SIDES.filter(s => (r.roads || {})[s.v] && r.roads[s.v].on);
+  const g = parseGps(r.gps), asg = r.assignmentId ? DB.data.assignments[r.assignmentId] : null, days = daysSince(r.date || r.submittedAt);
+  const iss = issues(r);
+  $('#content').innerHTML = `
+  <div class="rhead"><div class="lbl">${L('ফাইল নং', 'File no.')}</div><div class="fno num">${esc(r.fileNo || '—')}</div>
+    <div class="pills">${srcPill(r)}${reviewPill(r)}${iss.length ? `<span class="pill p-red">${L('বিচ্যুতি', 'Deviations')} ${fmt(iss.length)}</span>` : ''}${r.review && r.review.nothiNo ? `<span class="pill p-ok">${L('নথি নং ', 'Nothi ')}${esc(r.review.nothiNo)}</span>` : ''}</div>
+    <div class="by">${avatar(r.authorId, 40)}<div><b>${esc(nameOf(r.authorId))}</b><br><small>${esc(desigOf(r.authorId))} | ${L('জমা', 'Submitted')}: ${fdt(r.submittedAt)}${r.resubmittedAt ? ' | ' + L('পুনরায়', 'Resubmitted') + ': ' + fdt(r.resubmittedAt) : ''}</small></div></div></div>
+
+  ${(od || (r.revisit && r.status === 'submitted')) ? `<div class="banner ${od ? 'bad' : 'info'}" style="flex-direction:column">
+    <div>${L(`এই লোকেশন ${fmt(days)} দিন আগে পরিদর্শন করা হয়েছিল। আবার জরিপ বা পরিদর্শন দরকার?`, `This location was inspected ${days} days ago. Is another inspection needed?`)}</div>
+    <div class="acts" style="margin-top:4px">
+      <button class="btn sm ${r.revisit && r.revisit.v === 'yes' ? 'pri' : ''}" data-rv="yes">☑ ${L('হ্যাঁ, দরকার', 'Yes, needed')}</button>
+      <button class="btn sm ${r.revisit && r.revisit.v === 'no' ? 'pri' : ''}" data-rv="no">☐ ${L('না, দরকার নেই', 'No, not needed')}</button>
+      ${r.revisit && r.revisit.v === 'yes' && canAssign() ? `<button class="btn sm" id="rvAssign">${L('পুনঃপরিদর্শনের অ্যাসাইনমেন্ট দিন', 'Assign a revisit')}</button>` : ''}
+    </div>${r.revisit ? `<div class="hint" style="margin:0">${esc(nameOf(r.revisit.by))} — ${fdt(r.revisit.at)}</div>` : ''}</div>` : ''}
+
+  <div class="cols c2">
+  <section class="card"><h3>${L('জমির পরিচয়', 'Land details')}</h3><dl class="kv">
+    ${kv(L('রিপোর্টের ধরন', 'Type'), O(SOURCES, r.source || 'self'))}${kv(L('অভিযোগ নং', 'Complaint no.'), r.complaintNo)}
+    ${asg ? `<dt>${L('অ্যাসাইনমেন্ট', 'Assignment')}</dt><dd><button class="linkbtn" id="toAsg">${esc(asg.area || asg.complaintNo || L('দেখুন', 'View'))}</button></dd>` : ''}
+    ${kv(L('পরিদর্শনের তারিখ', 'Inspection date'), fd(r.date))}${kv(L('জোন', 'Zone'), O(ZONES, r.zone) + (r.subZone ? ' (' + r.subZone + ')' : ''))}
+    ${kv(L('মৌজা / এলাকা', 'Mouza / area'), r.mouza)}${kv(L('আরএস দাগ', 'RS Dag'), r.rsDag)}${kv(L('এমএস দাগ', 'MS Dag'), r.msDag)}
+    ${kv(L('প্লট নং', 'Plot no.'), r.plot)}${kv(L('হোল্ডিং নং', 'Holding no.'), r.holding)}${kv(L('মালিক', 'Owner'), r.owner)}${kv(L('ঠিকানা', 'Address'), r.address)}
+    ${r.gps ? `<dt>GPS</dt><dd class="num">${esc(r.gps)}${g ? ` <a class="lnk" target="_blank" rel="noopener" href="${esc(mapUrl(g))}">${L('ম্যাপ', 'Map')}</a>` : ''}</dd>` : ''}
+  </dl></section>
+  <section class="card"><h3>${L('অনুমোদনের কাগজ', 'Approval documents')}</h3><dl class="kv">
+    ${kv(L('নকশা নং', 'Plan no.'), r.planNo)}${kv(L('চিঠি / ইস্যু নং', 'Letter / issue no.'), r.letterNo)}${kv(L('অনুমোদনের তারিখ', 'Approval date'), r.approvalDate ? fd(r.approvalDate) : '')}
+    ${kv(L('অনুমোদিত শ্রেণি', 'Approved type'), r.btypeA ? O(BTYPES, r.btypeA) : '')}${kv(L('সরজমিন শ্রেণি', 'Type on site'), r.btypeM ? O(BTYPES, r.btypeM) : '')}
+    ${kv(L('অনুমোদিত ব্যবহার', 'Approved use'), r.useA ? O(USES, r.useA) : '')}${kv(L('সরজমিন ব্যবহার', 'Use on site'), r.useM ? O(USES, r.useM) : '')}
+    ${kv(L('জমির আকৃতি', 'Plot shape'), O(SHAPES, r.shape))}${kv(L('প্লটের আয়তন', 'Plot area'), r.plotArea ? fmt(num(r.plotArea)) + ' ' + u.area : '')}${kv(L('প্লটের মাপ', 'Dimensions'), r.plotDim)}
+  </dl></section></div>
+
+  <section class="card"><h3>${L('মাপ: অনুমোদিত বনাম সরজমিন', 'Approved vs on site')}</h3>
+    <div class="cols c2"><div class="diagram">${diagramSVG(r)}</div>
+    <div class="tscroll"><table class="tbl"><thead><tr><th>${L('বিষয়', 'Item')}</th><th class="r">${L('অনুমোদিত', 'Approved')}</th><th class="r">${L('সরজমিন', 'On site')}</th><th>${L('ফলাফল', 'Result')}</th></tr></thead><tbody>
+    ${roads.map(s => { const x = r.roads[s.v], d = roadCmp(s.v, r); return `<tr><td>${L('রাস্তা', 'Road')} (${L(s.b, s.e)})</td><td class="r num">${fmt(num(x.a))}</td><td class="r num">${fmt(num(x.m))}</td><td class="res ${d.s}">${d.s === 'none' ? '—' : d.t}</td></tr>`; }).join('')}
+    ${CMP().map(c => { const [a, m] = cmpVals(c, r); if (a == null && m == null) return ''; const d = compare(c, r);
+      return `<tr><td>${c.n} <small style="color:var(--muted)">(${unitOf(c, r)})</small></td><td class="r num">${fmt(a)}</td><td class="r num">${fmt(m)}</td><td class="res ${d.s}">${d.s === 'none' ? '—' : d.t}</td></tr>`; }).join('')}
+    </tbody></table></div></div></section>
+
+  ${(r.floorsList || []).length || r.floorNote ? `<section class="card"><h3>${L('তলাভিত্তিক ফ্লোর এরিয়া', 'Floor-wise area')} <small style="font-weight:normal;color:var(--muted)">(${u.area})</small></h3>
+    ${(r.floorsList || []).length ? `<div class="tscroll"><table class="tbl"><thead><tr><th>${L('তলা', 'Floor')}</th><th class="r">${L('অনুমোদিত', 'Approved')}</th><th class="r">${L('সরজমিন', 'On site')}</th><th>${L('ফলাফল', 'Result')}</th></tr></thead><tbody>
+    ${r.floorsList.map(f => { const d = floorCmp(f, r); return `<tr><td>${esc(f.name || '')}</td><td class="r num">${fmt(num(f.a))}</td><td class="r num">${fmt(num(f.m))}</td><td class="res ${d.s}">${d.s === 'none' ? '—' : d.t}</td></tr>`; }).join('')}
+    ${(() => { const s = floorSum(r), d = diff(s.a, s.m, 'over', u.area, true); return `<tr class="tot"><td>${L('যোগফল', 'Total')}</td><td class="r num">${fmt(s.a)}</td><td class="r num">${fmt(s.m)}</td><td class="res ${d.s}">${d.s === 'none' ? '—' : d.t}</td></tr>`; })()}
+    </tbody></table></div>` : ''}${r.floorNote ? `<div class="rt" style="margin-top:10px">${md(r.floorNote)}</div>` : ''}</section>` : ''}
+
+  ${(r.photos || []).length ? `<section class="card"><h3>${L('বর্তমান অবস্থার ছবি', 'Photos')}</h3><div id="photosBox">${photosHTML(r.photos, false)}</div></section>` : ''}
+
+  <section class="card"><h3>${L('পর্যবেক্ষণ ও সারাংশ', 'Observations and summary')}</h3><dl class="kv" style="margin-bottom:12px">
+    ${kv(L('বর্তমান অবস্থা', 'Current status'), r.cstat ? O(CSTAT, r.cstat) : '')}${kv(L('সুপারিশ', 'Recommendation'), r.reco ? O(RECO, r.reco) : '')}</dl>
+    ${r.remarks ? `<div class="rt" style="margin-bottom:12px">${md(r.remarks)}</div>` : ''}${summaryHTML(r)}</section>
+
+  <section class="card" id="cmtCard"><h3>${L('মন্তব্য ও নথি', 'Comments and Nothi')}</h3><div id="timeline"><p class="hint">${L('লোড হচ্ছে…', 'Loading…')}</p></div><div id="composer"></div></section>`;
+
+  const e = $('#editBtn'); if (e) e.onclick = () => openForm(id);
+  $('#repBtn').onclick = () => showReportText(r);
+  $('#prtBtn').onclick = () => window.print();
+  const dd = $('#devDel'); if (dd) dd.onclick = () => confirmSheet(L('রিপোর্ট মুছবেন?', 'Delete report?'), L('ডেভেলপার হিসেবে এই রিপোর্ট স্থায়ীভাবে মুছে যাবে।', 'This report will be permanently deleted.'), L('হ্যাঁ, মুছুন', 'Yes, delete'), async () => { if (await DB.del('reports', id)) go('reports'); });
+  const ta = $('#toAsg'); if (ta) ta.onclick = () => go('assignDetail', r.assignmentId);
+  $$('[data-rv]').forEach(b => b.onclick = async () => { if (await DB.patch('reports', id, { revisit: { v: b.dataset.rv, by: DB.me, at: Date.now() } })) { toast(L('সংরক্ষিত', 'Saved')); render(); } });
+  const ra = $('#rvAssign'); if (ra) ra.onclick = () => newAssignment({ zone: r.zone, area: r.mouza || '', address: r.address || '', gps: r.gps || '', complaintNo: r.complaintNo || '', details: L('পুনঃপরিদর্শন — আগের ফাইল নং ', 'Revisit — previous file no. ') + (r.fileNo || ''), relatedReport: id });
+  $$('#photosBox [data-pview]').forEach(el => el.onclick = () => { const p = r.photos[+el.dataset.pview]; viewImage(p.ref, p.cap, fdt(p.at) + (p.gps ? ' | GPS ' + p.gps : '')); });
+  renderComposer(r, kept);
+  if (V.cFor !== id) {
+    if (V.cUnsub) V.cUnsub();
+    V.cFor = id; V.comments = null;
+    V.cUnsub = DB.watchComments(id, list => { V.comments = list; if (V.name === 'detail' && V.id === id) renderTimeline(); });
+  }
+  renderTimeline();
+}
+function renderTimeline() {
+  const box = $('#timeline'); if (!box) return;
+  const cs = V.comments;
+  if (cs == null) return;
+  box.innerHTML = cs.length ? `<div class="tl">${cs.map(c => {
+    const [bc] = (REVIEW[c.kind] || REVIEW.review)();
+    return `<div class="tli">${avatar(c.by, 34)}<div class="bx"><div class="who">${esc(nameOf(c.by))} <small>${esc(desigOf(c.by))}</small></div>
+      ${c.kind && c.kind !== 'comment' ? `<span class="pill ${bc}" style="margin-top:4px">${esc(O(ACTS, c.kind))}</span>` : ''}
+      ${c.nothiNo ? `<div class="num" style="font-weight:bold;margin-top:4px">${L('নথি নং: ', 'Nothi no.: ')}${esc(c.nothiNo)}</div>` : ''}
+      ${c.text ? `<div class="tx rt">${md(c.text)}</div>` : ''}
+      ${c.file ? `<div data-cid="${esc(c.id)}">${filesHTML([c.file], false)}</div>` : ''}
+      <div class="tm num">${fdt(c.at)}</div></div></div>`;
+  }).join('')}</div>` : `<p class="hint">${L('এখনো কোনো মন্তব্য নেই।', 'No comments yet.')}</p>`;
+  box.querySelectorAll('[data-fview]').forEach(b => b.onclick = () => { const w = b.closest('[data-cid]'), c = w && cs.find(x => x.id === w.dataset.cid); if (c && c.file) viewImage(c.file.ref, c.file.name); });
+  DB.hydrate();
+}
+function renderComposer(r, kept) {
+  const mine = r.authorId === DB.me, off = !mine && isOfficer();
+  const kinds = off ? ACTS : ACTS.filter(a => a.v === 'comment');
+  $('#composer').innerHTML = `<div style="margin-top:14px;border-top:1px solid var(--line2);padding-top:12px">
+    ${kinds.length > 1 ? `<div class="f" style="margin-bottom:8px;max-width:340px"><label class="l" for="cKind">${L('কী করবেন', 'Action')}</label><select id="cKind">${opts(kinds, kept.k || 'comment', false)}</select></div>` : ''}
+    <div class="f"><label class="l" for="cTxt">${L('মন্তব্য লিখুন', 'Write a comment')}</label>${rte('cTxt', '', kept.t, L('আপনার মতামত বা নির্দেশনা — জরুরি অংশ বোল্ড বা হাইলাইট করুন', 'Your note — bold or highlight key parts'), 4)}</div>
+    <p class="hint" id="nothiHint" ${kept.k === 'nothi' ? '' : 'hidden'} style="margin:8px 0 0">${L('পাঠালে তারিখ-সময় অনুযায়ী নথি নম্বর তৈরি হবে।', 'A Nothi number is generated from the date and time.')}</p>
+    <div class="acts">${off ? `<span class="btn sm filebtn">${L('ফাইল/ছবি যুক্ত করুন', 'Attach file')}<input type="file" id="cFile" accept="image/*,application/pdf"></span><span class="gpsmsg" id="cFileName"></span>` : ''}
+    <button class="btn pri" id="cSend">${L('পাঠান', 'Send')}</button></div></div>`;
+  bindRte($('#composer'));
+  const k = $('#cKind'); if (k) k.onchange = () => { $('#nothiHint').hidden = k.value !== 'nothi'; };
+  const f = $('#cFile'); if (f) f.onchange = () => { $('#cFileName').textContent = f.files[0] ? clip(f.files[0].name, 40) : ''; };
+  $('#cSend').onclick = () => sendComment(r);
+}
+async function sendComment(r) {
+  const kind = ($('#cKind') || {}).value || 'comment', text = clip($('#cTxt').value.trim(), 5000), f = $('#cFile');
+  if (!text && kind === 'comment') { toast(L('মন্তব্য লিখুন', 'Write a comment')); return; }
+  const btn = $('#cSend'); btn.disabled = true;
+  const c = { by: DB.me, kind, text, at: Date.now() };
+  if (kind === 'nothi') c.nothiNo = genNo('NTH', r.zone);
+  if (f && f.files[0]) { const up = await DB.uploadDoc(f.files[0]); if (up) c.file = up; }
+  let ok = await DB.addComment(r.id, c);
+  if (ok && r.authorId !== DB.me && isOfficer()) {
+    const prev = r.review || {};
+    const s = kind === 'comment' ? (prev.s || 'review') : kind;
+    ok = await DB.patch('reports', r.id, { review: { s, at: Date.now(), by: DB.me, nothiNo: c.nothiNo || prev.nothiNo || '' } });
+  }
+  btn.disabled = false;
+  if (ok) { toast(kind === 'nothi' ? L('নথি পেশ হয়েছে — ', 'Filed — ') + c.nothiNo : L('পাঠানো হয়েছে', 'Sent')); $('#cTxt').value = ''; const p = $('#cTxt_prev'); if (p) p.innerHTML = ''; if (f) { f.value = ''; $('#cFileName').textContent = ''; } render(); }
+}
+
+/* ---------- প্রতিবেদন (লেখা আকারে) ---------- */
+function reportText(r) {
+  const u = unitsOf(r), X = [];
+  X.push(L('রাজউক সরজমিন পরিদর্শন প্রতিবেদন', 'RAJUK Field Inspection Report'));
+  X.push(L('ফাইল নং: ', 'File no.: ') + (r.fileNo || '—') + ' | ' + O(SOURCES, r.source || 'self'));
+  if (r.complaintNo) X.push(L('অভিযোগ নং: ', 'Complaint no.: ') + r.complaintNo);
+  if (r.review && r.review.nothiNo) X.push(L('নথি নং: ', 'Nothi no.: ') + r.review.nothiNo);
+  X.push(L('পরিদর্শক: ', 'Inspector: ') + nameOf(r.authorId) + ' (' + desigOf(r.authorId) + ')');
+  X.push(L('পরিদর্শনের তারিখ: ', 'Inspection date: ') + fd(r.date) + ' | ' + L('জমা: ', 'Submitted: ') + fdt(r.submittedAt));
+  X.push('');
+  X.push(`${L('জোন', 'Zone')}: ${O(ZONES, r.zone)}${r.subZone ? ' (' + r.subZone + ')' : ''} | ${L('মৌজা', 'Mouza')}: ${r.mouza || '—'}`);
+  X.push(`${L('আরএস দাগ', 'RS Dag')}: ${r.rsDag || '—'} | ${L('এমএস দাগ', 'MS Dag')}: ${r.msDag || '—'} | ${L('প্লট', 'Plot')}: ${r.plot || '—'} | ${L('হোল্ডিং', 'Holding')}: ${r.holding || '—'}`);
+  X.push(`${L('মালিক', 'Owner')}: ${r.owner || '—'}`); if (r.address) X.push(`${L('ঠিকানা', 'Address')}: ${r.address}`);
+  X.push(`GPS: ${r.gps || '—'}`);
+  X.push(`${L('নকশা নং', 'Plan no.')}: ${r.planNo || '—'} | ${L('চিঠি/ইস্যু নং', 'Letter no.')}: ${r.letterNo || '—'} | ${L('তারিখ', 'Date')}: ${r.approvalDate ? fd(r.approvalDate) : '—'}`);
+  if (r.btypeA || r.btypeM) X.push(`${L('ভবনের শ্রেণি', 'Building type')}: ${L('অনুমোদিত', 'approved')} ${r.btypeA || '—'} | ${L('সরজমিন', 'on site')} ${r.btypeM || '—'}`);
+  X.push(`${L('জমির আকৃতি', 'Plot shape')}: ${O(SHAPES, r.shape)}${r.plotArea ? ' | ' + L('আয়তন', 'Area') + ': ' + fmt(num(r.plotArea)) + ' ' + u.area : ''}`);
+  X.push('');
+  X.push(L('মাপ (অনুমোদিত / সরজমিন):', 'Measurements (approved / on site):'));
+  SIDES.forEach(s => { const x = (r.roads || {})[s.v]; if (!x || !x.on) return; const d = roadCmp(s.v, r); X.push(`- ${L('রাস্তা', 'Road')} (${L(s.b, s.e)}): ${fmt(num(x.a))} / ${fmt(num(x.m))} ${u.len}${d.s !== 'none' ? ' → ' + d.t : ''}`); });
+  CMP().forEach(c => { const [a, m] = cmpVals(c, r); if (a == null && m == null) return; const d = compare(c, r); X.push(`- ${c.n}: ${fmt(a)} / ${fmt(m)} ${unitOf(c, r)}${d.s !== 'none' ? ' → ' + d.t : ''}`); });
+  if ((r.floorsList || []).length) {
+    X.push(''); X.push(L('তলাভিত্তিক ফ্লোর এরিয়া (অনুমোদিত / সরজমিন):', 'Floor-wise area (approved / on site):'));
+    r.floorsList.forEach(f => { const d = floorCmp(f, r); X.push(`- ${f.name || ''}: ${fmt(num(f.a))} / ${fmt(num(f.m))} ${u.area}${d.s !== 'none' ? ' → ' + d.t : ''}`); });
+    const s = floorSum(r); X.push(`${L('যোগফল', 'Total')}: ${fmt(s.a)} / ${fmt(s.m)} ${u.area}`);
+  }
+  if (r.floorNote) X.push(L('তলার বিবরণ: ', 'Floor notes: ') + plain(r.floorNote));
+  X.push('');
+  const iss = issues(r);
+  X.push(iss.length ? L(`বিচ্যুতি (${fmt(iss.length)}টি):`, `Deviations (${iss.length}):`) : L('বিচ্যুতি: দেওয়া মাপ অনুযায়ী নেই', 'Deviations: none in entered measurements'));
+  iss.forEach((t, i) => X.push(`${fmt(i + 1)}. ${t}`));
+  X.push('');
+  if (r.cstat) X.push(L('বর্তমান অবস্থা: ', 'Current status: ') + O(CSTAT, r.cstat));
+  if (r.reco) X.push(L('সুপারিশ: ', 'Recommendation: ') + O(RECO, r.reco));
+  if (r.remarks) X.push(L('মন্তব্য: ', 'Remarks: ') + plain(r.remarks));
+  if ((r.photos || []).length) X.push(L('ছবি: ', 'Photos: ') + fmt(r.photos.length));
+  X.push(''); X.push(`— ${APP.nameEn} | ${APP.company}`);
+  return X.join('\n');
+}
+function showReportText(r) {
+  const t = reportText(r);
+  openSheet(L('প্রতিবেদন', 'Report'), `<textarea class="rep" readonly id="repTxt">${esc(t)}</textarea>
+    <div class="acts"><button class="btn pri" id="cp">${ic('copy', 16)} ${L('কপি করুন', 'Copy')}</button><button class="btn" id="dlr">${ic('download', 16)} ${L('ফাইল হিসেবে নিন', 'Save as file')}</button><button class="btn" id="cls">${L('বন্ধ করুন', 'Close')}</button></div>`);
+  $('#cp').onclick = async () => { try { await navigator.clipboard.writeText(t); toast(L('কপি হয়েছে', 'Copied')); } catch (e) { const a = $('#repTxt'); a.focus(); a.select(); toast(L('লেখা নির্বাচিত — কপি চাপুন', 'Text selected — press copy')); } };
+  $('#dlr').onclick = () => saveFile(String(r.fileNo || r.id).replace(/[\/\\\s:]/g, '_') + '.txt', t);
+  $('#cls').onclick = closeSheet;
+}
+function exportReportsCsv(list) {
+  const cols = [['fileNo', L('ফাইল নং', 'File no.')], ['_src', L('ধরন', 'Type')], ['complaintNo', L('অভিযোগ নং', 'Complaint no.')], ['_insp', L('পরিদর্শক', 'Inspector')], ['_sub', L('জমার সময়', 'Submitted')], ['_rev', L('অবস্থা', 'Status')], ['_nothi', L('নথি নং', 'Nothi no.')],
+    ['date', L('পরিদর্শনের তারিখ', 'Inspection date')], ['_zone', L('জোন', 'Zone')], ['subZone', L('সাব-জোন', 'Sub-zone')], ['mouza', L('মৌজা', 'Mouza')], ['rsDag', L('আরএস দাগ', 'RS Dag')], ['msDag', L('এমএস দাগ', 'MS Dag')],
+    ['plot', L('প্লট', 'Plot')], ['holding', L('হোল্ডিং', 'Holding')], ['owner', L('মালিক', 'Owner')], ['address', L('ঠিকানা', 'Address')], ['gps', 'GPS'], ['planNo', L('নকশা নং', 'Plan no.')], ['letterNo', L('চিঠি/ইস্যু নং', 'Letter no.')],
+    ['approvalDate', L('অনুমোদনের তারিখ', 'Approval date')], ['btypeA', L('অনুমোদিত শ্রেণি', 'Approved type')], ['btypeM', L('সরজমিন শ্রেণি', 'Type on site')], ['unit', L('একক', 'Unit')], ['_shape', L('আকৃতি', 'Shape')], ['plotArea', L('প্লটের আয়তন', 'Plot area')]];
+  SIDES.forEach(s => { cols.push(['_ra_' + s.v, L('রাস্তা নকশা ', 'Road plan ') + L(s.b, s.e)]); cols.push(['_rm_' + s.v, L('রাস্তা সরজমিন ', 'Road site ') + L(s.b, s.e)]); });
+  CMP().forEach(c => { cols.push(['_a_' + c.k, c.n + ' (' + L('অনুমোদিত', 'approved') + ')']); cols.push(['_m_' + c.k, c.n + ' (' + L('সরজমিন', 'on site') + ')']); });
+  cols.push(['_floors', L('তলাভিত্তিক এরিয়া', 'Floor areas')], ['_cstat', L('বর্তমান অবস্থা', 'Current status')], ['_reco', L('সুপারিশ', 'Recommendation')], ['_remarks', L('মন্তব্য', 'Remarks')], ['_revisit', L('পুনঃপরিদর্শন', 'Revisit')]);
+  const rows = [cols.map(c => c[1]).concat(L('বিচ্যুতির সংখ্যা', 'Deviation count'), L('বিচ্যুতি', 'Deviations'))];
+  (list || []).forEach(([, r]) => {
+    const x = Object.assign({}, r, { _src: O(SOURCES, r.source || 'self'), _insp: nameOf(r.authorId), _sub: r.submittedAt ? fdt(r.submittedAt) : '', _rev: r.status === 'submitted' ? (REVIEW[reviewState(r)] || REVIEW.new)()[1] : L('খসড়া', 'Draft'),
+      _nothi: (r.review && r.review.nothiNo) || '', _zone: O(ZONES, r.zone), _shape: O(SHAPES, r.shape), _cstat: r.cstat ? O(CSTAT, r.cstat) : '', _reco: r.reco ? O(RECO, r.reco) : '', _remarks: plain(r.remarks),
+      _floors: (r.floorsList || []).map(f => `${f.name}: ${f.a || '-'}/${f.m || '-'}`).join('; '), _revisit: r.revisit ? (r.revisit.v === 'yes' ? L('হ্যাঁ', 'Yes') : L('না', 'No')) : '' });
+    SIDES.forEach(s => { const rd = (r.roads || {})[s.v] || {}; x['_ra_' + s.v] = rd.on ? rd.a : ''; x['_rm_' + s.v] = rd.on ? rd.m : ''; });
+    CMP().forEach(c => { const [a, m] = cmpVals(c, r); x['_a_' + c.k] = a ?? ''; x['_m_' + c.k] = m ?? ''; });
+    const iss = issues(r); rows.push(cols.map(c => x[c[0]]).concat(iss.length, iss.join('; ')));
+  });
+  saveFile(`rajuk-reports-${today()}.csv`, toCsv(rows), 'text/csv');
+}
+
+/* ============================================================
+   v-assign.js — অ্যাসাইনমেন্ট (অভিযোগের ভিত্তিতে সাইট পরিদর্শনের নির্দেশ)
+   উচ্চ পর্যায় / অথরাইজড অফিসার / গ্রুপ প্রধান অ্যাসাইনমেন্ট দেন,
+   পরিদর্শক সরজমিনে গিয়ে সেখান থেকেই জরিপ শুরু করেন।
+   ============================================================ */
+'use strict';
+
+const aStatusPill = a => {
+  if (isAOverdue(a)) return `<span class="pill p-red">${L('মেয়াদ পেরিয়েছে', 'Overdue')}</span>`;
+  const c = { open: 'p-info', inprogress: 'p-amber', done: 'p-ok', cancelled: 'p-grey' }[a.status] || 'p-info';
+  return `<span class="pill ${c}">${esc(O(ASTATUS, a.status))}</span>`;
+};
+const myOpenAssignments = () => Object.entries(DB.data.assignments).filter(([, a]) => (a.assignees || []).includes(DB.me) && ['open', 'inprogress'].includes(a.status));
+
+function assignRow(id, a) {
+  const cls = isAOverdue(a) ? 'red' : a.status === 'done' ? 'ok' : a.status === 'cancelled' ? '' : 'orange';
+  const who = (a.assignees || []).slice(0, 3).map(u => avatar(u, 24)).join('');
+  return `<button class="row ${cls}" data-aopen="${esc(id)}">
+    <span style="display:flex">${who || avatar(a.createdBy, 30)}</span>
+    <span class="main"><div class="t1">${esc(a.area || L('এলাকা উল্লেখ নেই', 'No area'))}</div>
+      <div class="t2">${esc([O(ZONES, a.zone), a.complaintNo ? L('অভিযোগ ', 'Complaint ') + a.complaintNo : '', a.dueDate ? L('শেষ তারিখ ', 'Due ') + fd(a.dueDate) : ''].filter(x => x && x !== '—').join(' | '))}</div>
+      <div class="t3">${L('দিয়েছেন: ', 'By: ')}${esc(nameOf(a.createdBy))} | ${fdt(a.createdAt)}</div></span>
+    <span class="side">${aStatusPill(a)}${a.priority === 'urgent' ? `<span class="pill p-red">${L('জরুরি', 'Urgent')}</span>` : ''}</span></button>`;
+}
+
+function renderAssign() {
+  const tabs = [['mine', L('আমার জন্য', 'Assigned to me')]];
+  if (canAssign()) tabs.push(['given', L('আমি দিয়েছি', 'Given by me')]);
+  if (isSeniorUp() || myRole() === 'ao') tabs.push(['all', isSeniorUp() ? L('সব', 'All') : L('জোনের সব', 'Zone')]);
+  if (!tabs.some(t => t[0] === V.atab)) V.atab = canAssign() ? 'given' : 'mine';
+  setCmd('assign', L('অ্যাসাইনমেন্ট', 'Assignments'), L('অভিযোগের ভিত্তিতে সাইট পরিদর্শন', 'Complaint-based site visits'),
+    canAssign() ? `<button class="btn pri" id="newA">${ic('plus', 16)} ${L('নতুন অ্যাসাইনমেন্ট', 'New assignment')}</button>` : '');
+  let list = Object.entries(DB.data.assignments).filter(([, a]) => canSeeA(a));
+  if (V.atab === 'mine') list = list.filter(([, a]) => (a.assignees || []).includes(DB.me));
+  if (V.atab === 'given') list = list.filter(([, a]) => a.createdBy === DB.me);
+  const st = V.ast || 'active';
+  if (st === 'active') list = list.filter(([, a]) => ['open', 'inprogress'].includes(a.status));
+  else if (st === 'overdue') list = list.filter(([, a]) => isAOverdue(a));
+  else if (st !== 'all') list = list.filter(([, a]) => a.status === st);
+  const q = (V.aq || '').trim().toLowerCase();
+  if (q) list = list.filter(([, a]) => [a.area, a.address, a.complaintNo, a.no, plain(a.details), nameOf(a.createdBy)].join(' ').toLowerCase().includes(q));
+  list.sort((x, y) => (y[1].createdAt || 0) - (x[1].createdAt || 0));
+  $('#content').innerHTML = `
+    <div class="seg" role="group">${tabs.map(([k, n]) => `<button data-atab="${k}" aria-pressed="${V.atab === k}">${n}</button>`).join('')}</div>
+    <div class="toolbar"><input type="search" id="aq" value="${esc(V.aq || '')}" placeholder="${L('এলাকা, ঠিকানা বা অভিযোগ নম্বর', 'Area, address or complaint no.')}" aria-label="${L('খুঁজুন', 'Search')}"></div>
+    <div class="chips">${[['active', L('চলমান', 'Active')], ['open', L('নতুন', 'New')], ['inprogress', L('চলছে', 'In progress')], ['overdue', L('মেয়াদ পেরিয়েছে', 'Overdue')], ['done', L('সম্পন্ন', 'Done')], ['cancelled', L('বাতিল', 'Cancelled')], ['all', L('সব', 'All')]]
+      .map(([k, n]) => `<button class="chip" data-ast="${k}" aria-pressed="${st === k}">${n}</button>`).join('')}</div>
+    <div class="list">${list.map(([id, a]) => assignRow(id, a)).join('') || `<div class="empty"><b>${L('কোনো অ্যাসাইনমেন্ট নেই', 'No assignments')}</b><p>${canAssign() ? L('অভিযোগ এলে নতুন অ্যাসাইনমেন্ট দিয়ে পরিদর্শককে পাঠান।', 'Create one to send an inspector to a site.') : L('অফিসার কাজ দিলে এখানে দেখাবে।', 'Tasks from officers appear here.')}</p></div>`}</div>`;
+  const n = $('#newA'); if (n) n.onclick = () => newAssignment(null);
+  $$('[data-atab]').forEach(b => b.onclick = () => { V.atab = b.dataset.atab; render(); });
+  $$('[data-ast]').forEach(b => b.onclick = () => { V.ast = b.dataset.ast; render(); });
+  const qi = $('#aq'); qi.oninput = () => { V.aq = qi.value; const p = qi.selectionStart; render(); const x = $('#aq'); x.focus(); x.setSelectionRange(p, p); };
+  $$('[data-aopen]').forEach(b => b.onclick = () => { V.from = 'assign'; go('assignDetail', b.dataset.aopen); });
+}
+
+/* ---------- নতুন অ্যাসাইনমেন্ট ---------- */
+function newAssignment(pre) {
+  if (!canAssign()) { toast(L('অ্যাসাইনমেন্ট দেওয়ার অনুমতি নেই', 'Not allowed to assign')); return; }
+  const p = me() || {};
+  V.arec = Object.assign({ id: newId('a'), zone: p.zone || '', area: '', address: '', gps: '', complaintNo: '', complaintDate: '', details: '', files: [], assignees: [], dueDate: '', priority: 'normal' }, pre || {});
+  V.pickZone = V.arec.zone || 'all'; V.pickQ = '';
+  V.from = V.name; go('assignForm');
+}
+function pickerHTML() {
+  const a = V.arec, q = (V.pickQ || '').toLowerCase();
+  const people = Object.entries(DB.data.profiles).filter(([uid, p]) => !(DB.data.roles[uid] || {}).disabled && (V.pickZone === 'all' || p.zone === V.pickZone) && (!q || (p.name || '').toLowerCase().includes(q)))
+    .sort((x, y) => (x[1].name || '').localeCompare(y[1].name || ''));
+  return people.length ? people.map(([uid, p]) => `<label class="pick"><input type="checkbox" data-pick="${esc(uid)}" ${a.assignees.includes(uid) ? 'checked' : ''}>${avatar(uid, 30)}
+    <span><span class="nm">${esc(p.name || '')}${uid === DB.me ? L(' (আপনি)', ' (you)') : ''}</span><br><span class="ds">${esc(desigOf(uid))} | ${esc(O(ZONES, p.zone))}</span></span></label>`).join('')
+    : `<p class="hint" style="padding:10px;margin:0">${L('এই জোনে কেউ নেই', 'Nobody in this zone')}</p>`;
+}
+function renderAssignForm() {
+  const a = V.arec; if (!a) { go('assign'); return; }
+  setCmd('assign', L('নতুন অ্যাসাইনমেন্ট', 'New assignment'), L('পরিদর্শককে সাইট দেখে আসার নির্দেশ', 'Send an inspector to a site'),
+    `<button class="btn pri" id="aSave">${L('অ্যাসাইনমেন্ট দিন', 'Assign')}</button>`, true);
+  const f = (k, label, o = {}) => `<div class="f${o.full ? ' full' : ''}"><label class="l" for="a_${k}">${label}${o.req ? ' <span class="req">*</span>' : ''}</label>${o.list ? `<select id="a_${k}" data-ak="${k}">${opts(o.list, a[k], !o.nonone)}</select>` : `<input id="a_${k}" data-ak="${k}" type="${o.type || 'text'}" maxlength="${o.max || 120}" value="${esc(a[k] || '')}" placeholder="${esc(o.ph || '')}">`}</div>`;
+  $('#content').innerHTML = `<div class="cols c21"><div>
+    <section class="card"><h3>${L('অভিযোগের তথ্য', 'Complaint details')}</h3>
+      <div class="grid">
+        ${f('complaintNo', L('অভিযোগ নম্বর (ঐচ্ছিক)', 'Complaint no. (optional)'))}
+        ${f('complaintDate', L('অভিযোগের তারিখ', 'Complaint date'), { type: 'date' })}
+        ${f('zone', L('জোন', 'Zone'), { list: ZONES, req: true })}
+        ${f('area', L('এলাকার নাম', 'Area name'), { req: true, ph: L('যেমন: মিরপুর ১০, রোড ৫', 'e.g. Mirpur 10, Road 5') })}
+        <div class="f full"><label class="l" for="a_address">${L('ঠিকানা / সাইটের বিবরণ', 'Address / site')}</label><textarea id="a_address" data-ak="address" rows="2" maxlength="400">${esc(a.address)}</textarea></div>
+        ${f('gps', L('GPS (জানা থাকলে)', 'GPS (if known)'), { ph: '23.8041, 90.3667' })}
+        ${f('priority', L('গুরুত্ব', 'Priority'), { list: PRIORITY, nonone: true })}
+        ${f('dueDate', L('শেষ তারিখ', 'Due date'), { type: 'date' })}
+        <div class="f full"><label class="l" for="a_details">${L('নির্দেশনা / অভিযোগের সারাংশ', 'Instructions / complaint summary')}</label>${rte('a_details', '', a.details, L('কী দেখে আসতে হবে — জরুরি অংশ বোল্ড বা হাইলাইট করুন', 'What to check — bold or highlight key points'), 4)}</div>
+      </div></section>
+    <section class="card"><h3>${L('অভিযোগের কপি', 'Complaint copy')}</h3><p class="hint">${L('অভিযোগপত্রের ছবি বা PDF যুক্ত করুন।', 'Attach a photo or PDF of the complaint.')}</p>
+      <span class="btn filebtn">${ic('camera', 16)} ${L('ফাইল যুক্ত করুন', 'Attach file')}<input type="file" id="aFiles" accept="image/*,application/pdf" multiple></span><span class="gpsmsg" id="aMsg"></span>
+      <div id="aFilesBox">${filesHTML(a.files, true)}</div></section></div>
+    <section class="card"><h3>${L('কাকে দেবেন', 'Assign to')} <span class="req">*</span></h3>
+      <div class="grid" style="margin-bottom:8px"><div class="f"><label class="l" for="pickZone">${L('জোন', 'Zone')}</label><select id="pickZone">${opts([{ v: 'all', b: 'সব জোন', e: 'All zones' }, ...ZONES], V.pickZone, false)}</select></div>
+      <div class="f"><label class="l" for="pickQ">${L('নাম', 'Name')}</label><input id="pickQ" type="search" value="${esc(V.pickQ)}"></div></div>
+      <div class="picker" id="picker">${pickerHTML()}</div>
+      <p class="hint" style="margin:8px 0 0" id="pickCount">${L(`${fmt(a.assignees.length)} জন বাছাই করা হয়েছে`, `${a.assignees.length} selected`)}</p></section></div>`;
+  $$('[data-ak]').forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => { V.arec[el.dataset.ak] = el.value; }));
+  bindRte($('#content')); $('#a_details').addEventListener('input', e => { V.arec.details = e.target.value; });
+  const bindPick = () => $$('[data-pick]').forEach(c => c.onchange = () => {
+    const u = c.dataset.pick, arr = V.arec.assignees;
+    if (c.checked && !arr.includes(u)) arr.push(u); if (!c.checked) V.arec.assignees = arr.filter(x => x !== u);
+    $('#pickCount').textContent = L(`${fmt(V.arec.assignees.length)} জন বাছাই করা হয়েছে`, `${V.arec.assignees.length} selected`);
+  });
+  bindPick();
+  $('#pickZone').onchange = e => { V.pickZone = e.target.value; $('#picker').innerHTML = pickerHTML(); bindPick(); DB.hydrate(); };
+  $('#pickQ').oninput = e => { V.pickQ = e.target.value; $('#picker').innerHTML = pickerHTML(); bindPick(); DB.hydrate(); };
+  const bindFiles = () => {
+    $$('#aFilesBox [data-frm]').forEach(b => b.onclick = () => { V.arec.files.splice(+b.dataset.frm, 1); $('#aFilesBox').innerHTML = filesHTML(V.arec.files, true); bindFiles(); });
+    $$('#aFilesBox [data-fview]').forEach(b => b.onclick = () => { const x = V.arec.files[+b.dataset.fview]; viewImage(x.ref, x.name); });
+  };
+  bindFiles();
+  $('#aFiles').onchange = async e => {
+    const files = [...e.target.files]; if (V.arec.files.length + files.length > 10) { toast(L('সর্বোচ্চ ১০টি ফাইল', 'Max 10 files')); return; }
+    $('#aMsg').textContent = ' ' + L('আপলোড হচ্ছে…', 'Uploading…');
+    for (const f of files) { const up = await DB.uploadDoc(f); if (up && V.name === 'assignForm') V.arec.files.push(up); }
+    if (V.name !== 'assignForm') return;
+    $('#aMsg').textContent = ''; e.target.value = ''; $('#aFilesBox').innerHTML = filesHTML(V.arec.files, true); bindFiles(); DB.hydrate();
+  };
+  $('#aSave').onclick = saveAssignment;
+}
+async function saveAssignment() {
+  const a = V.arec;
+  if (!a.zone) { toast(L('জোন বাছাই করুন', 'Choose a zone')); $('#a_zone').focus(); return; }
+  if (!a.area.trim()) { toast(L('এলাকার নাম দিন', 'Enter the area name')); $('#a_area').focus(); return; }
+  if (!a.assignees.length) { toast(L('অন্তত একজনকে বাছাই করুন', 'Pick at least one person')); return; }
+  if (a.gps && !parseGps(a.gps)) { toast(L('GPS সঠিক নয়', 'Invalid GPS')); return; }
+  const doc = Object.assign({}, a, { details: clip(a.details, 5000), no: genNo('ASG', a.zone), createdBy: DB.me, createdAt: Date.now(), status: 'open' });
+  delete doc.id;
+  const sb = $('#aSave'); sb.disabled = true;
+  const ok = await DB.put('assignments', a.id, doc);
+  sb.disabled = false;
+  if (ok) { toast(L('অ্যাসাইনমেন্ট দেওয়া হয়েছে', 'Assignment sent')); const id = a.id; V.arec = null; V.from = 'assign'; go('assignDetail', id); }
+}
+
+/* ---------- অ্যাসাইনমেন্ট দেখা ---------- */
+function renderAssignDetail() {
+  const id = V.id, a = DB.data.assignments[id];
+  if (!a || !canSeeA(a)) { go('assign'); return; }
+  const mineA = (a.assignees || []).includes(DB.me), creator = a.createdBy === DB.me || isDev();
+  const active = ['open', 'inprogress'].includes(a.status);
+  const rep = a.reportId ? DB.data.reports[a.reportId] : null;
+  setCmd('assign', a.area || L('অ্যাসাইনমেন্ট', 'Assignment'), a.no || '',
+    `${mineA && active ? `<button class="btn pri" id="startRep">${L('জরিপ শুরু করুন', 'Start survey')}</button>` : ''}
+     ${rep && canSee(rep) ? `<button class="btn" id="viewRep">${L('রিপোর্ট দেখুন', 'View report')}</button>` : ''}
+     ${creator && active ? `<button class="btn" id="aDone">${L('সম্পন্ন চিহ্নিত', 'Mark done')}</button><button class="btn" id="aCancel">${L('বাতিল', 'Cancel')}</button>` : ''}
+     ${creator ? `<button class="btn danger" id="aDel">${L('মুছুন', 'Delete')}</button>` : ''}`, true);
+  const g = parseGps(a.gps), kv = (k, v) => v && v !== '—' ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : '';
+  $('#content').innerHTML = `
+    ${isAOverdue(a) ? `<div class="banner bad">${L('শেষ তারিখ পেরিয়ে গেছে', 'The due date has passed')} (${fd(a.dueDate)})</div>` : ''}
+    <div class="cols c21"><div>
+    <section class="card"><h3>${L('অভিযোগ ও সাইট', 'Complaint and site')}</h3><dl class="kv">
+      <dt>${L('অবস্থা', 'Status')}</dt><dd>${aStatusPill(a)} ${a.priority === 'urgent' ? `<span class="pill p-red">${L('জরুরি', 'Urgent')}</span>` : ''}</dd>
+      ${kv(L('অ্যাসাইনমেন্ট নং', 'Assignment no.'), a.no)}${kv(L('অভিযোগ নং', 'Complaint no.'), a.complaintNo)}${kv(L('অভিযোগের তারিখ', 'Complaint date'), a.complaintDate ? fd(a.complaintDate) : '')}
+      ${kv(L('জোন', 'Zone'), O(ZONES, a.zone))}${kv(L('এলাকা', 'Area'), a.area)}${kv(L('ঠিকানা', 'Address'), a.address)}
+      ${a.gps ? `<dt>GPS</dt><dd class="num">${esc(a.gps)}${g ? ` <a class="lnk" target="_blank" rel="noopener" href="${esc(mapUrl(g))}">${L('ম্যাপ', 'Map')}</a>` : ''}</dd>` : ''}
+      ${kv(L('শেষ তারিখ', 'Due date'), a.dueDate ? fd(a.dueDate) : '')}${kv(L('দেওয়া হয়েছে', 'Created'), fdt(a.createdAt))}
+      ${a.doneAt ? kv(L('সম্পন্ন', 'Completed'), fdt(a.doneAt)) : ''}
+    </dl>${a.details ? `<div class="rt" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line2)">${md(a.details)}</div>` : ''}</section>
+    ${(a.files || []).length ? `<section class="card"><h3>${L('অভিযোগের কপি', 'Complaint copy')}</h3><div id="aFilesBox">${filesHTML(a.files, false)}</div></section>` : ''}</div>
+    <div><section class="card"><h3>${L('দিয়েছেন', 'Assigned by')}</h3><div style="display:flex;gap:10px;align-items:center">${avatar(a.createdBy, 40)}<div><b>${esc(nameOf(a.createdBy))}</b><br><span class="hint">${esc(desigOf(a.createdBy))}</span></div></div></section>
+    <section class="card"><h3>${L('পরিদর্শক', 'Inspectors')}</h3><div class="list">${(a.assignees || []).map(u => `<div style="display:flex;gap:10px;align-items:center">${avatar(u, 32)}<div><b>${esc(nameOf(u))}</b><br><span class="hint">${esc(desigOf(u))}</span></div></div>`).join('')}</div></section></div></div>`;
+  const s = $('#startRep'); if (s) s.onclick = () => newReport(Object.assign({ id }, a));
+  const v = $('#viewRep'); if (v) v.onclick = () => { V.from = 'assignDetail'; go('detail', a.reportId); };
+  const dn = $('#aDone'); if (dn) dn.onclick = async () => { if (await DB.patch('assignments', id, { status: 'done', doneAt: Date.now(), doneBy: DB.me })) render(); };
+  const cc = $('#aCancel'); if (cc) cc.onclick = () => confirmSheet(L('বাতিল করবেন?', 'Cancel assignment?'), L('পরিদর্শকের তালিকা থেকে সরে যাবে।', 'It will leave the inspectors’ active list.'), L('হ্যাঁ, বাতিল', 'Yes, cancel'), async () => { if (await DB.patch('assignments', id, { status: 'cancelled' })) render(); });
+  const dl = $('#aDel'); if (dl) dl.onclick = () => confirmSheet(L('অ্যাসাইনমেন্ট মুছবেন?', 'Delete assignment?'), L('স্থায়ীভাবে মুছে যাবে। এর থেকে করা রিপোর্ট থেকে যাবে।', 'Permanently removed. Reports made from it remain.'), L('হ্যাঁ, মুছুন', 'Yes, delete'), async () => { if (await DB.del('assignments', id)) go('assign'); });
+  $$('#aFilesBox [data-fview]').forEach(b => b.onclick = () => { const x = a.files[+b.dataset.fview]; viewImage(x.ref, x.name); });
+}
+
+/* ============================================================
+   v-stats.js — ড্যাশবোর্ড ও পরিসংখ্যান
+   দিন / মাস / বছর অনুযায়ী অভিযোগভিত্তিক ও স্বপ্রণোদিত ফাইল আলাদা হিসাব
+   ============================================================ */
+'use strict';
+
+const visibleSubmitted = () => Object.entries(DB.data.reports).filter(([, r]) => r.status === 'submitted' && canSee(r));
+
+/* ---------- ড্যাশবোর্ড ---------- */
+function renderHome() {
+  const p = me() || {}, role = myRole();
+  setCmd('home', L('ড্যাশবোর্ড', 'Dashboard'), `${p.name || ''} | ${roleLabel(role)}`,
+    `<button class="btn pri" id="hNew">${ic('plus', 16)} ${L('নতুন জরিপ', 'New survey')}</button>${canAssign() ? `<button class="btn" id="hAssign">${L('অ্যাসাইনমেন্ট দিন', 'Assign')}</button>` : ''}`);
+  const sub = visibleSubmitted(), t = today(), m = monthKey(Date.now());
+  const cnt = f => sub.filter(([, r]) => f(r)).length;
+  const myOpen = myOpenAssignments();
+  const overdue = Object.entries(DB.data.reports).filter(([, r]) => canSee(r) && isOverdue(r) && !(r.revisit && r.revisit.v));
+  const revisit = Object.entries(DB.data.reports).filter(([, r]) => canSee(r) && r.revisit && r.revisit.v === 'yes');
+  const newIn = isOfficer() ? sub.filter(([, r]) => r.authorId !== DB.me && ['new', 'resub'].includes(reviewState(r))) : [];
+  const drafts = Object.entries(DB.data.reports).filter(([, r]) => r.authorId === DB.me && r.status !== 'submitted');
+  $('#content').innerHTML = `
+    ${pendingApproval() ? `<div class="banner warn">${L('আপনার পদবি অনুযায়ী ক্ষমতা এখনো অনুমোদন হয়নি। ডেভেলপার/অ্যাডমিন অনুমোদন দিলে চালু হবে। ততক্ষণ পরিদর্শক হিসেবে কাজ করতে পারবেন।', 'Your designation is awaiting approval. Until then you can work as an inspector.')}</div>` : ''}
+    ${DB.mode === 'local' ? `<div class="banner info">${L('ডেমো মোড: তথ্য শুধু এই ডিভাইসে, আপনি ডেভেলপার হিসেবে সব দেখতে পাচ্ছেন।', 'Demo mode: data stays on this device; you have full developer access.')}</div>` : ''}
+    <div class="kpis">
+      <button class="kpi" style="--kc:var(--orange)" data-go="assign"><div class="v num">${fmt(myOpen.length)}</div><div class="k">${L('আমার চলমান অ্যাসাইনমেন্ট', 'My active assignments')}</div></button>
+      <button class="kpi" style="--kc:var(--blue)" data-go="reports"><div class="v num">${fmt(cnt(r => dayKey(r.submittedAt) === t))}</div><div class="k">${L('আজকের রিপোর্ট', 'Reports today')}</div><div class="s">${L('এই মাসে ', 'This month ')}${fmt(cnt(r => monthKey(r.submittedAt) === m))}</div></button>
+      <button class="kpi" style="--kc:var(--red)" data-go="overdue"><div class="v num">${fmt(overdue.length)}</div><div class="k">${L('১ মাস পার — সিদ্ধান্ত বাকি', 'Over a month — decide')}</div></button>
+      <button class="kpi" style="--kc:var(--green)" data-go="${isOfficer() ? 'inbox' : 'drafts'}"><div class="v num">${fmt(isOfficer() ? newIn.length : drafts.length)}</div><div class="k">${isOfficer() ? L('নতুন প্রাপ্ত রিপোর্ট', 'New received reports') : L('আমার খসড়া', 'My drafts')}</div></button>
+    </div>
+    <div class="cols c2">
+      <section class="card"><h3>${L('আমার অ্যাসাইনমেন্ট', 'My assignments')}</h3>
+        <div class="list">${myOpen.sort((x, y) => (x[1].dueDate || '9').localeCompare(y[1].dueDate || '9')).slice(0, 5).map(([id, a]) => assignRow(id, a)).join('') || `<p class="hint" style="margin:0">${L('এখন কোনো কাজ দেওয়া নেই।', 'Nothing assigned right now.')}</p>`}</div></section>
+      <section class="card"><h3>${L('১ মাস আগে দেখা লোকেশন', 'Locations seen over a month ago')}</h3><p class="hint">${L('আবার পরিদর্শন দরকার কি না হ্যাঁ/না দিন।', 'Mark whether another visit is needed.')}</p>
+        <div class="list">${overdue.slice(0, 5).map(([id, r]) => reportRow(id, r, r.authorId !== DB.me)).join('') || `<p class="hint" style="margin:0">${L('কিছু বাকি নেই।', 'Nothing pending.')}</p>`}</div></section>
+    </div>
+    ${revisit.length ? `<section class="card"><h3>${L('পুনঃপরিদর্শন দরকার', 'Revisit needed')}</h3><div class="list">${revisit.slice(0, 6).map(([id, r]) => reportRow(id, r, r.authorId !== DB.me)).join('')}</div></section>` : ''}`;
+  $('#hNew').onclick = () => newReport(null);
+  const ha = $('#hAssign'); if (ha) ha.onclick = () => newAssignment(null);
+  $$('[data-go]').forEach(b => b.onclick = () => {
+    const g = b.dataset.go;
+    if (g === 'assign') { V.atab = 'mine'; V.ast = 'active'; go('assign'); }
+    else if (g === 'overdue') { V.rtab = isOfficer() ? 'inbox' : 'mine'; V.rst = 'overdue'; go('reports'); }
+    else if (g === 'inbox') { V.rtab = 'inbox'; V.rst = 'new'; go('reports'); }
+    else if (g === 'drafts') { V.rtab = 'mine'; V.rst = 'draft'; go('reports'); }
+    else { V.rst = 'all'; go('reports'); }
+  });
+  $$('[data-aopen]').forEach(b => b.onclick = () => { V.from = 'home'; go('assignDetail', b.dataset.aopen); });
+  $$('[data-open]').forEach(b => b.onclick = () => openReport(b.dataset.open));
+}
+
+/* ---------- পরিসংখ্যান ---------- */
+function periodList(gran) {
+  const out = [], d = new Date();
+  if (gran === 'day') for (let i = 13; i >= 0; i--) { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate() - i); out.push({ key: dayKey(x), label: x.toLocaleDateString(loc(), { day: 'numeric', month: 'short' }) }); }
+  if (gran === 'month') for (let i = 11; i >= 0; i--) { const x = new Date(d.getFullYear(), d.getMonth() - i, 1); out.push({ key: monthKey(x), label: x.toLocaleDateString(loc(), { month: 'short', year: '2-digit' }) }); }
+  if (gran === 'year') for (let i = 4; i >= 0; i--) { const y = d.getFullYear() - i; out.push({ key: String(y), label: fmt(y).replace(/[,٬]/g, '') }); }
+  return out;
+}
+const keyFn = g => (g === 'day' ? dayKey : g === 'month' ? monthKey : yearKey);
+
+function barChart(rows) {
+  const W = 640, H = 230, pl = 34, pb = 44, pt = 10, n = rows.length, max = Math.max(1, ...rows.map(r => r.c + r.s));
+  const bw = (W - pl - 10) / n, h = H - pb - pt, y = v => pt + h - (v / max) * h;
+  const ticks = [...new Set([0, Math.ceil(max / 2), max])];
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${L('রিপোর্টের সংখ্যা', 'Report count')}">
+    ${ticks.map(t => `<line x1="${pl}" x2="${W - 6}" y1="${y(t)}" y2="${y(t)}" stroke="var(--line2)"/><text x="${pl - 6}" y="${y(t) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${fmt(t)}</text>`).join('')}
+    ${rows.map((r, i) => { const x = pl + i * bw + bw * .18, w = bw * .64;
+      return `<rect x="${x.toFixed(1)}" y="${y(r.s).toFixed(1)}" width="${w.toFixed(1)}" height="${(h - (y(r.s) - pt)).toFixed(1)}" fill="var(--blue)" rx="1"><title>${esc(r.label)}: ${fmt(r.s)}</title></rect>
+      <rect x="${x.toFixed(1)}" y="${y(r.s + r.c).toFixed(1)}" width="${w.toFixed(1)}" height="${(y(r.s) - y(r.s + r.c)).toFixed(1)}" fill="var(--orange)" rx="1"><title>${esc(r.label)}: ${fmt(r.c)}</title></rect>
+      ${r.c + r.s ? `<text x="${(x + w / 2).toFixed(1)}" y="${(y(r.s + r.c) - 4).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--ink)">${fmt(r.c + r.s)}</text>` : ''}
+      <text x="${(x + w / 2).toFixed(1)}" y="${H - pb + 16}" text-anchor="middle" font-size="9.5" fill="var(--muted)" transform="rotate(-35 ${(x + w / 2).toFixed(1)} ${H - pb + 16})">${esc(r.label)}</text>`; }).join('')}
+  </svg>`;
+}
+
+function renderStats() {
+  const gran = V.sgran || 'day', zoneF = V.szone || 'all';
+  setCmd('stats', L('পরিসংখ্যান', 'Statistics'), L('দিন, মাস ও বছর অনুযায়ী ফাইলের হিসাব', 'File counts by day, month and year'), `<button class="btn" id="stCsv">${ic('download', 16)} CSV</button>`);
+  let sub = visibleSubmitted();
+  if (zoneF !== 'all') sub = sub.filter(([, r]) => r.zone === zoneF);
+  const kf = keyFn(gran), t = Date.now();
+  const split = f => { const x = sub.filter(([, r]) => f(r)); return { all: x.length, c: x.filter(([, r]) => r.source === 'complaint').length, s: x.filter(([, r]) => r.source !== 'complaint').length }; };
+  const kToday = split(r => dayKey(r.submittedAt) === dayKey(t)), kMonth = split(r => monthKey(r.submittedAt) === monthKey(t)), kYear = split(r => yearKey(r.submittedAt) === yearKey(t)), kAll = split(() => true);
+  const rows = periodList(gran).map(p => {
+    const x = sub.filter(([, r]) => kf(r.submittedAt) === p.key);
+    return { label: p.label, key: p.key, c: x.filter(([, r]) => r.source === 'complaint').length, s: x.filter(([, r]) => r.source !== 'complaint').length, dev: x.filter(([, r]) => issues(r).length).length, nothi: x.filter(([, r]) => r.review && r.review.nothiNo).length };
+  });
+  V.statRows = rows;
+  const as = Object.values(DB.data.assignments).filter(canSeeA).filter(a => zoneF === 'all' || a.zone === zoneF);
+  const kpi = (k, o, c) => `<div class="kpi" style="--kc:var(${c})"><div class="v num">${fmt(o.all)}</div><div class="k">${k}</div><div class="s">${L('অভিযোগ ', 'Complaint ')}${fmt(o.c)} | ${L('স্বপ্রণোদিত ', 'Self ')}${fmt(o.s)}</div></div>`;
+  const tot = rows.reduce((a, r) => ({ c: a.c + r.c, s: a.s + r.s, dev: a.dev + r.dev, nothi: a.nothi + r.nothi }), { c: 0, s: 0, dev: 0, nothi: 0 });
+  $('#content').innerHTML = `
+    <div class="toolbar"><div class="seg" role="group" style="margin:0">${[['day', L('দিন', 'Day')], ['month', L('মাস', 'Month')], ['year', L('বছর', 'Year')]].map(([k, n]) => `<button data-gran="${k}" aria-pressed="${gran === k}">${n}</button>`).join('')}</div>
+      <select id="stZone" style="width:auto">${opts([{ v: 'all', b: 'সব জোন', e: 'All zones' }, ...ZONES], zoneF, false)}</select></div>
+    <div class="kpis">${kpi(L('আজ', 'Today'), kToday, '--blue')}${kpi(L('এই মাসে', 'This month'), kMonth, '--green')}${kpi(L('এই বছরে', 'This year'), kYear, '--teal')}${kpi(L('মোট', 'Total'), kAll, '--purple')}</div>
+    <section class="card"><h3>${gran === 'day' ? L('গত ১৪ দিন', 'Last 14 days') : gran === 'month' ? L('গত ১২ মাস', 'Last 12 months') : L('গত ৫ বছর', 'Last 5 years')}</h3>
+      <div class="chart">${barChart(rows)}</div>
+      <div class="legend"><span><i style="background:var(--orange)"></i>${L('অভিযোগভিত্তিক', 'Complaint-based')}</span><span><i style="background:var(--blue)"></i>${L('স্বপ্রণোদিত', 'Self-initiated')}</span></div></section>
+    <div class="cols c21">
+    <section class="card"><h3>${L('হিসাবের তালিকা', 'Count table')}</h3><div class="tscroll"><table class="tbl"><thead><tr>
+      <th>${gran === 'day' ? L('দিন', 'Day') : gran === 'month' ? L('মাস', 'Month') : L('বছর', 'Year')}</th><th class="r">${L('অভিযোগভিত্তিক', 'Complaint')}</th><th class="r">${L('স্বপ্রণোদিত', 'Self')}</th><th class="r">${L('মোট', 'Total')}</th><th class="r">${L('বিচ্যুতিসহ', 'With deviation')}</th><th class="r">${L('নথি পেশ', 'Filed')}</th></tr></thead><tbody>
+      ${rows.slice().reverse().map(r => `<tr><td>${esc(r.label)}</td><td class="r num">${fmt(r.c)}</td><td class="r num">${fmt(r.s)}</td><td class="r num"><b>${fmt(r.c + r.s)}</b></td><td class="r num">${fmt(r.dev)}</td><td class="r num">${fmt(r.nothi)}</td></tr>`).join('')}
+      <tr class="tot"><td>${L('মোট', 'Total')}</td><td class="r num">${fmt(tot.c)}</td><td class="r num">${fmt(tot.s)}</td><td class="r num">${fmt(tot.c + tot.s)}</td><td class="r num">${fmt(tot.dev)}</td><td class="r num">${fmt(tot.nothi)}</td></tr>
+      </tbody></table></div></section>
+    <section class="card"><h3>${L('অ্যাসাইনমেন্ট', 'Assignments')}</h3><dl class="kv">
+      <dt>${L('মোট', 'Total')}</dt><dd class="num">${fmt(as.length)}</dd>
+      <dt>${L('নতুন', 'New')}</dt><dd class="num">${fmt(as.filter(a => a.status === 'open').length)}</dd>
+      <dt>${L('চলমান', 'In progress')}</dt><dd class="num">${fmt(as.filter(a => a.status === 'inprogress').length)}</dd>
+      <dt>${L('সম্পন্ন', 'Done')}</dt><dd class="num">${fmt(as.filter(a => a.status === 'done').length)}</dd>
+      <dt>${L('মেয়াদ পেরিয়েছে', 'Overdue')}</dt><dd class="num" style="color:var(--red)">${fmt(as.filter(isAOverdue).length)}</dd>
+      <dt>${L('১ মাস পার রিপোর্ট', 'Reports over a month')}</dt><dd class="num" style="color:var(--red)">${fmt(sub.filter(([, r]) => isOverdue(r)).length)}</dd>
+      <dt>${L('পুনঃপরিদর্শন দরকার', 'Revisit needed')}</dt><dd class="num">${fmt(sub.filter(([, r]) => r.revisit && r.revisit.v === 'yes').length)}</dd>
+    </dl></section></div>`;
+  $$('[data-gran]').forEach(b => b.onclick = () => { V.sgran = b.dataset.gran; render(); });
+  $('#stZone').onchange = e => { V.szone = e.target.value; render(); };
+  $('#stCsv').onclick = () => {
+    const head = [gran === 'day' ? L('দিন', 'Day') : gran === 'month' ? L('মাস', 'Month') : L('বছর', 'Year'), L('অভিযোগভিত্তিক', 'Complaint'), L('স্বপ্রণোদিত', 'Self'), L('মোট', 'Total'), L('বিচ্যুতিসহ', 'With deviation'), L('নথি পেশ', 'Filed')];
+    saveFile(`rajuk-stats-${gran}-${today()}.csv`, toCsv([head, ...V.statRows.map(r => [r.key, r.c, r.s, r.c + r.s, r.dev, r.nothi])]), 'text/csv');
+  };
+}
+
+/* ============================================================
+   v-admin.js — লগইন, আইডি খোলা, প্রোফাইল, অনুমতি, গ্রুপ,
+   নিয়ন্ত্রণ প্যানেল (শুধু ডেভেলপার), অ্যাপ সম্পর্কে
+   ============================================================ */
+'use strict';
+
+const creditHTML = () => `<div class="credit-line">${esc(L(APP.nameBn, APP.nameEn))} ${L('সংস্করণ', 'version')} ${esc(APP.version)}<br>Developed by <b>${esc(APP.developer)}</b><br>© ${APP.year} ${esc(APP.company)}</div>`;
+
+/* ---------- লগইন (Firebase) ---------- */
+function authErr(e) {
+  const m = {
+    'auth/invalid-credential': L('ইমেইল বা পাসওয়ার্ড ভুল', 'Wrong email or password'), 'auth/wrong-password': L('পাসওয়ার্ড ভুল', 'Wrong password'),
+    'auth/user-not-found': L('এই ইমেইলে কোনো আইডি নেই', 'No account with this email'), 'auth/email-already-in-use': L('এই ইমেইলে আগেই আইডি খোলা আছে — লগইন করুন', 'Email already registered — sign in'),
+    'auth/weak-password': L('পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের দিন', 'Use at least 8 characters'), 'auth/invalid-email': L('ইমেইল ঠিকানা সঠিক নয়', 'Invalid email'),
+    'auth/too-many-requests': L('অনেকবার চেষ্টা হয়েছে — কিছুক্ষণ পরে আবার চেষ্টা করুন', 'Too many attempts — try again later'),
+    'auth/invalid-phone-number': L('ফোন নম্বর সঠিক নয় — যেমন 01712345678', 'Invalid phone — e.g. 01712345678'), 'auth/invalid-verification-code': L('কোড সঠিক নয়', 'Wrong code'),
+    'auth/code-expired': L('কোডের মেয়াদ শেষ — আবার পাঠান', 'Code expired — send again'), 'auth/network-request-failed': L('ইন্টারনেট সংযোগ নেই', 'No internet connection') };
+  toast(m[e && e.code] || L('সমস্যা হয়েছে — আবার চেষ্টা করুন', 'Something went wrong — try again'));
+}
+const bdPhone = s => { s = asciiDigits(s).replace(/[\s-]/g, ''); if (/^01\d{9}$/.test(s)) return '+88' + s; if (/^8801\d{9}$/.test(s)) return '+' + s; return s; };
+/* শক্তিশালী পাসওয়ার্ড: কমপক্ষে ৮ অক্ষর, বড় হাতের, ছোট হাতের ও সংখ্যা */
+const strongPw = p => p.length >= 8 && /[a-z]/.test(p) && /[A-Z]/.test(p) && /\d/.test(p);
+
+function renderAuth() {
+  const m = V.authMode || 'login';
+  $('#cmd').innerHTML = ''; $('#cmd').hidden = true;
+  const tabs = [['login', L('ইমেইলে লগইন', 'Email')], ['phone', L('ফোনে লগইন', 'Phone')], ['signup', L('নতুন আইডি', 'Register')]];
+  let body = '';
+  if (m === 'login') body = `<div class="f" style="margin-bottom:10px"><label class="l" for="aEmail">${L('ইমেইল', 'Email')}</label><input id="aEmail" type="email" inputmode="email" autocomplete="username" maxlength="120"></div>
+    <div class="f"><label class="l" for="aPw">${L('পাসওয়ার্ড', 'Password')}</label><input id="aPw" type="password" autocomplete="current-password" maxlength="128"></div>
+    <div class="acts"><button class="btn pri block" id="aGo">${L('লগইন', 'Sign in')}</button></div>
+    <div style="text-align:center;margin-top:10px"><button class="linkbtn" id="aForgot">${L('পাসওয়ার্ড ভুলে গেছেন?', 'Forgot password?')}</button></div>
+    <p class="hint" style="margin-top:10px">${L('ইমেইলে পাসওয়ার্ড বদলানোর লিংক যাবে, অথবা "ফোনে লগইন" থেকে SMS কোড দিয়ে ঢুকুন।', 'A reset link goes to your email, or use “Phone” to sign in with an SMS code.')}</p>`;
+  if (m === 'signup') body = `<div class="f" style="margin-bottom:10px"><label class="l" for="aEmail">${L('ইমেইল', 'Email')}</label><input id="aEmail" type="email" inputmode="email" autocomplete="username" maxlength="120"></div>
+    <div class="grid"><div class="f"><label class="l" for="aPw">${L('পাসওয়ার্ড', 'Password')}</label><input id="aPw" type="password" autocomplete="new-password" maxlength="128"></div>
+    <div class="f"><label class="l" for="aPw2">${L('আবার পাসওয়ার্ড', 'Repeat')}</label><input id="aPw2" type="password" autocomplete="new-password" maxlength="128"></div></div>
+    <p class="hint" style="margin:8px 0 0">${L('কমপক্ষে ৮ অক্ষর, বড় হাতের ও ছোট হাতের অক্ষর এবং সংখ্যা থাকতে হবে।', 'At least 8 characters with upper-case, lower-case and a number.')}</p>
+    <div class="acts"><button class="btn pri block" id="aSign">${L('আইডি খুলুন', 'Create ID')}</button></div>`;
+  if (m === 'phone') body = !V.confirm ? `<div class="f"><label class="l" for="aPhone">${L('মোবাইল নম্বর', 'Mobile number')}</label><input id="aPhone" type="tel" inputmode="tel" placeholder="01712345678" maxlength="16"></div>
+    <div class="acts"><button class="btn pri block" id="aSend">${L('কোড পাঠান', 'Send code')}</button></div>
+    <p class="hint" style="margin-top:10px">${L('SMS-এ ৬ সংখ্যার কোড যাবে। নতুন নম্বর হলে আইডি খুলবে, পুরনো হলে লগইন হবে।', 'A 6-digit code is sent by SMS. New numbers get an ID; existing ones sign in.')}</p>`
+    : `<div class="f"><label class="l" for="aCode">${L('SMS-এ পাওয়া কোড', 'Code from SMS')}</label><input id="aCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6"></div>
+    <div class="acts"><button class="btn pri" id="aVerify">${L('যাচাই করে ঢুকুন', 'Verify')}</button><button class="btn" id="aBack">${L('নম্বর বদলান', 'Change number')}</button></div>`;
+  $('#content').innerHTML = `<div class="authwrap"><div class="authcard">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px"><span class="logo" style="border:1px solid var(--line)">${LOGO}</span><div><h1>${esc(L(APP.nameBn, APP.nameEn))}</h1><div class="sub" style="margin:0">${esc(L(APP.orgBn, APP.orgEn))}</div></div></div>
+    <div class="seg" role="group" style="width:100%">${tabs.map(([k, n]) => `<button data-am="${k}" aria-pressed="${m === k}" style="flex:1">${n}</button>`).join('')}</div>
+    ${body}${creditHTML()}</div></div>`;
+  $$('[data-am]').forEach(b => b.onclick = () => { V.authMode = b.dataset.am; V.confirm = null; render(); });
+  const busy = (id, on) => { const b = $(id); if (b) b.disabled = on; };
+  const g = $('#aGo'); if (g) { g.onclick = async () => { busy('#aGo', true); try { await DB.auth.signInWithEmailAndPassword($('#aEmail').value.trim(), $('#aPw').value); } catch (e) { authErr(e); } busy('#aGo', false); }; $('#aPw').onkeydown = e => { if (e.key === 'Enter') g.click(); }; }
+  const fg = $('#aForgot'); if (fg) fg.onclick = async () => {
+    const em = $('#aEmail').value.trim(); if (!em) { toast(L('আগে ইমেইল লিখুন', 'Enter your email first')); $('#aEmail').focus(); return; }
+    try { DB.auth.languageCode = lang; await DB.auth.sendPasswordResetEmail(em); } catch (e) { if (e && e.code === 'auth/invalid-email') { authErr(e); return; } }
+    toast(L('এই ইমেইলে আইডি থাকলে পাসওয়ার্ড বদলানোর লিংক পাঠানো হয়েছে', 'If this email has an account, a reset link was sent'));
+  };
+  const sg = $('#aSign'); if (sg) sg.onclick = async () => {
+    const pw = $('#aPw').value;
+    if (!strongPw(pw)) { toast(L('পাসওয়ার্ড দুর্বল — কমপক্ষে ৮ অক্ষর, বড়-ছোট হাতের অক্ষর ও সংখ্যা দিন', 'Weak password — 8+ chars with upper, lower and a number')); return; }
+    if (pw !== $('#aPw2').value) { toast(L('দুটো পাসওয়ার্ড মিলছে না', 'Passwords do not match')); return; }
+    busy('#aSign', true); try { await DB.auth.createUserWithEmailAndPassword($('#aEmail').value.trim(), pw); try { await DB.auth.currentUser.sendEmailVerification(); } catch (e) { /* ignore */ } } catch (e) { authErr(e); } busy('#aSign', false);
+  };
+  const sd = $('#aSend'); if (sd) sd.onclick = async () => {
+    busy('#aSend', true);
+    try {
+      DB.auth.languageCode = lang;
+      if (!window._rv) window._rv = new firebase.auth.RecaptchaVerifier('rcBox', { size: 'invisible' });
+      V.confirm = await DB.auth.signInWithPhoneNumber(bdPhone($('#aPhone').value), window._rv);
+      toast(L('কোড পাঠানো হয়েছে', 'Code sent')); render();
+    } catch (e) { authErr(e); busy('#aSend', false); }
+  };
+  const vf = $('#aVerify'); if (vf) vf.onclick = async () => { busy('#aVerify', true); try { await V.confirm.confirm($('#aCode').value.trim()); V.confirm = null; } catch (e) { authErr(e); } busy('#aVerify', false); };
+  const bk = $('#aBack'); if (bk) bk.onclick = () => { V.confirm = null; render(); };
+}
+
+function renderBlocked() {
+  setCmd('profile', L('আইডি স্থগিত', 'Account suspended'), '', DB.mode === 'firebase' ? `<button class="btn" id="lo">${L('লগআউট', 'Sign out')}</button>` : '');
+  $('#content').innerHTML = `<div class="empty"><b>${L('আপনার আইডি এখন স্থগিত আছে', 'Your account is suspended')}</b><p>${L('অ্যাপের ডেভেলপার বা অ্যাডমিনের সাথে যোগাযোগ করুন।', 'Contact the app developer or administrator.')}</p></div>${creditHTML()}`;
+  const lo = $('#lo'); if (lo) lo.onclick = () => DB.auth.signOut();
+}
+
+/* ---------- প্রোফাইল / আইডি খোলা ---------- */
+function renderProfile() {
+  const first = !me(), p = V.prof && V.prof._for === DB.me ? V.prof : Object.assign({ _for: DB.me }, me() || {});
+  V.prof = p;
+  const dev = myRole() === 'dev';
+  setCmd('profile', first ? L('আপনার আইডি তৈরি করুন', 'Set up your ID') : L('প্রোফাইল', 'Profile'), first ? L('একবার তথ্য দিলেই হবে', 'One-time setup') : roleLabel(myRole()),
+    `<button class="btn pri" id="pSave">${first ? L('আইডি খুলুন', 'Create ID') : L('সংরক্ষণ করুন', 'Save')}</button>`);
+  const g = p.groupId && DB.data.groups[p.groupId];
+  const theme = (() => { try { return localStorage.getItem('rj-theme') || 'auto'; } catch (e) { return 'auto'; } })();
+  $('#content').innerHTML = `
+  ${first ? `<div class="banner info">${L('পদবি ও জোন অনুযায়ী ঠিক হবে আপনার রিপোর্ট কার কাছে যাবে। অফিসার পদবির ক্ষমতা ডেভেলপার/অ্যাডমিন অনুমোদন দিলে চালু হবে।', 'Designation and zone decide where your reports go. Officer powers start once the developer/admin approves.')}</div>` : ''}
+  ${!first && pendingApproval() ? `<div class="banner warn">${L('আপনার পদবির ক্ষমতা অনুমোদনের অপেক্ষায়।', 'Your designation is awaiting approval.')}</div>` : ''}
+  <div class="cols c21"><div>
+  <section class="card"><h3>${L('ব্যক্তিগত তথ্য', 'Personal details')}</h3>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px"><span id="pAv">${avatarFrom(p, 76)}</span>
+      <div><span class="btn sm filebtn">${ic('camera', 14)} ${L('ছবি দিন', 'Add photo')}<input type="file" accept="image/*" id="pPhoto"></span><div class="gpsmsg" id="pMsg"></div></div></div>
+    <div class="grid">
+      <div class="f full"><label class="l" for="pName">${L('পূর্ণ নাম', 'Full name')} <span class="req">*</span></label><input id="pName" maxlength="80" value="${esc(p.name || '')}"></div>
+      <div class="f full"><label class="l" for="pDesig">${L('পদবি', 'Designation')} ${dev ? '' : '<span class="req">*</span>'}</label><select id="pDesig">${opts(DESIG, p.desig)}</select></div>
+      <div class="f"><label class="l" for="pZone">${L('জোন', 'Zone')} <span class="req">*</span></label><select id="pZone">${opts(ZONES, p.zone)}</select></div>
+      <div class="f"><label class="l" for="pEmp">${L('কর্মচারী আইডি', 'Employee ID')}</label><input id="pEmp" maxlength="30" value="${esc(p.empId || '')}"></div>
+    </div></section>
+  <section class="card"><h3>${L('যোগাযোগ (গোপন)', 'Contact (private)')}</h3><p class="hint">${L('শুধু আপনি ও অনুমোদিত কর্মকর্তা দেখতে পারবেন।', 'Visible only to you and authorized officers.')}</p>
+    <div class="grid"><div class="f"><label class="l" for="pMob">${L('মোবাইল', 'Mobile')}</label><input id="pMob" type="tel" inputmode="tel" maxlength="16"></div>
+    <div class="f"><label class="l" for="pEmail">${L('ইমেইল', 'Email')}</label><input id="pEmail" type="email" inputmode="email" maxlength="120"></div></div></section></div>
+  <div>
+  ${!first ? `<section class="card"><h3>${L('আমার ভূমিকা', 'My role')}</h3><dl class="kv"><dt>${L('ক্ষমতা', 'Access')}</dt><dd>${esc(roleLabel(myRole()))}</dd><dt>${L('গ্রুপ', 'Group')}</dt><dd>${g ? esc(g.name) : L('কোনো গ্রুপে নেই', 'No group')}</dd></dl></section>` : ''}
+  <section class="card"><h3>${L('প্রদর্শন', 'Display')}</h3>
+    <div class="f" style="margin-bottom:10px"><span class="l">${L('ভাষা', 'Language')}</span><div class="seg" style="margin:0"><button data-lang="bn" aria-pressed="${lang === 'bn'}">বাংলা</button><button data-lang="en" aria-pressed="${lang === 'en'}">English</button></div></div>
+    <div class="f"><span class="l">${L('থিম', 'Theme')}</span><div class="seg" style="margin:0">${[['auto', L('স্বয়ংক্রিয়', 'Auto')], ['light', L('আলো', 'Light')], ['dark', L('অন্ধকার', 'Dark')]].map(([k, n]) => `<button data-theme="${k}" aria-pressed="${theme === k}">${n}</button>`).join('')}</div></div></section>
+  ${DB.mode === 'firebase' ? `<section class="card"><h3>${L('নিরাপত্তা', 'Security')}</h3><dl class="kv" style="margin-bottom:10px"><dt>${L('লগইন', 'Sign-in')}</dt><dd>${esc((DB.user && (DB.user.email || DB.user.phoneNumber)) || '')}</dd></dl>
+    <div class="acts">${DB.user && DB.user.email ? `<button class="btn sm" id="pwReset">${L('পাসওয়ার্ড বদলান', 'Change password')}</button>` : ''}<button class="btn danger sm" id="logout">${L('লগআউট', 'Sign out')}</button></div></section>` : ''}
+  </div></div>${creditHTML()}`;
+  DB.getContact(DB.me).then(c => {
+    if (V.name !== 'profile' && V.name !== 'onboard') return;
+    const mob = $('#pMob'), em = $('#pEmail');
+    if (mob && !mob.value) mob.value = (c && c.mobile) || (DB.user && DB.user.phoneNumber) || '';
+    if (em && !em.value) em.value = (c && c.email) || (DB.user && DB.user.email) || '';
+  });
+  $('#pPhoto').onchange = async e => { const f = e.target.files[0]; if (!f) return; $('#pMsg').textContent = L('আপলোড হচ্ছে…', 'Uploading…'); const ref = await DB.uploadImage(f); $('#pMsg').textContent = ''; if (ref) { V.prof.photo = ref; $('#pAv').innerHTML = avatarFrom(V.prof, 76); DB.hydrate(); } };
+  $$('[data-lang]').forEach(b => b.onclick = () => setLang(b.dataset.lang));
+  $$('[data-theme]').forEach(b => b.onclick = () => setTheme(b.dataset.theme));
+  const lo = $('#logout'); if (lo) lo.onclick = () => DB.auth.signOut();
+  const pr = $('#pwReset'); if (pr) pr.onclick = async () => { try { DB.auth.languageCode = lang; await DB.auth.sendPasswordResetEmail(DB.user.email); toast(L('ইমেইলে পাসওয়ার্ড বদলানোর লিংক পাঠানো হয়েছে', 'Reset link sent to your email')); } catch (e) { authErr(e); } };
+  $('#pSave').onclick = async () => {
+    const np = { name: clip($('#pName').value.trim(), 80), desig: $('#pDesig').value, zone: $('#pZone').value, empId: clip($('#pEmp').value.trim(), 30),
+      photo: V.prof.photo || '', groupId: (me() || {}).groupId || '', createdAt: (me() || {}).createdAt || Date.now(), updatedAt: Date.now() };
+    if (!np.name || !np.zone || (!np.desig && !dev)) { toast(L('নাম, পদবি ও জোন দিন', 'Enter name, designation and zone')); return; }
+    const em = clip($('#pEmail').value.trim(), 120), mob = clip($('#pMob').value.trim(), 16);
+    if (em && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { toast(L('ইমেইল সঠিক নয়', 'Invalid email')); return; }
+    const sb = $('#pSave'); sb.disabled = true;
+    const ok = await DB.put('profiles', DB.me, np);
+    if (ok) await DB.put('contacts', DB.me, { email: em, mobile: mob, updatedAt: Date.now() });
+    sb.disabled = false;
+    if (ok) { V.prof = null; toast(first ? L('আইডি তৈরি হয়েছে', 'ID created') : L('সংরক্ষিত হয়েছে', 'Saved')); go(first ? 'home' : 'profile'); }
+  };
+}
+
+/* ---------- প্রথমবার অনুমতি চাওয়া (ডেমোতে নয়) ---------- */
+function maybeAskPermissions() {
+  if (DB.mode === 'local' || !me() || $('#sheetBg').classList.contains('open')) return;
+  try { if (localStorage.getItem('rj-perm-v1')) return; } catch (e) { return; }
+  openSheet(L('অ্যাপ চালাতে অনুমতি দিন', 'Allow access'), `<p class="hint">${L('সরজমিনে GPS লোকেশন নেওয়া ও ছবি তোলার জন্য এই অনুমতিগুলো দরকার।', 'Needed to record GPS and take photos on site.')}</p>
+    <div class="perm"><span class="ic">${ic('pin', 20)}</span><div class="tx"><b>${L('লোকেশন (Google Location)', 'Location')}</b>${L('ভবনের GPS কোড নিজে থেকে বসাতে', 'To fill the building’s GPS')}</div><button class="btn sm pri" id="pmLoc">${L('অনুমতি দিন', 'Allow')}</button></div>
+    <div class="perm"><span class="ic">${ic('camera', 20)}</span><div class="tx"><b>${L('ক্যামেরা', 'Camera')}</b>${L('বর্তমান অবস্থার ছবি তুলতে', 'To photograph the site')}</div><button class="btn sm pri" id="pmCam">${L('অনুমতি দিন', 'Allow')}</button></div>
+    <div class="acts"><button class="btn" id="pmDone">${L('সম্পন্ন', 'Done')}</button></div>`);
+  const mark = (id, ok) => { const b = $(id); if (b) { b.textContent = ok ? L('দেওয়া হয়েছে', 'Allowed') : L('দেওয়া হয়নি', 'Not allowed'); b.disabled = true; b.className = 'btn sm ' + (ok ? 'ok' : ''); } };
+  $('#pmLoc').onclick = () => locate().then(() => mark('#pmLoc', true), () => mark('#pmLoc', false));
+  $('#pmCam').onclick = async () => {
+    try { const s = await navigator.mediaDevices.getUserMedia({ video: true }); s.getTracks().forEach(t => t.stop()); mark('#pmCam', true); } catch (e) { mark('#pmCam', false); }
+  };
+  $('#pmDone').onclick = () => { try { localStorage.setItem('rj-perm-v1', '1'); } catch (e) { /* ignore */ } closeSheet(); };
+}
+
+/* ---------- গ্রুপ ---------- */
+function renderGroups() {
+  setCmd('groups', L('গ্রুপ', 'Groups'), L('অফিসার অনুযায়ী দল — সদস্যদের রিপোর্ট প্রধানের কাছে যায়', 'Teams by officer — members’ reports go to the head'), '');
+  const p = me() || {}, gs = Object.entries(DB.data.groups).sort((a, b) => (a[1].name || '').localeCompare(b[1].name || ''));
+  const members = gid => Object.entries(DB.data.profiles).filter(([, x]) => x.groupId === gid);
+  $('#content').innerHTML = `
+  ${canAssign() ? `<section class="card"><h3>${L('নতুন গ্রুপ তৈরি', 'Create a group')}</h3><p class="hint">${L('আপনি গ্রুপ প্রধান হবেন।', 'You become the group head.')}</p>
+    <div class="grid"><div class="f"><label class="l" for="gName">${L('গ্রুপের নাম', 'Group name')}</label><input id="gName" maxlength="60" placeholder="${L('যেমন: জোন-৩ পরিদর্শন দল', 'e.g. Zone 3 inspection team')}"></div>
+    <div class="f"><label class="l" for="gZone">${L('জোন', 'Zone')}</label><select id="gZone">${opts(ZONES, p.zone)}</select></div></div>
+    <div class="acts"><button class="btn pri" id="gCreate">${L('গ্রুপ তৈরি করুন', 'Create group')}</button></div></section>` : ''}
+  <div class="list">${gs.map(([id, g]) => {
+    const m = members(id), mine = p.groupId === id, lead = g.leaderId === DB.me;
+    return `<section class="card" style="margin:0"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">${avatar(g.leaderId, 40)}<div style="flex:1;min-width:160px"><b>${esc(g.name)}</b>
+      <div class="hint" style="margin:0">${esc(O(ZONES, g.zone))} | ${L('প্রধান: ', 'Head: ')}${esc(nameOf(g.leaderId))} | ${L(`সদস্য ${fmt(m.length)} জন`, `${m.length} members`)}</div></div>
+      ${lead ? `<span class="pill p-info">${L('আপনি প্রধান', 'You lead')}</span>` : mine ? `<button class="btn sm" data-leave="1">${L('ছাড়ুন', 'Leave')}</button>` : `<button class="btn sm pri" data-join="${esc(id)}">${L('যোগ দিন', 'Join')}</button>`}
+      ${lead || isDev() ? `<button class="btn danger sm" data-gdel="${esc(id)}">${L('মুছুন', 'Delete')}</button>` : ''}</div>
+      ${m.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">${m.map(([uid]) => `<span style="display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--line2);border-radius:999px;padding:2px 10px 2px 2px;font-size:.82rem">${avatar(uid, 22)}${esc(nameOf(uid))}</span>`).join('')}</div>` : ''}</section>`;
+  }).join('') || `<div class="empty"><b>${L('কোনো গ্রুপ নেই', 'No groups yet')}</b><p>${canAssign() ? L('উপরে থেকে প্রথম গ্রুপ তৈরি করুন।', 'Create the first group above.') : L('অফিসার গ্রুপ তৈরি করলে এখানে যোগ দিতে পারবেন।', 'Join here once an officer creates a group.')}</p></div>`}</div>`;
+  const c = $('#gCreate'); if (c) c.onclick = async () => {
+    const n = clip($('#gName').value.trim(), 60); if (!n) { toast(L('গ্রুপের নাম দিন', 'Enter a group name')); return; }
+    if (await DB.put('groups', newId('g'), { name: n, zone: $('#gZone').value, leaderId: DB.me, createdAt: Date.now() })) { toast(L('গ্রুপ তৈরি হয়েছে', 'Group created')); render(); }
+  };
+  $$('[data-join]').forEach(b => b.onclick = () => setGroup(b.dataset.join));
+  $$('[data-leave]').forEach(b => b.onclick = () => setGroup(''));
+  $$('[data-gdel]').forEach(b => b.onclick = () => confirmSheet(L('গ্রুপ মুছবেন?', 'Delete group?'), L('রিপোর্ট মুছবে না, শুধু গ্রুপটা থাকবে না।', 'Reports stay; only the group is removed.'), L('হ্যাঁ, মুছুন', 'Yes, delete'), async () => { if (await DB.del('groups', b.dataset.gdel)) render(); }));
+}
+async function setGroup(gid) {
+  const p = Object.assign({}, me(), { groupId: gid, updatedAt: Date.now() });
+  if (await DB.put('profiles', DB.me, p)) { toast(gid ? L('গ্রুপে যোগ দিয়েছেন', 'Joined group') : L('গ্রুপ ছেড়েছেন', 'Left group')); render(); }
+}
+
+/* ---------- নিয়ন্ত্রণ প্যানেল (শুধু ডেভেলপার) ---------- */
+function renderAdmin() {
+  if (!isDev()) { go('home'); return; }
+  setCmd('admin', L('নিয়ন্ত্রণ প্যানেল', 'Control panel'), L('ব্যবহারকারী, ক্ষমতা ও সেটিংস — শুধু ডেভেলপার', 'Users, access and settings — developer only'), '');
+  const users = Object.entries(DB.data.profiles).sort((a, b) => (a[1].name || '').localeCompare(b[1].name || ''));
+  const pend = users.filter(([uid, p]) => { const want = (DESIG.find(d => d.v === p.desig) || {}).role; const r = DB.data.roles[uid]; return want && want !== 'inspector' && !(r && r.approved); });
+  const stats = { users: users.length, reports: Object.keys(DB.data.reports).length, asg: Object.keys(DB.data.assignments).length, groups: Object.keys(DB.data.groups).length };
+  const s = DB.data.settings.app || {};
+  const roleOpts = cur => ['inspector', 'lead', 'ao', 'senior', 'dev'].map(r => `<option value="${r}" ${r === cur ? 'selected' : ''}>${esc(roleLabel(r))}</option>`).join('');
+  $('#content').innerHTML = `
+    <div class="kpis">
+      <div class="kpi" style="--kc:var(--purple)"><div class="v num">${fmt(stats.users)}</div><div class="k">${L('ব্যবহারকারী', 'Users')}</div><div class="s">${L('অনুমোদন বাকি ', 'Pending ')}${fmt(pend.length)}</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="v num">${fmt(stats.reports)}</div><div class="k">${L('রিপোর্ট', 'Reports')}</div></div>
+      <div class="kpi" style="--kc:var(--orange)"><div class="v num">${fmt(stats.asg)}</div><div class="k">${L('অ্যাসাইনমেন্ট', 'Assignments')}</div></div>
+      <div class="kpi" style="--kc:var(--teal)"><div class="v num">${fmt(stats.groups)}</div><div class="k">${L('গ্রুপ', 'Groups')}</div></div></div>
+    ${pend.length ? `<div class="banner warn">${L(`${fmt(pend.length)} জন অফিসার পদবির অনুমোদনের অপেক্ষায় — নিচের তালিকায় "অনুমোদিত" টিক দিয়ে সংরক্ষণ করুন।`, `${pend.length} officer request(s) waiting — tick “Approved” below and save.`)}</div>` : ''}
+    <section class="card"><h3>${L('ব্যবহারকারী ও ক্ষমতা', 'Users and access')}</h3><p class="hint">${L('পদবি ব্যবহারকারী নিজে দেন, কিন্তু ক্ষমতা শুধু এখান থেকে চালু হয়। স্থগিত করলে সে অ্যাপে কিছু করতে পারবে না।', 'Users choose a designation; access is granted only here. Suspended users cannot do anything.')}</p>
+      <div class="tscroll"><table class="tbl"><thead><tr><th>${L('নাম', 'Name')}</th><th>${L('চাওয়া পদবি / জোন', 'Requested / zone')}</th><th>${L('ক্ষমতা', 'Access')}</th><th>${L('অনুমোদিত', 'Approved')}</th><th>${L('স্থগিত', 'Suspended')}</th><th></th></tr></thead><tbody>
+      ${users.map(([uid, p]) => { const r = DB.data.roles[uid] || {}, self = uid === DB.me, want = (DESIG.find(d => d.v === p.desig) || {}).role || 'inspector';
+        return `<tr data-u="${esc(uid)}"><td><div style="display:flex;gap:8px;align-items:center">${avatar(uid, 28)}<div><b>${esc(p.name || '')}</b>${self ? ` <span class="pill p-purple">${L('আপনি', 'You')}</span>` : ''}<br><button class="linkbtn" style="font-size:.76rem" data-contact="${esc(uid)}">${L('যোগাযোগ দেখুন', 'Contact')}</button></div></div></td>
+          <td>${esc(O(DESIG, p.desig))}<br><span class="hint">${esc(O(ZONES, p.zone))}</span></td>
+          <td><select data-role ${self && DB.owner ? 'disabled' : ''} style="min-width:150px">${roleOpts(r.role || want)}</select></td>
+          <td><input type="checkbox" data-appr ${r.approved ? 'checked' : ''} ${self && DB.owner ? 'disabled' : ''}></td>
+          <td><input type="checkbox" data-dis ${r.disabled ? 'checked' : ''} ${self ? 'disabled' : ''}></td>
+          <td><button class="btn sm pri" data-usave>${L('সংরক্ষণ', 'Save')}</button></td></tr>`; }).join('')}
+      </tbody></table></div></section>
+    <div class="cols c2">
+    <section class="card"><h3>${L('অ্যাপ সেটিংস', 'App settings')}</h3>
+      <div class="f" style="max-width:260px"><label class="l" for="setOd">${L('কত দিন পর রিপোর্ট লাল হবে', 'Days until a report turns red')}</label><input id="setOd" type="number" min="1" max="365" inputmode="numeric" value="${esc(s.overdueDays || DEFAULT_OVERDUE_DAYS)}"></div>
+      <div class="acts"><button class="btn pri" id="setSave">${L('সংরক্ষণ', 'Save')}</button></div></section>
+    <section class="card"><h3>${L('নিরাপত্তা অবস্থা', 'Security status')}</h3><dl class="kv">
+      <dt>${L('চলছে', 'Running on')}</dt><dd>${DB.mode === 'cloud' ? L('Claude (অনলাইন)', 'Claude (online)') : DB.mode === 'firebase' ? 'Firebase' : L('ডেমো (এই ডিভাইস)', 'Demo (this device)')}</dd>
+      <dt>${L('ডেভেলপার', 'Developer')}</dt><dd>${esc(APP.developer)}</dd><dt>${L('প্রতিষ্ঠান', 'Company')}</dt><dd>${esc(APP.company)}</dd>
+      <dt>${L('সংস্করণ', 'Version')}</dt><dd>${esc(APP.version)}</dd></dl></section></div>`;
+  $$('[data-usave]').forEach(b => b.onclick = async () => {
+    const tr = b.closest('tr'), uid = tr.dataset.u, role = tr.querySelector('[data-role]').value;
+    const doc = { role, approved: tr.querySelector('[data-appr]').checked || role === 'inspector', disabled: tr.querySelector('[data-dis]').checked && uid !== DB.me, by: DB.me, at: Date.now() };
+    if (uid === DB.me && DB.owner) { doc.role = 'dev'; doc.approved = true; doc.disabled = false; }
+    if (await DB.put('roles', uid, doc)) { toast(L('ক্ষমতা হালনাগাদ হয়েছে', 'Access updated')); DB._scopeKey = ''; DB.rescope(); render(); }
+  });
+  $$('[data-contact]').forEach(b => b.onclick = async () => {
+    const c = await DB.getContact(b.dataset.contact);
+    openSheet(nameOf(b.dataset.contact), `<dl class="kv"><dt>${L('মোবাইল', 'Mobile')}</dt><dd>${esc((c && c.mobile) || '—')}</dd><dt>${L('ইমেইল', 'Email')}</dt><dd>${esc((c && c.email) || '—')}</dd></dl><div class="acts"><button class="btn" id="cc">${L('বন্ধ করুন', 'Close')}</button></div>`);
+    $('#cc').onclick = closeSheet;
+  });
+  $('#setSave').onclick = async () => {
+    const n = Math.round(num($('#setOd').value) || 0); if (n < 1 || n > 365) { toast(L('১ থেকে ৩৬৫ দিনের মধ্যে দিন', 'Enter 1 to 365 days')); return; }
+    if (await DB.put('settings', 'app', Object.assign({}, s, { overdueDays: n, by: DB.me, at: Date.now() }))) toast(L('সেটিংস সংরক্ষিত', 'Settings saved'));
+  };
+}
+
+/* ---------- অ্যাপ সম্পর্কে ---------- */
+function renderAbout() {
+  setCmd('about', L('অ্যাপ সম্পর্কে', 'About'), '', '');
+  $('#content').innerHTML = `<div class="about-hero"><span class="logo">${LOGO}</span><div><div style="font-size:1.3rem;font-weight:bold">${esc(L(APP.nameBn, APP.nameEn))}</div><div style="opacity:.8">${esc(L(APP.orgBn, APP.orgEn))}</div><div style="opacity:.7;font-size:.85rem">${L('সংস্করণ', 'Version')} ${esc(APP.version)}</div></div></div>
+    <div class="cols c2"><section class="card"><h3>${L('নির্মাতা', 'Made by')}</h3><dl class="kv">
+      <dt>${L('ডেভেলপার', 'Developer')}</dt><dd>${esc(APP.developer)}</dd><dt>${L('প্রতিষ্ঠান', 'Company')}</dt><dd>${esc(APP.company)}</dd><dt>${L('স্বত্ব', 'Copyright')}</dt><dd>© ${APP.year} ${esc(APP.company)}</dd></dl></section>
+    <section class="card"><h3>${L('যা যা করা যায়', 'What it does')}</h3><div class="rt">${md(L('- সরজমিন জরিপ: নকশা বনাম বাস্তব মাপ, বিচ্যুতি নিজে থেকে হিসাব\n- অভিযোগভিত্তিক অ্যাসাইনমেন্ট ও স্বপ্রণোদিত পরিদর্শন আলাদা\n- জোন অনুযায়ী অথরাইজড অফিসারের কাছে রিপোর্ট, মন্তব্য ও নথি পেশ\n- দিন, মাস, বছর অনুযায়ী পরিসংখ্যান\n- ১ মাস পার হলে লাল সতর্কতা ও পুনঃপরিদর্শনের সিদ্ধান্ত', '- Field surveys: plan vs actual, automatic deviations\n- Complaint assignments and self-initiated inspections kept separate\n- Zone-wise routing to Authorized Officers, comments and Nothi\n- Statistics by day, month and year\n- Red alert after a month and revisit decision'))}</div></section></div>
+    ${creditHTML()}`;
+}
+
+/* ============================================================
+   app.js — নেভিগেশন, পাতা বদল, শুরু (boot)
+   Developed by Md Rubel Mia — Digitalaxis Tech
+   ============================================================ */
+'use strict';
+
+const V = { name: 'loading', id: null, from: null };
+let started = false;
+
+const VIEWS = {
+  auth: renderAuth, onboard: renderProfile, blocked: renderBlocked,
+  home: renderHome, reports: renderReports, form: renderForm, detail: renderDetail,
+  assign: renderAssign, assignForm: renderAssignForm, assignDetail: renderAssignDetail,
+  stats: renderStats, groups: renderGroups, admin: renderAdmin, profile: renderProfile, about: renderAbout
+};
+/* যে পাতায় ফর্ম পূরণ চলছে, সেখানে অন্যের পরিবর্তনে পাতা নতুন করে আঁকা হয় না */
+const EDITING = ['form', 'assignForm', 'profile', 'onboard', 'auth'];
+const NAV_OF = { form: 'reports', detail: 'reports', assignForm: 'assign', assignDetail: 'assign', onboard: 'profile' };
+
+function defaultView() {
+  if (DB.mode === 'firebase' && !DB.me) return 'auth';
+  if (isDisabled()) return 'blocked';
+  return me() ? 'home' : 'onboard';
+}
+
+function go(name, id) {
+  if (V.name === 'detail' && (name !== 'detail' || id !== V.id) && V.cUnsub) { V.cUnsub(); V.cUnsub = null; V.cFor = null; V.comments = null; }
+  V.name = name; V.id = id || null;
+  render(); window.scrollTo(0, 0);
+}
+async function goBack() {
+  if (V.name === 'form') {
+    await autoSave();
+    if (V.rec && V.rec.status === 'submitted') { go('detail', V.rec.id); return; }
+  }
+  const fallback = { form: 'reports', detail: 'reports', assignForm: 'assign', assignDetail: 'assign' }[V.name] || 'home';
+  let t = V.from;
+  if (!t || t === V.name || ['form', 'detail', 'assignForm', 'assignDetail', 'onboard', 'auth'].includes(t)) t = fallback;
+  V.from = null; go(t);
+}
+
+function onData() {
+  if (!started) return;
+  if (V.name === 'onboard' && me()) { go('home'); return; }
+  if (V.name === 'blocked' && !isDisabled()) { go(defaultView()); return; }
+  if (isDisabled() && V.name !== 'blocked') { go('blocked'); return; }
+  clearTimeout(onData.t);
+  onData.t = setTimeout(() => {
+    if (EDITING.includes(V.name)) { renderNav(); return; }
+    const y = window.scrollY; render(); window.scrollTo(0, y);
+  }, 120);
+}
+
+/* ---------- নেভিগেশন ---------- */
+function navItems() {
+  const items = [['home', L('ড্যাশবোর্ড', 'Dashboard'), 'var(--blue)'], ['assign', L('অ্যাসাইনমেন্ট', 'Assignments'), 'var(--orange)'], ['reports', L('রিপোর্ট', 'Reports'), 'var(--blue)'],
+    ['stats', L('পরিসংখ্যান', 'Statistics'), 'var(--green)'], ['groups', L('গ্রুপ', 'Groups'), 'var(--teal)']];
+  if (isDev()) items.push(['admin', L('নিয়ন্ত্রণ প্যানেল', 'Control panel'), 'var(--purple)']);
+  items.push(['profile', L('প্রোফাইল', 'Profile'), 'var(--slate)'], ['about', L('অ্যাপ সম্পর্কে', 'About'), 'var(--slate)']);
+  return items;
+}
+function navCounts() {
+  return {
+    assign: myOpenAssignments().length,
+    reports: isOfficer() ? Object.values(DB.data.reports).filter(r => r.authorId !== DB.me && r.status === 'submitted' && canSee(r) && ['new', 'resub'].includes(reviewState(r))).length : 0
+  };
+}
+function renderNav() {
+  const nav = $('#nav'), show = started && me() && !['auth', 'blocked'].includes(V.name) && !(DB.mode === 'firebase' && !DB.me);
+  nav.hidden = !show; $('#meBtn').hidden = !show;
+  if (!show) return;
+  const cur = NAV_OF[V.name] || V.name, items = navItems(), cnt = navCounts(), mobileMain = ['home', 'assign', 'reports', 'stats'];
+  const btn = ([k, n, c], cls) => `<button class="ni ${cls}" data-nav="${k}" style="--nc:${c}" ${cur === k ? 'aria-current="page"' : ''}>${ic(k, 22)}<span class="t">${esc(n)}</span>${cnt[k] ? `<span class="cnt">${fmt(cnt[k])}</span>` : ''}</button>`;
+  const moreActive = !mobileMain.includes(cur);
+  nav.innerHTML = items.map(it => btn(it, mobileMain.includes(it[0]) ? '' : 'desk-only')).join('') +
+    `<button class="ni mob-only" data-more="1" style="--nc:var(--slate)" ${moreActive ? 'aria-current="page"' : ''}>${ic('more', 22)}<span class="t">${L('আরও', 'More')}</span></button>
+     <div class="credit">Developed by <b>${esc(APP.developer)}</b><br>${esc(APP.company)}</div>`;
+  nav.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => navTo(b.dataset.nav));
+  nav.querySelector('[data-more]').onclick = () => {
+    openSheet(L('আরও', 'More'), `<div class="moregrid">${items.filter(it => !mobileMain.includes(it[0])).map(([k, n, c]) => `<button data-nav2="${k}" style="--nc:${c}">${ic(k, 22)}${esc(n)}</button>`).join('')}
+      <button data-lang2="1" style="--nc:var(--slate)">${ic('about', 22)}${lang === 'bn' ? 'English' : 'বাংলা'}</button></div>
+      <div class="credit-line">Developed by <b>${esc(APP.developer)}</b><br>${esc(APP.company)}</div>`);
+    $$('[data-nav2]').forEach(b => b.onclick = () => { closeSheet(); navTo(b.dataset.nav2); });
+    $('[data-lang2]').onclick = () => { closeSheet(); setLang(lang === 'bn' ? 'en' : 'bn'); };
+  };
+  const p = me(); $('#meBtn').innerHTML = avatarFrom(p, 32);
+}
+async function navTo(k) { if (V.name === 'form') await autoSave(); V.from = null; go(k); }
+
+/* ---------- পাতা আঁকা ---------- */
+function render() {
+  document.documentElement.lang = lang;
+  $('#appName').textContent = L(APP.nameBn, APP.nameEn);
+  $('#appOrg').textContent = L(APP.orgBn, APP.orgEn);
+  $('#langBtn').textContent = lang === 'bn' ? 'English' : 'বাংলা';
+  if (!started) return;
+  if (DB.mode === 'firebase' && !DB.me) V.name = 'auth';
+  else if (isDisabled()) V.name = 'blocked';
+  else if (!me() && V.name !== 'onboard') V.name = 'onboard';
+  else if (V.name === 'admin' && !isDev()) V.name = 'home';
+  $('#cmd').hidden = false;
+  renderNav();
+  try { (VIEWS[V.name] || renderHome)(); }
+  catch (e) { console.error(e); $('#content').innerHTML = `<div class="banner bad">${L('পাতাটি দেখাতে সমস্যা হয়েছে। আবার চেষ্টা করুন।', 'This page could not be shown. Please try again.')}</div>`; }
+  DB.hydrate();
+  if (V.name === 'home') maybeAskPermissions();
+}
+
+function setLang(x) { lang = x; try { localStorage.setItem('rj-lang', x); } catch (e) { /* ignore */ } const y = window.scrollY; render(); window.scrollTo(0, y); }
+function setTheme(t) {
+  try { localStorage.setItem('rj-theme', t); } catch (e) { /* ignore */ }
+  if (t === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', t);
+  if (V.name === 'profile') render();
+}
+(function applyTheme() { try { const t = localStorage.getItem('rj-theme'); if (t && t !== 'auto') document.documentElement.setAttribute('data-theme', t); } catch (e) { /* ignore */ } })();
+
+/* নিষ্ক্রিয় থাকলে স্বয়ংক্রিয় লগআউট (Firebase) */
+function idleWatch() {
+  if (DB.mode !== 'firebase' || !IDLE_LOGOUT_MINUTES) return;
+  let t; const reset = () => { clearTimeout(t); t = setTimeout(async () => { if (DB.me) { await autoSave(); DB.auth.signOut(); toast(L('নিরাপত্তার জন্য লগআউট করা হয়েছে', 'Signed out for security')); } }, IDLE_LOGOUT_MINUTES * 60000); };
+  ['pointerdown', 'keydown', 'scroll'].forEach(ev => window.addEventListener(ev, reset, { passive: true })); reset();
+}
+
+/* ---------- শুরু ---------- */
+(async function boot() {
+  $('#logo').innerHTML = LOGO;
+  render();
+  $('#langBtn').onclick = () => setLang(lang === 'bn' ? 'en' : 'bn');
+  $('#meBtn').onclick = () => navTo('profile');
+  $('#sheetBg').addEventListener('click', e => { if (e.target.id === 'sheetBg') closeSheet(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+  window.addEventListener('beforeunload', e => { if (V.name === 'form' && V.dirty) { e.preventDefault(); e.returnValue = ''; } });
+  let ok = false;
+  if (window.claude && typeof window.claude.use === 'function') ok = await DB.connectClaude();
+  if (!ok && FIREBASE_CONFIG) ok = await DB.connectFirebase();
+  if (!ok) await DB.useLocal();
+  started = true;
+  V.name = defaultView();
+  render();
+  idleWatch();
+})();
+
+</script>
+</body>
+</html>
